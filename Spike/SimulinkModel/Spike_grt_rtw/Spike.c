@@ -6,9 +6,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.21
+ * Model version              : 1.25
  * Simulink Coder version : 9.2 (R2019b) 18-Jul-2019
- * C source code generated on : Fri Jun 12 10:45:57 2020
+ * C source code generated on : Fri Jun 12 11:24:53 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -1435,11 +1435,11 @@ void Spike_step(void)
   Spike_emxFree_boolean_T(&TF);
 
   /* MATLAB Function: '<Root>/MATLAB Function' */
-  if (ii->data[ii->size[1] - 1] > A->size[1]) {
+  if (ii->data[ii->size[1] - 3] > A->size[1]) {
     nx = 0;
     idx = 0;
   } else {
-    nx = ii->data[ii->size[1] - 1] - 1;
+    nx = ii->data[ii->size[1] - 3] - 1;
     idx = A->size[1];
   }
 
