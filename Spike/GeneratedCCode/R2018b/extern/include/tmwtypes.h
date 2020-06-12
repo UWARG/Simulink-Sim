@@ -27,7 +27,15 @@
 
 #include <limits.h>
 
-#ifdef __APPLE_CC__
+/* __STDC_VERSION__ version check below means "check for a C99 compiler".
+
+   Visual Studio (checked on versions 2015 and 2017) does
+   not define __STDC_VERSION__, however  it has stdbool.h available,
+   thus a separate check for _MSC_VER below.
+ */
+#if defined(__APPLE_CC__) \
+    || (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) \
+    || (defined(_MSC_VER) && (_MSC_VER >= 1900))
 #include <stdbool.h>
 #endif
 
@@ -796,8 +804,18 @@ typedef size_t    mwIndex;        /* unsigned pointer-width integer */
 typedef ptrdiff_t mwSignedIndex;  /* a signed pointer-width integer */
 #endif
 
+                                  /* for the individual dim */
+#ifndef SLSIZE_SLINDEX
+#define SLSIZE_SLINDEX
 typedef int SLIndex;
 typedef int SLSize;
+#endif
+
+/* for the total size */
+#define SLIndexType size_t
+#define INVALID_SIZET_VALUE   (std::numeric_limits<SLIndexType>::max())
+#define MAX_VALID_SIZET_VALUE   (std::numeric_limits<SLIndexType>::max() -1)
+
 
 #if (defined(_LP64) || defined(_WIN64)) && !defined(MX_COMPAT_32)
 /* Currently 2^48 based on hardware limitations */
