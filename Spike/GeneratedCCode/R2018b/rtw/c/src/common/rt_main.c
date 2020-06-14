@@ -67,13 +67,14 @@ select option 'Generate an example main program', or modify rt_main.c for \
 your application needs.
 #endif
 
+#define QUOTE1(name) #name
+#define QUOTE(name) QUOTE1(name)    /* need to expand name    */
+
 #ifndef SAVEFILE
 # define MATFILE2(file) #file ".mat"
 # define MATFILE1(file) MATFILE2(file)
 # define MATFILE MATFILE1(MODEL)
 #else
-# define QUOTE1(name) #name
-# define QUOTE(name) QUOTE1(name)    /* need to expand name    */
 # define MATFILE QUOTE(SAVEFILE)
 #endif
 
@@ -123,12 +124,23 @@ extern "C" {
 # endif
 #endif
 
-#if defined(MULTITASKING) /* multitask */
 #if defined(TID01EQ) && TID01EQ == 1
 #define FIRST_TID 1
 #else 
 #define FIRST_TID 0
 #endif
+
+/*====================*
+ * External functions *
+ *====================*/
+
+extern void MODEL_INITIALIZE(void);
+extern void MODEL_TERMINATE(void);
+
+#if !defined(MULTITASKING)
+ extern void MODEL_STEP(void);       /* single-rate step function */
+#else
+ extern void MODEL_STEP(int_T tid);  /* multirate step function */
 #endif
 
 
@@ -381,10 +393,6 @@ int_T main(int_T argc, const char *argv[])
     /*******************************************
      * warn if the model will run indefinitely *
      *******************************************/
-#ifndef EXT_MODE
-# define EXT_MODE 0
-#endif
-    
 #if MAT_FILE==0 && EXT_MODE==0
     printf("warning: the simulation will run with no stop time; "
            "to change this behavior select the 'MAT-file logging' option\n");

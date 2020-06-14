@@ -6,9 +6,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.25
- * Simulink Coder version : 9.2 (R2019b) 18-Jul-2019
- * C source code generated on : Fri Jun 12 11:24:53 2020
+ * Model version              : 1.83
+ * Simulink Coder version : 9.0 (R2018b) 24-May-2018
+ * C source code generated on : Sat Jun 13 21:57:13 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -22,13 +22,13 @@
 #include "rtwtypes.h"
 #include "multiword_types.h"
 
-/* Custom Type definition for MATLAB Function: '<Root>/MATLAB Function1' */
+/* Custom Type definition for MATLAB Function: '<Root>/WriteToFile' */
 #include <stdio.h>
 
-/* Custom Type definition for MATLAB Function: '<Root>/MATLAB Function' */
+/* Custom Type definition for MATLAB Function: '<Root>/Read Throttle' */
 #include <stdio.h>
 
-/* Custom Type definition for MATLAB Function: '<Root>/MATLAB Function1' */
+/* Custom Type definition for MATLAB Function: '<Root>/WriteToFile' */
 #ifndef struct_tag_sL6LJlPlxhdTxZzXh5NTaQC
 #define struct_tag_sL6LJlPlxhdTxZzXh5NTaQC
 
@@ -44,9 +44,9 @@ struct tag_sL6LJlPlxhdTxZzXh5NTaQC
 
 typedef struct tag_sL6LJlPlxhdTxZzXh5NTaQC sL6LJlPlxhdTxZzXh5NTaQC_Spike_T;
 
-#endif                               /*typedef_sL6LJlPlxhdTxZzXh5NTaQC_Spike_T*/
+#endif                                 /*typedef_sL6LJlPlxhdTxZzXh5NTaQC_Spike_T*/
 
-/* Custom Type definition for MATLAB Function: '<Root>/MATLAB Function' */
+/* Custom Type definition for MATLAB Function: '<Root>/Read Throttle' */
 #ifndef struct_tag_su2dYx4D5wygFoF57GWu6uG
 #define struct_tag_su2dYx4D5wygFoF57GWu6uG
 
@@ -66,8 +66,9 @@ struct tag_su2dYx4D5wygFoF57GWu6uG
 
 typedef struct tag_su2dYx4D5wygFoF57GWu6uG su2dYx4D5wygFoF57GWu6uG_Spike_T;
 
-#endif                               /*typedef_su2dYx4D5wygFoF57GWu6uG_Spike_T*/
+#endif                                 /*typedef_su2dYx4D5wygFoF57GWu6uG_Spike_T*/
 
+#include <stddef.h>
 #ifndef struct_emxArray_char_T
 #define struct_emxArray_char_T
 
@@ -172,6 +173,9 @@ struct emxArray_real_T
 typedef struct emxArray_real_T emxArray_real_T_Spike_T;
 
 #endif                                 /*typedef_emxArray_real_T_Spike_T*/
+
+/* Parameters (default storage) */
+typedef struct P_Spike_T_ P_Spike_T;
 
 /* Forward declaration for rtModel */
 typedef struct tag_RTM_Spike_T RT_MODEL_Spike_T;
