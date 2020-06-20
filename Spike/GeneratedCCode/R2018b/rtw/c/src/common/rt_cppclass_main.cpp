@@ -1,7 +1,7 @@
 /* 
- * Copyright 2012-2018 The MathWorks, Inc.
+ * Copyright 2013-2018 The MathWorks, Inc.
  *
- * File: rt_main.c
+ * File: rt_cppclass_main.cpp
  *
  * Abstract:
  *
@@ -12,9 +12,9 @@
  *   This file is a useful starting point for creating a custom main when 
  *   targeting a custom floating point processor or integer micro-controller.
  *
- *   Alternatively for ERT targets, you can generate a sample ert_main.c file 
+ *   Alternatively for ERT targets, you can generate a sample ert_main.cpp file 
  *   with the generated code by selecting the "Generate an example main program"
- *   option.  In this case, ert_main.c is precisely customized to the
+ *   option.  In this case, ert_main.cpp is precisely customized to the
  *   model requirements.  
  *
  * Required Defines:
@@ -34,10 +34,7 @@
 /* create generic macros that work with any model */
 # define EXPAND_CONCAT(name1,name2) name1 ## name2
 # define CONCAT(name1,name2) EXPAND_CONCAT(name1,name2)
-# define MODEL_INITIALIZE CONCAT(MODEL,_initialize)
-# define MODEL_STEP       CONCAT(MODEL,_step)
-# define MODEL_TERMINATE  CONCAT(MODEL,_terminate)
-# define RT_MDL           CONCAT(MODEL,_M)
+# define MODEL_INSTANCE   CONCAT(MODEL,_Obj)
 #endif
 
 #ifndef NUMST
@@ -45,26 +42,19 @@
 #endif
 
 #if CLASSIC_INTERFACE == 1
-# error "Classic call interface is not supported by rt_main.c."
+# error "Classic call interface is not supported by rt_cppclass_main.cpp."
 #endif
 
 #if ONESTEPFCN==0
-#error Separate output and update functions are not supported by rt_main.c. \
-You must update rt_main.c to suit your application needs, or select \
+#error Separate output and update functions are not supported by rt_cppclass_main.cpp. \
+You must update rt_cppclass_main.cpp to suit your application needs, or select \
 the 'Single output/update function' option.
 #endif
 
 #if TERMFCN==0
-#error The terminate function is required by rt_main.c. \
-You must update rt_main.c to suit your application needs, or select \
+#error The terminate function is required by rt_cppclass_main.cpp. \
+You must update rt_cppclass_main.cpp to suit your application needs, or select \
 the 'Terminate function required' option.
-#endif
-
-#if MULTI_INSTANCE_CODE==1
-#error The static version of rt_main.c does not support reusable \
-code generation.  Either deselect ERT option 'Generate reusable code', \
-select option 'Generate an example main program', or modify rt_main.c for \
-your application needs.
 #endif
 
 #define QUOTE1(name) #name
@@ -86,17 +76,13 @@ your application needs.
 #if !defined(INTEGER_CODE) || INTEGER_CODE == 0
 # include <stdio.h>    /* optional for printf */
 #else
-#ifdef __cplusplus
 extern "C" {
-#endif
   extern int printf(const char *, ...); 
   extern int fflush(void *);
-#ifdef __cplusplus
 }
 #endif
-#endif
 #include <string.h>  /* optional for strcmp */
-#include "rtmodel.h" /* optional for automated builds */
+#include "rtmodel.h"  /* includes model.h */
 
 #include "rt_logging.h"
 #ifdef UseMMIDataLogging
@@ -106,7 +92,7 @@ extern "C" {
 #include "ext_work.h"
 
 #ifdef MODEL_STEP_FCN_CONTROL_USED
-#error The static version of rt_main.c does not support model step function prototype control.
+#error rt_cppclass_main.cpp does not support model step function prototype control.
 #endif
 
 /*========================* 
@@ -134,13 +120,12 @@ extern "C" {
  * External functions *
  *====================*/
 
-extern void MODEL_INITIALIZE(void);
-extern void MODEL_TERMINATE(void);
-
 #if !defined(MULTITASKING)
- extern void MODEL_STEP(void);       /* single-rate step function */
+ /* single-rate step function */
+ #define MODEL_STEP(obj) obj.MODEL_STEPNAME()
 #else
- extern void MODEL_STEP(int_T tid);  /* multirate step function */
+ /* multirate step function */
+ #define MODEL_STEP MODEL_STEPNAME
 #endif
 
 
@@ -155,6 +140,10 @@ static boolean_T OverrunFlags[NUMST];
 static boolean_T eventFlags[NUMST]; 
 #endif
 
+/* Create model instance */
+static MODEL_CLASSNAME MODEL_INSTANCE;
+
+
 /*===================*
  * Visible functions *
  *===================*/
@@ -168,7 +157,7 @@ static boolean_T eventFlags[NUMST];
  *   it could be called from an interrupt service routine (ISR) with minor
  *   modifications.
  */
-static void rt_OneStep(void)
+static void rt_OneStep(MODEL_CLASSNAME & mdl)
 {
     /* Disable interrupts here */
 
@@ -176,25 +165,25 @@ static void rt_OneStep(void)
      * Check and see if base step time is too fast *
      ***********************************************/
     if (OverrunFlags[0]++) {
-        rtmSetErrorStatus(RT_MDL, "Overrun");
+        rtmSetErrorStatus(mdl.getRTM(), "Overrun");
     }
 
     /*************************************************
      * Check and see if an error status has been set *
      * by an overrun or by the generated code.       *
      *************************************************/
-    if (rtmGetErrorStatus(RT_MDL) != NULL) {
+    if (rtmGetErrorStatus(mdl.getRTM()) != NULL) {
         return;
     }
 
     /* Save FPU context here (if necessary) */
-    /* Reenable interrupts here */
+    /* Re-enable interrupts here */
     /* Set model inputs here */
 
     /**************
      * Step model *
      **************/
-    MODEL_STEP();
+    MODEL_STEP(mdl);
 
     /* Get model outputs here */
 
@@ -207,7 +196,7 @@ static void rt_OneStep(void)
 
     /* Disable interrupts here */
     /* Restore FPU context here (if necessary) */
-    /* Reenable interrupts here */
+    /* Re-enable interrupts here */
 
 } /* end rtOneStep */
 
@@ -226,7 +215,7 @@ static void rt_OneStep(void)
  *   Also, you may wish to unroll any or all of for and while loops to
  *   improve the real-time performance of this function.
  */
-static void rt_OneStep(void)
+static void rt_OneStep(MODEL_CLASSNAME & mdl)
 {
     int_T i;
 
@@ -236,33 +225,33 @@ static void rt_OneStep(void)
      * Check and see if base step time is too fast *
      ***********************************************/
     if (OverrunFlags[0]++) {
-        rtmSetErrorStatus(RT_MDL, "Overrun");
+        rtmSetErrorStatus(mdl.getRTM(), "Overrun");
     }
 
     /*************************************************
      * Check and see if an error status has been set *
      * by an overrun or by the generated code.       *
      *************************************************/
-    if (rtmGetErrorStatus(RT_MDL) != NULL) {
+    if (rtmGetErrorStatus(mdl.getRTM()) != NULL) {
         return;
     }
 
     /* Save FPU context here (if necessary) */
-    /* Reenable interrupts here */
+    /* Re-enable interrupts here */
     
     /*************************************************
      * Update EventFlags and check subrate overrun   *
      *************************************************/
     for (i = FIRST_TID+1; i < NUMST; i++) {
-        if (rtmStepTask(RT_MDL,i) && eventFlags[i]++) {
+        if (rtmStepTask(mdl.getRTM(),i) && eventFlags[i]++) {
             OverrunFlags[0]--;
             OverrunFlags[i]++;
             /* Sampling too fast */
-            rtmSetErrorStatus(RT_MDL, "Overrun");
+            rtmSetErrorStatus(mdl.getRTM(), "Overrun");
             return;
         }
-        if (++rtmTaskCounter(RT_MDL,i) == rtmCounterLimit(RT_MDL,i))
-            rtmTaskCounter(RT_MDL, i) = 0;
+        if (++rtmTaskCounter(mdl.getRTM(),i) == rtmCounterLimit(mdl.getRTM(),i))
+            rtmTaskCounter(mdl.getRTM(), i) = 0;
     }
 
     /* Set model inputs associated with base rate here */
@@ -270,7 +259,7 @@ static void rt_OneStep(void)
     /*******************************************
      * Step the model for the base sample time *
      *******************************************/
-    MODEL_STEP(0);
+    MODEL_STEP(mdl,0);
 
     /* Get model outputs associated with base rate here */
 
@@ -297,7 +286,7 @@ static void rt_OneStep(void)
             /******************************************
              * Step the model for sample time "i" *
              ******************************************/
-            MODEL_STEP(i);
+            MODEL_STEP(mdl,i);
 
             /* Get model outputs associated with subrate here */
             
@@ -324,7 +313,7 @@ static void rt_OneStep(void)
  *   Initialized the model and the overrun flags
  *
  */
-static void rt_InitModel(void)
+static void rt_InitModel(MODEL_CLASSNAME & mdl)
 {
 #if defined(MULTITASKING)
     int i;
@@ -340,7 +329,7 @@ static void rt_InitModel(void)
     /************************
      * Initialize the model *
      ************************/
-    MODEL_INITIALIZE();
+    mdl.initialize();
 }
 
 /* Function: rt_TermModel ====================================================
@@ -349,28 +338,22 @@ static void rt_InitModel(void)
  *   Terminates the model and prints the error status
  *
  */
-static int_T rt_TermModel(void)
+static int_T rt_TermModel(MODEL_CLASSNAME & mdl)
 {
-    MODEL_TERMINATE();
+    mdl.terminate();
     
     {
-        const char_T *errStatus = (const char_T *) (rtmGetErrorStatus(RT_MDL));
-        int_T i = 0;
+        const char_T *errStatus = (const char_T *) (rtmGetErrorStatus(mdl.getRTM()));
+        int_T i;
         
         if (errStatus != NULL && strcmp(errStatus, "Simulation finished")) {
             (void)printf("%s\n", errStatus);
-#if defined(MULTITASKING)
             for (i = 0; i < NUMST; i++) {
                 if (OverrunFlags[i]) {
                     (void)printf("ISR overrun - sampling rate too"
                                  "fast for sample time index %d.\n", i);
                 }
             }
-#else
-           if (OverrunFlags[i]) { 
-               (void)printf("ISR overrun - base sampling rate too fast.\n");
-           }
-#endif
             return(1);
         }
     }
@@ -402,14 +385,14 @@ int_T main(int_T argc, const char *argv[])
     /************************
      * Initialize the model *
      ************************/
-    rt_InitModel();
+    rt_InitModel(MODEL_INSTANCE);
 
     /* External mode */
-    rtSetTFinalForExtMode(&rtmGetTFinal(RT_MDL));
+    rtSetTFinalForExtMode(&rtmGetTFinal(MODEL_INSTANCE.getRTM()));
     rtExtModeCheckInit(NUMST);
-    rtExtModeWaitForStartPkt(rtmGetRTWExtModeInfo(RT_MDL),
+    rtExtModeWaitForStartPkt(rtmGetRTWExtModeInfo(MODEL_INSTANCE.getRTM()),
                              NUMST,
-                             (boolean_T *)&rtmGetStopRequested(RT_MDL));
+                             (boolean_T *)&rtmGetStopRequested(MODEL_INSTANCE.getRTM()));
 
     (void)printf("\n** starting the model **\n");
 
@@ -419,21 +402,21 @@ int_T main(int_T argc, const char *argv[])
      * background task.  Note that the generated code sets error status    *
      * to "Simulation finished" when MatFileLogging is specified in TLC.   *
      ***********************************************************************/
-    while (rtmGetErrorStatus(RT_MDL) == NULL &&
-           !rtmGetStopRequested(RT_MDL)) {
+    while (rtmGetErrorStatus(MODEL_INSTANCE.getRTM()) == NULL &&
+           !rtmGetStopRequested(MODEL_INSTANCE.getRTM())) {
 
-        rtExtModePauseIfNeeded(rtmGetRTWExtModeInfo(RT_MDL),
+        rtExtModePauseIfNeeded(rtmGetRTWExtModeInfo(MODEL_INSTANCE.getRTM()),
                                NUMST,
-                               (boolean_T *)&rtmGetStopRequested(RT_MDL));
+                               (boolean_T *)&rtmGetStopRequested(MODEL_INSTANCE.getRTM()));
 
-        if (rtmGetStopRequested(RT_MDL)) break;
+        if (rtmGetStopRequested(MODEL_INSTANCE.getRTM())) break;
 
         /* external mode */
-        rtExtModeOneStep(rtmGetRTWExtModeInfo(RT_MDL),
+        rtExtModeOneStep(rtmGetRTWExtModeInfo(MODEL_INSTANCE.getRTM()),
                          NUMST,
-                         (boolean_T *)&rtmGetStopRequested(RT_MDL));
+                         (boolean_T *)&rtmGetStopRequested(MODEL_INSTANCE.getRTM()));
         
-        rt_OneStep();
+        rt_OneStep(MODEL_INSTANCE);
     }
 
     /*******************************
@@ -441,15 +424,17 @@ int_T main(int_T argc, const char *argv[])
      *******************************/
 
 #ifdef UseMMIDataLogging
-    rt_CleanUpForStateLogWithMMI(rtmGetRTWLogInfo(RT_MDL));
+    rt_CleanUpForStateLogWithMMI(rtmGetRTWLogInfo(MODEL_INSTANCE.getRTM()));
 #endif
-    rt_StopDataLogging(MATFILE,rtmGetRTWLogInfo(RT_MDL));
+    rt_StopDataLogging(MATFILE,rtmGetRTWLogInfo(MODEL_INSTANCE.getRTM()));
 
-    ret = rt_TermModel();
+    ret = rt_TermModel(MODEL_INSTANCE);
 
     rtExtModeShutdown(NUMST);
 
     return ret;
 }
 
-/* [EOF] rt_main.c */
+/* [EOF] rt_cppclass_main.cpp */
+
+

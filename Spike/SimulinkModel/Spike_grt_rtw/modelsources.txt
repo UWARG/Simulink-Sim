@@ -1,2 +1,2 @@
-  Spike.c
+  Spike.cpp
 

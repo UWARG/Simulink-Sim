@@ -6,9 +6,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.83
+ * Model version              : 1.84
  * Simulink Coder version : 9.0 (R2018b) 24-May-2018
- * C source code generated on : Sat Jun 13 21:57:13 2020
+ * C++ source code generated on : Fri Jun 19 23:11:26 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -22,10 +22,19 @@
 #include <stddef.h>
 #include "rtwtypes.h"
 #include "rt_nonfinite.h"
+#ifdef __cplusplus
 
-extern real_T rtGetInf(void);
-extern real32_T rtGetInfF(void);
-extern real_T rtGetMinusInf(void);
-extern real32_T rtGetMinusInfF(void);
+extern "C" {
 
+#endif
+
+  extern real_T rtGetInf(void);
+  extern real32_T rtGetInfF(void);
+  extern real_T rtGetMinusInf(void);
+  extern real32_T rtGetMinusInfF(void);
+
+#ifdef __cplusplus
+
+}                                      /* extern "C" */
+#endif
 #endif                                 /* RTW_HEADER_rtGetInf_h_ */

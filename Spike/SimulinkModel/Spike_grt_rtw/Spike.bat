@@ -1,4 +1,4 @@
-set MATLAB=C:\Program Files\MATLAB\R2018b
+@if not "%MINGW_ROOT%" == "" (@set "PATH=%PATH%;%MINGW_ROOT%")
 
 cd .
 

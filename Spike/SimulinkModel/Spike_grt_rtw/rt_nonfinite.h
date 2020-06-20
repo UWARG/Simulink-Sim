@@ -6,9 +6,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.83
+ * Model version              : 1.84
  * Simulink Coder version : 9.0 (R2018b) 24-May-2018
- * C source code generated on : Sat Jun 13 21:57:13 2020
+ * C++ source code generated on : Fri Jun 19 23:11:26 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -21,37 +21,46 @@
 #define RTW_HEADER_rt_nonfinite_h_
 #include <stddef.h>
 #include "rtwtypes.h"
+#ifdef __cplusplus
 
-extern real_T rtInf;
-extern real_T rtMinusInf;
-extern real_T rtNaN;
-extern real32_T rtInfF;
-extern real32_T rtMinusInfF;
-extern real32_T rtNaNF;
-extern void rt_InitInfAndNaN(size_t realSize);
-extern boolean_T rtIsInf(real_T value);
-extern boolean_T rtIsInfF(real32_T value);
-extern boolean_T rtIsNaN(real_T value);
-extern boolean_T rtIsNaNF(real32_T value);
-typedef struct {
-  struct {
-    uint32_T wordH;
-    uint32_T wordL;
-  } words;
-} BigEndianIEEEDouble;
+extern "C" {
 
-typedef struct {
-  struct {
-    uint32_T wordL;
-    uint32_T wordH;
-  } words;
-} LittleEndianIEEEDouble;
+#endif
 
-typedef struct {
-  union {
-    real32_T wordLreal;
-    uint32_T wordLuint;
-  } wordL;
-} IEEESingle;
+  extern real_T rtInf;
+  extern real_T rtMinusInf;
+  extern real_T rtNaN;
+  extern real32_T rtInfF;
+  extern real32_T rtMinusInfF;
+  extern real32_T rtNaNF;
+  extern void rt_InitInfAndNaN(size_t realSize);
+  extern boolean_T rtIsInf(real_T value);
+  extern boolean_T rtIsInfF(real32_T value);
+  extern boolean_T rtIsNaN(real_T value);
+  extern boolean_T rtIsNaNF(real32_T value);
+  typedef struct {
+    struct {
+      uint32_T wordH;
+      uint32_T wordL;
+    } words;
+  } BigEndianIEEEDouble;
 
+  typedef struct {
+    struct {
+      uint32_T wordL;
+      uint32_T wordH;
+    } words;
+  } LittleEndianIEEEDouble;
+
+  typedef struct {
+    union {
+      real32_T wordLreal;
+      uint32_T wordLuint;
+    } wordL;
+  } IEEESingle;
+
+#ifdef __cplusplus
+
+}                                      /* extern "C" */
+#endif
 #endif                                 /* RTW_HEADER_rt_nonfinite_h_ */

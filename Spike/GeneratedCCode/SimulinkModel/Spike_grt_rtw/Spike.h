@@ -6,9 +6,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.83
+ * Model version              : 1.84
  * Simulink Coder version : 9.0 (R2018b) 24-May-2018
- * C source code generated on : Sat Jun 13 21:57:13 2020
+ * C++ source code generated on : Fri Jun 19 23:11:26 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -20,7 +20,7 @@
 #ifndef RTW_HEADER_Spike_h_
 #define RTW_HEADER_Spike_h_
 #include <string.h>
-#include <math.h>
+#include <cmath>
 #include <stdlib.h>
 #ifndef Spike_COMMON_INCLUDES_
 # define Spike_COMMON_INCLUDES_
@@ -301,25 +301,136 @@ struct tag_RTM_Spike_T {
   } Timing;
 };
 
-/* Block parameters (default storage) */
-extern P_Spike_T Spike_P;
+/* Class declaration for model Spike */
+class SpikeModelClass {
+  /* public data and function members */
+ public:
+  /* model initialize function */
+  void initialize();
 
-/* Block signals (default storage) */
-extern B_Spike_T Spike_B;
+  /* model step function */
+  void step();
 
-/* Continuous states (default storage) */
-extern X_Spike_T Spike_X;
+  /* model terminate function */
+  void terminate();
 
-/* Block states (default storage) */
-extern DW_Spike_T Spike_DW;
+  /* Constructor */
+  SpikeModelClass();
 
-/* Model entry point functions */
-extern void Spike_initialize(void);
-extern void Spike_step(void);
-extern void Spike_terminate(void);
+  /* Destructor */
+  ~SpikeModelClass();
 
-/* Real-time Model object */
-extern RT_MODEL_Spike_T *const Spike_M;
+  /* Real-Time Model get method */
+  RT_MODEL_Spike_T * getRTM();
+
+  /* private data and function members */
+ private:
+  /* Tunable parameters */
+  P_Spike_T Spike_P;
+
+  /* Block signals */
+  B_Spike_T Spike_B;
+
+  /* Block states */
+  DW_Spike_T Spike_DW;
+  X_Spike_T Spike_X;                   /* Block continuous states */
+  PeriodicIndX_Spike_T Spike_PeriodicIndX;/* Block periodic continuous states */
+  PeriodicRngX_Spike_T Spike_PeriodicRngX;
+
+  /* Real-Time Model */
+  RT_MODEL_Spike_T Spike_M;
+
+  /* private member function(s) for subsystem '<Root>'*/
+  int8_T Spike_filedata_f(void);
+  int8_T Spike_cfopen_p(const char * cfilename, const char * cpermission);
+  void Spike_fclose_er(void);
+  void Spike_emxInit_char_T(emxArray_char_T_Spike_T **pEmxArray, int32_T
+    numDimensions);
+  void Spike_emxInit_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray, int32_T
+    numDimensions);
+  void Spike_emxInit_int32_T(emxArray_int32_T_Spike_T **pEmxArray, int32_T
+    numDimensions);
+  int8_T Spike_filedata_o(void);
+  int8_T Spike_cfopen_g0(const char * cfilename, const char * cpermission);
+  FILE * Spike_fileManager_l(real_T varargin_1);
+  void Spike_emxInit_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray, int32_T
+    numDimensions);
+  void Spike_emxEnsureCapacity_uint8_T(emxArray_uint8_T_Spike_T *emxArray,
+    int32_T oldNumel);
+  void Spike_emxEnsureCapacity_int32_T(emxArray_int32_T_Spike_T *emxArray,
+    int32_T oldNumel);
+  void Spike_emxFree_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray);
+  void Spike_emxFree_int32_T(emxArray_int32_T_Spike_T **pEmxArray);
+  void Spike_fclose_g(real_T fileID);
+  void Spike_emxEnsureCapacity_char_T(emxArray_char_T_Spike_T *emxArray, int32_T
+    oldNumel);
+  void Spike_readfile_e(emxArray_char_T_Spike_T *y);
+  void Spi_emxEnsureCapacity_boolean_T(emxArray_boolean_T_Spike_T *emxArray,
+    int32_T oldNumel);
+  void Spike_isstrprop(const emxArray_char_T_Spike_T *x,
+                       emxArray_boolean_T_Spike_T *y);
+  boolean_T Spike_ifWhileCond(const boolean_T x[2]);
+  void Spike_emxInit_real_T(emxArray_real_T_Spike_T **pEmxArray, int32_T
+    numDimensions);
+  void Spike_emxEnsureCapacity_real_T(emxArray_real_T_Spike_T *emxArray, int32_T
+    oldNumel);
+  void Spike_char(const emxArray_real_T_Spike_T *varargin_1,
+                  emxArray_char_T_Spike_T *y);
+  void Spike_copysign(emxArray_char_T_Spike_T *s1, const emxArray_char_T_Spike_T
+                      *s, int32_T *k, int32_T n, int32_T *idx, boolean_T
+                      *success);
+  void Spike_readNonFinite(const emxArray_char_T_Spike_T *s, int32_T *k, int32_T
+    n, boolean_T *b_finite, real_T *fv);
+  boolean_T Spike_copydigits(emxArray_char_T_Spike_T *s1, int32_T *idx, const
+    emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T allowpoint);
+  boolean_T Spike_copyexponent(emxArray_char_T_Spike_T *s1, int32_T *idx, const
+    emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
+  void Spike_skipspaces(const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
+  boolean_T Spike_copysign_k(emxArray_char_T_Spike_T *s1, int32_T *idx, const
+    emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
+  void Spike_readfloat_p(emxArray_char_T_Spike_T *s1, int32_T *idx, const
+    emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T *isimag,
+    boolean_T *b_finite, real_T *nfv, boolean_T *success);
+  void Spike_readfloat(emxArray_char_T_Spike_T *s1, const
+                       emxArray_char_T_Spike_T *s, int32_T n, int32_T *idx,
+                       int32_T *k, boolean_T *isimag, boolean_T *b_finite,
+                       real_T *nfv, boolean_T *success);
+  void Spike_emxFree_real_T(emxArray_real_T_Spike_T **pEmxArray);
+  void Spike_readfloat_pk(emxArray_char_T_Spike_T *s1, int32_T *idx, const
+    emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T *isimag,
+    boolean_T *b_finite, real_T *nfv, boolean_T *success);
+  real_T Spike_sscanfd_d(const emxArray_char_T_Spike_T *s);
+  void Spike_sscanfd(const emxArray_char_T_Spike_T *s, real_T *out1, real_T
+                     *out2);
+  void Spike_emxFree_char_T(emxArray_char_T_Spike_T **pEmxArray);
+  creal_T Spike_str2double(const emxArray_char_T_Spike_T *s);
+  void Spike_fclose_gy(void);
+  int8_T Spike_filedata(void);
+  int8_T Spike_cfopen(const char * cfilename, const char * cpermission);
+  FILE * Spike_fileManager(real_T varargin_1);
+  void Spike_fclose(real_T fileID);
+  void Spike_readfile(emxArray_char_T_Spike_T *y);
+  void Spike_fclose_e(void);
+  int8_T Spike_filedata_e(void);
+  int8_T Spike_cfopen_m(const char * cfilename, const char * cpermission);
+  FILE * Spike_fileManager_hw(real_T varargin_1);
+  void Spike_fclose_m(real_T fileID);
+  void Spike_readfile_f(emxArray_char_T_Spike_T *y);
+  void Spike_fclose_m2(void);
+  int8_T Spike_filedata_i(void);
+  int8_T Spike_cfopen_g(const char * cfilename, const char * cpermission);
+  FILE * Spike_fileManager_h(real_T varargin_1);
+  void Spike_fclose_d(real_T fileID);
+  void Spike_readfile_m(emxArray_char_T_Spike_T *y);
+  void Spike_emxFree_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray);
+  void Spike_fclose_dh(void);
+
+  /* Continuous states update member function*/
+  void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
+
+  /* Derivatives member function */
+  void Spike_derivatives();
+};
 
 /*-
  * The generated code includes comments that allow you to trace directly

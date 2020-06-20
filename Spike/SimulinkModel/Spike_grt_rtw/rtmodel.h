@@ -6,9 +6,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.83
+ * Model version              : 1.84
  * Simulink Coder version : 9.0 (R2018b) 24-May-2018
- * C source code generated on : Sat Jun 13 21:57:13 2020
+ * C++ source code generated on : Fri Jun 19 23:11:26 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -25,4 +25,13 @@
  */
 #include "Spike.h"
 #define GRTINTERFACE                   0
+
+/*
+ * ROOT_IO_FORMAT: 0 (Individual arguments)
+ * ROOT_IO_FORMAT: 1 (Structure reference)
+ * ROOT_IO_FORMAT: 2 (Part of model data structure)
+ */
+# define ROOT_IO_FORMAT                2
+#define MODEL_CLASSNAME                SpikeModelClass
+#define MODEL_STEPNAME                 step
 #endif                                 /* RTW_HEADER_rtmodel_h_ */

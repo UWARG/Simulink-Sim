@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'Spike'. 
 ## 
 ## Makefile     : Spike.mk
-## Generated on : Sat Jun 13 21:57:29 2020
+## Generated on : Fri Jun 19 23:11:32 2020
 ## MATLAB Coder version: 4.1 (R2018b)
 ## 
 ## Build Info:
@@ -36,59 +36,75 @@ ARCH                      = win64
 SOLVER                    = 
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
-TGT_FCN_LIB               = ISO_C
+TGT_FCN_LIB               = ISO_C++
 MODEL_HAS_DYNAMICALLY_LOADED_SFCNS = 0
 RELATIVE_PATH_TO_ANCHOR   = ..
 COMPILER_COMMAND_FILE     = Spike_comp.rsp
 CMD_FILE                  = Spike.rsp
-C_STANDARD_OPTS           = 
-CPP_STANDARD_OPTS         = 
+C_STANDARD_OPTS           = -ansi -pedantic -Wno-long-long -fwrapv
+CPP_STANDARD_OPTS         = -std=c++98 -pedantic -Wno-long-long -fwrapv
 
 ###########################################################################
 ## TOOLCHAIN SPECIFICATIONS
 ###########################################################################
 
-# Toolchain Name:          LCC-win64 v2.4.1 | gmake (64-bit Windows)
-# Supported Version(s):    2.4.1
+# Toolchain Name:          MinGW64 | gmake (64-bit Windows)
+# Supported Version(s):    5.x
 # ToolchainInfo Version:   R2018b
 # Specification Revision:  1.0
 # 
+#-------------------------------------------
+# Macros assumed to be defined elsewhere
+#-------------------------------------------
+
+# C_STANDARD_OPTS
+# CPP_STANDARD_OPTS
+# MINGW_ROOT
+# MINGW_C_STANDARD_OPTS
 
 #-----------
 # MACROS
 #-----------
 
-SHELL              = cmd
-LCC_ROOT           = $(MATLAB_ROOT)/sys/lcc64/lcc64
-LCC_BUILDLIB       = $(LCC_ROOT)/bin/buildlib
-LCC_LIB            = $(LCC_ROOT)/lib64
-MW_EXTERNLIB_DIR   = $(MATLAB_ROOT)/extern/lib/win64/microsoft
-MW_LIB_DIR         = $(MATLAB_ROOT)/lib/win64
-TOOLCHAIN_INCLUDES = -I$(LCC_ROOT)/include64
-MEX_OPTS_FILE      = $(MATLAB_ROOT/rtw/c/tools/lcc-win64.xml
+WARN_FLAGS            = -Wall -W -Wwrite-strings -Winline -Wstrict-prototypes -Wnested-externs -Wpointer-arith -Wcast-align
+WARN_FLAGS_MAX        = $(WARN_FLAGS) -Wcast-qual -Wshadow
+CPP_WARN_FLAGS        = -Wall -W -Wwrite-strings -Winline -Wpointer-arith -Wcast-align
+CPP_WARN_FLAGS_MAX    = $(CPP_WARN_FLAGS) -Wcast-qual -Wshadow
+MEX_OPTS_FILE         = $(MATLAB_ROOT)/bin/win64/mexopts/mingw64.xml
+MEX_CPP_OPTS_FILE     = $(MATLAB_ROOT)/bin/win64/mexopts/mingw64_g++.xml
+MW_EXTERNLIB_DIR      = $(MATLAB_ROOT)/extern/lib/win64/mingw64
+SHELL                 = %SystemRoot%/system32/cmd.exe
 
 TOOLCHAIN_SRCS = 
 TOOLCHAIN_INCS = 
-TOOLCHAIN_LIBS = 
+TOOLCHAIN_LIBS = -lws2_32
 
 #------------------------
 # BUILD TOOL COMMANDS
 #------------------------
 
-# C Compiler: Lcc-win64 C Compiler
-CC_PATH = $(LCC_ROOT)/bin
-CC = "$(CC_PATH)/lcc64"
+# C Compiler: GNU C Compiler
+CC_PATH = $(MINGW_ROOT)
+CC = "$(CC_PATH)/gcc"
 
-# Linker: Lcc-win64 Linker
-LD_PATH = $(LCC_ROOT)/bin
-LD = "$(LD_PATH)/lcclnk64"
+# Linker: GNU Linker
+LD_PATH = $(MINGW_ROOT)
+LD = "$(LD_PATH)/g++"
 
-# Archiver: Lcc-win64 Archiver
-AR_PATH = $(LCC_ROOT)/bin
-AR = "$(AR_PATH)/lcclib64"
+# C++ Compiler: GNU C++ Compiler
+CPP_PATH = $(MINGW_ROOT)
+CPP = "$(CPP_PATH)/g++"
+
+# C++ Linker: GNU C++ Linker
+CPP_LD_PATH = $(MINGW_ROOT)
+CPP_LD = "$(CPP_LD_PATH)/g++"
+
+# Archiver: GNU Archiver
+AR_PATH = $(MINGW_ROOT)
+AR = "$(AR_PATH)/ar"
 
 # MEX Tool: MEX Tool
-MEX_PATH = $(MATLAB_ARCH_BIN)
+MEX_PATH = $(MATLAB_BIN)/win64
 MEX = "$(MEX_PATH)/mex"
 
 # Download: Download
@@ -98,7 +114,7 @@ DOWNLOAD =
 EXECUTE = $(PRODUCT)
 
 # Builder: GMAKE Utility
-MAKE_PATH = %MATLAB%\bin\win64
+MAKE_PATH = %MATLAB%/bin/win64
 MAKE = "$(MAKE_PATH)/gmake"
 
 
@@ -107,13 +123,17 @@ MAKE = "$(MAKE_PATH)/gmake"
 #-------------------------
 
 CDEBUG              = -g
-C_OUTPUT_FLAG       = -Fo
-LDDEBUG             =
+C_OUTPUT_FLAG       = -o
+LDDEBUG             = -g
+OUTPUT_FLAG         = -o
+CPPDEBUG            = -g
+CPP_OUTPUT_FLAG     = -o
+CPPLDDEBUG          = -g
 OUTPUT_FLAG         = -o
 ARDEBUG             =
-STATICLIB_OUTPUT_FLAG = /out:
+STATICLIB_OUTPUT_FLAG =
 MEX_DEBUG           = -g
-RM                  = @del /F
+RM                  = @del
 ECHO                = @echo
 MV                  = @move
 RUN                 =
@@ -122,17 +142,36 @@ RUN                 =
 # "Faster Builds" Build Configuration
 #----------------------------------------
 
-ARFLAGS              =
-CFLAGS               = -c -w -noregistrylookup -nodeclspec -I$(LCC_ROOT)/include64
+ARFLAGS              = ruvs
+CFLAGS               = -c $(MINGW_C_STANDARD_OPTS) -m64 \
+                       -O0
+CPPFLAGS             = -c $(CPP_STANDARD_OPTS) -m64 \
+                       -O0
+CPP_LDFLAGS          = -Wl,-rpath,"$(MATLAB_ARCH_BIN)",-L"$(MATLAB_ARCH_BIN)" -static -m64
+CPP_SHAREDLIB_LDFLAGS  = -shared -Wl,-rpath,"$(MATLAB_ARCH_BIN)",-L"$(MATLAB_ARCH_BIN)" -Wl,--no-undefined \
+                         -Wl,--out-implib,$(basename $(PRODUCT))$(STATICLIB_EXT)
 DOWNLOAD_FLAGS       =
 EXECUTE_FLAGS        =
-LDFLAGS              = -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL)
-MEX_CPPFLAGS         =
-MEX_CPPLDFLAGS       =
-MEX_CFLAGS           = -win64 $(MEX_SRC) $(MEX_OPT_FILE)$(INCLUDES) -outdir $(RELATIVE_PATH_TO_ANCHOR)
-MEX_LDFLAGS          = LINKFLAGS="$$LINKFLAGS $(LDFLAGS_ADDITIONAL)"
+LDFLAGS              = -Wl,-rpath,"$(MATLAB_ARCH_BIN)",-L"$(MATLAB_ARCH_BIN)" -static -m64
+MEX_CPPFLAGS         = -R2018a -MATLAB_ARCH=$(ARCH) $(INCLUDES) \
+                         \
+                       CXXOPTIMFLAGS="$(MINGW_C_STANDARD_OPTS)  \
+                       -O0 \
+                        $(DEFINES)" \
+                         \
+                       -silent
+MEX_CPPLDFLAGS       = LDFLAGS=='$$LDFLAGS'
+MEX_CFLAGS           = -R2018a -MATLAB_ARCH=$(ARCH) $(INCLUDES) \
+                         \
+                       COPTIMFLAGS="$(MINGW_C_STANDARD_OPTS)  \
+                       -O0 \
+                        $(DEFINES)" \
+                         \
+                       -silent
+MEX_LDFLAGS          = LDFLAGS=='$$LDFLAGS'
 MAKE_FLAGS           = -f $(MAKEFILE)
-SHAREDLIB_LDFLAGS    = -dll -entry LibMain -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL) $(DEF_FILE)
+SHAREDLIB_LDFLAGS    = -shared -Wl,-rpath,"$(MATLAB_ARCH_BIN)",-L"$(MATLAB_ARCH_BIN)" -Wl,--no-undefined \
+                       -Wl,--out-implib,$(basename $(PRODUCT))$(STATICLIB_EXT)
 
 #--------------------
 # File extensions
@@ -141,6 +180,11 @@ SHAREDLIB_LDFLAGS    = -dll -entry LibMain -s -L$(LCC_LIB) $(LDFLAGS_ADDITIONAL)
 H_EXT               = .h
 OBJ_EXT             = .obj
 C_EXT               = .c
+EXE_EXT             = .exe
+SHAREDLIB_EXT       = .dll
+HPP_EXT             = .hpp
+OBJ_EXT             = .obj
+CPP_EXT             = .cpp
 EXE_EXT             = .exe
 SHAREDLIB_EXT       = .dll
 STATICLIB_EXT       = .lib
@@ -160,7 +204,7 @@ BUILD_TYPE = "Top-Level Standalone Executable"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = -I./referenced_model_includes -I$(START_DIR) -I$(START_DIR)/Spike_grt_rtw -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common
+INCLUDES_BUILDINFO = -I$(START_DIR) -I$(START_DIR)/Spike_grt_rtw -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common
 
 INCLUDES = $(INCLUDES_BUILDINFO)
 
@@ -168,7 +212,7 @@ INCLUDES = $(INCLUDES_BUILDINFO)
 ## DEFINES
 ###########################################################################
 
-DEFINES_BUILD_ARGS = -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DMAT_FILE=0 -DONESTEPFCN=1 -DTERMFCN=1 -DMULTI_INSTANCE_CODE=0 -DINTEGER_CODE=0 -DMT=0
+DEFINES_BUILD_ARGS = -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DMAT_FILE=0 -DONESTEPFCN=1 -DTERMFCN=1 -DMULTI_INSTANCE_CODE=1 -DINTEGER_CODE=0 -DMT=0
 DEFINES_IMPLIED = -DTID01EQ=1
 DEFINES_STANDARD = -DMODEL=Spike -DNUMST=2 -DNCSTATES=12 -DHAVESTDIO -DRT -DUSE_RTMODEL
 
@@ -178,9 +222,9 @@ DEFINES = $(DEFINES_BUILD_ARGS) $(DEFINES_IMPLIED) $(DEFINES_STANDARD)
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(START_DIR)/Spike_grt_rtw/Spike.c $(START_DIR)/Spike_grt_rtw/Spike_data.c $(START_DIR)/Spike_grt_rtw/rtGetInf.c $(START_DIR)/Spike_grt_rtw/rtGetNaN.c $(START_DIR)/Spike_grt_rtw/rt_nonfinite.c
+SRCS = $(START_DIR)/Spike_grt_rtw/Spike.cpp $(START_DIR)/Spike_grt_rtw/rtGetInf.cpp $(START_DIR)/Spike_grt_rtw/rtGetNaN.cpp $(START_DIR)/Spike_grt_rtw/rt_nonfinite.cpp
 
-MAIN_SRC = $(MATLAB_ROOT)/rtw/c/src/common/rt_main.c
+MAIN_SRC = $(MATLAB_ROOT)/rtw/c/src/common/rt_cppclass_main.cpp
 
 ALL_SRCS = $(SRCS) $(MAIN_SRC)
 
@@ -188,9 +232,9 @@ ALL_SRCS = $(SRCS) $(MAIN_SRC)
 ## OBJECTS
 ###########################################################################
 
-OBJS = Spike.obj Spike_data.obj rtGetInf.obj rtGetNaN.obj rt_nonfinite.obj
+OBJS = Spike.obj rtGetInf.obj rtGetNaN.obj rt_nonfinite.obj
 
-MAIN_OBJ = rt_main.obj
+MAIN_OBJ = rt_cppclass_main.obj
 
 ALL_OBJS = $(OBJS) $(MAIN_OBJ)
 
@@ -220,13 +264,45 @@ SYSTEM_LIBS =
 # C Compiler
 #---------------
 
-CFLAGS_BASIC = $(DEFINES) $(INCLUDES)
+CFLAGS_BASIC = $(DEFINES) $(INCLUDES) @$(COMPILER_COMMAND_FILE)
 
 CFLAGS += $(CFLAGS_BASIC)
+
+#-----------------
+# C++ Compiler
+#-----------------
+
+CPPFLAGS_BASIC = $(DEFINES) $(INCLUDES) @$(COMPILER_COMMAND_FILE)
+
+CPPFLAGS += $(CPPFLAGS_BASIC)
+
+#---------------------
+# MEX C++ Compiler
+#---------------------
+
+MEX_CPP_Compiler_BASIC =  @$(COMPILER_COMMAND_FILE)
+
+MEX_CPPFLAGS += $(MEX_CPP_Compiler_BASIC)
+
+#-----------------
+# MEX Compiler
+#-----------------
+
+MEX_Compiler_BASIC =  @$(COMPILER_COMMAND_FILE)
+
+MEX_CFLAGS += $(MEX_Compiler_BASIC)
 
 ###########################################################################
 ## INLINED COMMANDS
 ###########################################################################
+
+
+ifdef SIM_TARGET_BUILD
+MINGW_C_STANDARD_OPTS = $(filter-out -ansi, $(C_STANDARD_OPTS))
+else
+MINGW_C_STANDARD_OPTS = $(C_STANDARD_OPTS)
+endif
+
 
 ###########################################################################
 ## PHONY TARGETS
@@ -268,7 +344,7 @@ execute : download
 
 $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 	@echo "### Creating standalone executable "$(PRODUCT)" ..."
-	$(LD) $(LDFLAGS) -o $(PRODUCT) @$(CMD_FILE) $(subst /,\,$(subst /,\,$(SYSTEM_LIBS))) $(subst /,\,$(subst /,\,$(TOOLCHAIN_LIBS)))
+	$(CPP_LD) $(CPP_LDFLAGS) -o $(PRODUCT) @$(CMD_FILE) $(SYSTEM_LIBS) $(TOOLCHAIN_LIBS)
 	@echo "### Created: $(PRODUCT)"
 
 
@@ -281,31 +357,55 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 #---------------------
 
 %.obj : %.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : %.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(START_DIR)/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(START_DIR)/Spike_grt_rtw/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(START_DIR)/Spike_grt_rtw/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(MATLAB_ROOT)/rtw/c/src/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.obj : $(MATLAB_ROOT)/rtw/c/src/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 %.obj : $(MATLAB_ROOT)/simulink/src/%.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-rt_main.obj : $(MATLAB_ROOT)/rtw/c/src/common/rt_main.c
-	$(CC) $(CFLAGS) -Fo"$@" $(subst /,\,"$<")
+%.obj : $(MATLAB_ROOT)/simulink/src/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+rt_cppclass_main.obj : $(MATLAB_ROOT)/rtw/c/src/common/rt_cppclass_main.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
 ###########################################################################
@@ -334,6 +434,9 @@ info :
 	@echo "### CFLAGS = $(CFLAGS)"
 	@echo "### LDFLAGS = $(LDFLAGS)"
 	@echo "### SHAREDLIB_LDFLAGS = $(SHAREDLIB_LDFLAGS)"
+	@echo "### CPPFLAGS = $(CPPFLAGS)"
+	@echo "### CPP_LDFLAGS = $(CPP_LDFLAGS)"
+	@echo "### CPP_SHAREDLIB_LDFLAGS = $(CPP_SHAREDLIB_LDFLAGS)"
 	@echo "### ARFLAGS = $(ARFLAGS)"
 	@echo "### MEX_CFLAGS = $(MEX_CFLAGS)"
 	@echo "### MEX_CPPFLAGS = $(MEX_CPPFLAGS)"

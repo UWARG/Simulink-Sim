@@ -1,14 +1,14 @@
 /*
- * Spike.c
+ * Spike.cpp
  *
  * Classroom License -- for classroom instructional use only.  Not for
  * government, commercial, academic research, or other organizational use.
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.83
+ * Model version              : 1.84
  * Simulink Coder version : 9.0 (R2018b) 24-May-2018
- * C source code generated on : Sat Jun 13 21:57:13 2020
+ * C++ source code generated on : Fri Jun 19 23:11:26 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -20,108 +20,6 @@
 #include "Spike.h"
 #include "Spike_private.h"
 
-/* Block signals (default storage) */
-B_Spike_T Spike_B;
-
-/* Continuous states */
-X_Spike_T Spike_X;
-
-/* Periodic continuous states */
-PeriodicIndX_Spike_T Spike_PeriodicIndX;
-PeriodicRngX_Spike_T Spike_PeriodicRngX;
-
-/* Block states (default storage) */
-DW_Spike_T Spike_DW;
-
-/* Real-time model */
-RT_MODEL_Spike_T Spike_M_;
-RT_MODEL_Spike_T *const Spike_M = &Spike_M_;
-
-/* Forward declaration for local functions */
-static int8_T Spike_filedata_f(void);
-static int8_T Spike_cfopen_p(const char * cfilename, const char * cpermission);
-static void Spike_fclose_er(void);
-static void Spike_emxInit_char_T(emxArray_char_T_Spike_T **pEmxArray, int32_T
-  numDimensions);
-static void Spike_emxInit_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray,
-  int32_T numDimensions);
-static void Spike_emxInit_int32_T(emxArray_int32_T_Spike_T **pEmxArray, int32_T
-  numDimensions);
-static int8_T Spike_filedata_o(void);
-static int8_T Spike_cfopen_g0(const char * cfilename, const char * cpermission);
-static FILE * Spike_fileManager_l(real_T varargin_1);
-static void Spike_emxInit_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray, int32_T
-  numDimensions);
-static void Spike_emxEnsureCapacity_uint8_T(emxArray_uint8_T_Spike_T *emxArray,
-  int32_T oldNumel);
-static void Spike_emxEnsureCapacity_int32_T(emxArray_int32_T_Spike_T *emxArray,
-  int32_T oldNumel);
-static void Spike_emxFree_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray);
-static void Spike_emxFree_int32_T(emxArray_int32_T_Spike_T **pEmxArray);
-static void Spike_fclose_g(real_T fileID);
-static void Spike_emxEnsureCapacity_char_T(emxArray_char_T_Spike_T *emxArray,
-  int32_T oldNumel);
-static void Spike_readfile_e(emxArray_char_T_Spike_T *y);
-static void Spi_emxEnsureCapacity_boolean_T(emxArray_boolean_T_Spike_T *emxArray,
-  int32_T oldNumel);
-static void Spike_isstrprop(const emxArray_char_T_Spike_T *x,
-  emxArray_boolean_T_Spike_T *y);
-static boolean_T Spike_ifWhileCond(const boolean_T x[2]);
-static void Spike_emxInit_real_T(emxArray_real_T_Spike_T **pEmxArray, int32_T
-  numDimensions);
-static void Spike_emxEnsureCapacity_real_T(emxArray_real_T_Spike_T *emxArray,
-  int32_T oldNumel);
-static void Spike_char(const emxArray_real_T_Spike_T *varargin_1,
-  emxArray_char_T_Spike_T *y);
-static void Spike_copysign(emxArray_char_T_Spike_T *s1, const
-  emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, int32_T *idx, boolean_T
-  *success);
-static void Spike_readNonFinite(const emxArray_char_T_Spike_T *s, int32_T *k,
-  int32_T n, boolean_T *b_finite, real_T *fv);
-static boolean_T Spike_copydigits(emxArray_char_T_Spike_T *s1, int32_T *idx,
-  const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T allowpoint);
-static boolean_T Spike_copyexponent(emxArray_char_T_Spike_T *s1, int32_T *idx,
-  const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
-static void Spike_skipspaces(const emxArray_char_T_Spike_T *s, int32_T *k,
-  int32_T n);
-static boolean_T Spike_copysign_k(emxArray_char_T_Spike_T *s1, int32_T *idx,
-  const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
-static void Spike_readfloat_p(emxArray_char_T_Spike_T *s1, int32_T *idx, const
-  emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T *isimag,
-  boolean_T *b_finite, real_T *nfv, boolean_T *success);
-static void Spike_readfloat(emxArray_char_T_Spike_T *s1, const
-  emxArray_char_T_Spike_T *s, int32_T n, int32_T *idx, int32_T *k, boolean_T
-  *isimag, boolean_T *b_finite, real_T *nfv, boolean_T *success);
-static void Spike_emxFree_real_T(emxArray_real_T_Spike_T **pEmxArray);
-static void Spike_readfloat_pk(emxArray_char_T_Spike_T *s1, int32_T *idx, const
-  emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T *isimag,
-  boolean_T *b_finite, real_T *nfv, boolean_T *success);
-static real_T Spike_sscanfd_d(const emxArray_char_T_Spike_T *s);
-static void Spike_sscanfd(const emxArray_char_T_Spike_T *s, real_T *out1, real_T
-  *out2);
-static void Spike_emxFree_char_T(emxArray_char_T_Spike_T **pEmxArray);
-static creal_T Spike_str2double(const emxArray_char_T_Spike_T *s);
-static void Spike_fclose_gy(void);
-static int8_T Spike_filedata(void);
-static int8_T Spike_cfopen(const char * cfilename, const char * cpermission);
-static FILE * Spike_fileManager(real_T varargin_1);
-static void Spike_fclose(real_T fileID);
-static void Spike_readfile(emxArray_char_T_Spike_T *y);
-static void Spike_fclose_e(void);
-static int8_T Spike_filedata_e(void);
-static int8_T Spike_cfopen_m(const char * cfilename, const char * cpermission);
-static FILE * Spike_fileManager_hw(real_T varargin_1);
-static void Spike_fclose_m(real_T fileID);
-static void Spike_readfile_f(emxArray_char_T_Spike_T *y);
-static void Spike_fclose_m2(void);
-static int8_T Spike_filedata_i(void);
-static int8_T Spike_cfopen_g(const char * cfilename, const char * cpermission);
-static FILE * Spike_fileManager_h(real_T varargin_1);
-static void Spike_fclose_d(real_T fileID);
-static void Spike_readfile_m(emxArray_char_T_Spike_T *y);
-static void Spike_emxFree_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray);
-static void Spike_fclose_dh(void);
-
 /* State reduction function */
 void local_stateReduction(real_T* x, int_T* p, int_T n, real_T* r)
 {
@@ -131,7 +29,7 @@ void local_stateReduction(real_T* x, int_T* p, int_T n, real_T* r)
     real_T lb = r[j++];
     real_T xk = x[k]-lb;
     real_T rk = r[j]-lb;
-    int_T q = (int_T) floor(xk/rk);
+    int_T q = (int_T) std::floor(xk/rk);
     if (q) {
       x[k] = xk-q*rk+lb;
     }
@@ -142,7 +40,7 @@ void local_stateReduction(real_T* x, int_T* p, int_T n, real_T* r)
  * This function updates continuous states using the ODE3 fixed-step
  * solver algorithm
  */
-static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
+void SpikeModelClass::rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 {
   /* Solver Matrices */
   static const real_T rt_ODE3_A[3] = {
@@ -188,7 +86,7 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 
   rtsiSetT(si, t + h*rt_ODE3_A[0]);
   rtsiSetdX(si, f1);
-  Spike_step();
+  this->step();
   Spike_derivatives();
 
   /* f(:,3) = feval(odefile, t + hA(2), y + f*hB(:,2), args(:)(*)); */
@@ -202,7 +100,7 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 
   rtsiSetT(si, t + h*rt_ODE3_A[1]);
   rtsiSetdX(si, f2);
-  Spike_step();
+  this->step();
   Spike_derivatives();
 
   /* tnew = t + hA(3);
@@ -222,7 +120,7 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 }
 
 /* Function for MATLAB Function: '<Root>/WriteToFile' */
-static int8_T Spike_filedata_f(void)
+int8_T SpikeModelClass::Spike_filedata_f(void)
 {
   int8_T f;
   int32_T k;
@@ -243,7 +141,8 @@ static int8_T Spike_filedata_f(void)
 }
 
 /* Function for MATLAB Function: '<Root>/WriteToFile' */
-static int8_T Spike_cfopen_p(const char * cfilename, const char * cpermission)
+int8_T SpikeModelClass::Spike_cfopen_p(const char * cfilename, const char
+  * cpermission)
 {
   int8_T fileid;
   FILE * filestar;
@@ -269,7 +168,7 @@ static int8_T Spike_cfopen_p(const char * cfilename, const char * cpermission)
 }
 
 /* Function for MATLAB Function: '<Root>/WriteToFile' */
-static void Spike_fclose_er(void)
+void SpikeModelClass::Spike_fclose_er(void)
 {
   int32_T cst;
   int32_T j;
@@ -284,8 +183,8 @@ static void Spike_fclose_er(void)
   }
 }
 
-static void Spike_emxInit_char_T(emxArray_char_T_Spike_T **pEmxArray, int32_T
-  numDimensions)
+void SpikeModelClass::Spike_emxInit_char_T(emxArray_char_T_Spike_T **pEmxArray,
+  int32_T numDimensions)
 {
   emxArray_char_T_Spike_T *emxArray;
   int32_T i;
@@ -301,8 +200,8 @@ static void Spike_emxInit_char_T(emxArray_char_T_Spike_T **pEmxArray, int32_T
   }
 }
 
-static void Spike_emxInit_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray,
-  int32_T numDimensions)
+void SpikeModelClass::Spike_emxInit_boolean_T(emxArray_boolean_T_Spike_T
+  **pEmxArray, int32_T numDimensions)
 {
   emxArray_boolean_T_Spike_T *emxArray;
   int32_T i;
@@ -319,8 +218,8 @@ static void Spike_emxInit_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray,
   }
 }
 
-static void Spike_emxInit_int32_T(emxArray_int32_T_Spike_T **pEmxArray, int32_T
-  numDimensions)
+void SpikeModelClass::Spike_emxInit_int32_T(emxArray_int32_T_Spike_T **pEmxArray,
+  int32_T numDimensions)
 {
   emxArray_int32_T_Spike_T *emxArray;
   int32_T i;
@@ -338,7 +237,7 @@ static void Spike_emxInit_int32_T(emxArray_int32_T_Spike_T **pEmxArray, int32_T
 }
 
 /* Function for MATLAB Function: '<Root>/Read Throttle' */
-static int8_T Spike_filedata_o(void)
+int8_T SpikeModelClass::Spike_filedata_o(void)
 {
   int8_T f;
   int32_T k;
@@ -359,7 +258,8 @@ static int8_T Spike_filedata_o(void)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Throttle' */
-static int8_T Spike_cfopen_g0(const char * cfilename, const char * cpermission)
+int8_T SpikeModelClass::Spike_cfopen_g0(const char * cfilename, const char
+  * cpermission)
 {
   int8_T fileid;
   FILE * filestar;
@@ -386,13 +286,13 @@ static int8_T Spike_cfopen_g0(const char * cfilename, const char * cpermission)
 real_T rt_roundd_snf(real_T u)
 {
   real_T y;
-  if (fabs(u) < 4.503599627370496E+15) {
+  if (std::abs(u) < 4.503599627370496E+15) {
     if (u >= 0.5) {
-      y = floor(u + 0.5);
+      y = std::floor(u + 0.5);
     } else if (u > -0.5) {
       y = u * 0.0;
     } else {
-      y = ceil(u - 0.5);
+      y = std::ceil(u - 0.5);
     }
   } else {
     y = u;
@@ -402,7 +302,7 @@ real_T rt_roundd_snf(real_T u)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Throttle' */
-static FILE * Spike_fileManager_l(real_T varargin_1)
+FILE * SpikeModelClass::Spike_fileManager_l(real_T varargin_1)
 {
   FILE * f;
   int8_T fileid;
@@ -426,8 +326,8 @@ static FILE * Spike_fileManager_l(real_T varargin_1)
   return f;
 }
 
-static void Spike_emxInit_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray, int32_T
-  numDimensions)
+void SpikeModelClass::Spike_emxInit_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray,
+  int32_T numDimensions)
 {
   emxArray_uint8_T_Spike_T *emxArray;
   int32_T i;
@@ -444,8 +344,8 @@ static void Spike_emxInit_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray, int32_T
   }
 }
 
-static void Spike_emxEnsureCapacity_uint8_T(emxArray_uint8_T_Spike_T *emxArray,
-  int32_T oldNumel)
+void SpikeModelClass::Spike_emxEnsureCapacity_uint8_T(emxArray_uint8_T_Spike_T
+  *emxArray, int32_T oldNumel)
 {
   int32_T newNumel;
   int32_T i;
@@ -487,8 +387,8 @@ static void Spike_emxEnsureCapacity_uint8_T(emxArray_uint8_T_Spike_T *emxArray,
   }
 }
 
-static void Spike_emxEnsureCapacity_int32_T(emxArray_int32_T_Spike_T *emxArray,
-  int32_T oldNumel)
+void SpikeModelClass::Spike_emxEnsureCapacity_int32_T(emxArray_int32_T_Spike_T
+  *emxArray, int32_T oldNumel)
 {
   int32_T newNumel;
   int32_T i;
@@ -530,7 +430,7 @@ static void Spike_emxEnsureCapacity_int32_T(emxArray_int32_T_Spike_T *emxArray,
   }
 }
 
-static void Spike_emxFree_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray)
+void SpikeModelClass::Spike_emxFree_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_uint8_T_Spike_T *)NULL) {
     if (((*pEmxArray)->data != (uint8_T *)NULL) && (*pEmxArray)->canFreeData) {
@@ -543,7 +443,7 @@ static void Spike_emxFree_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray)
   }
 }
 
-static void Spike_emxFree_int32_T(emxArray_int32_T_Spike_T **pEmxArray)
+void SpikeModelClass::Spike_emxFree_int32_T(emxArray_int32_T_Spike_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_int32_T_Spike_T *)NULL) {
     if (((*pEmxArray)->data != (int32_T *)NULL) && (*pEmxArray)->canFreeData) {
@@ -557,7 +457,7 @@ static void Spike_emxFree_int32_T(emxArray_int32_T_Spike_T **pEmxArray)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Throttle' */
-static void Spike_fclose_g(real_T fileID)
+void SpikeModelClass::Spike_fclose_g(real_T fileID)
 {
   int8_T fileid;
   int32_T cst;
@@ -593,8 +493,8 @@ static void Spike_fclose_g(real_T fileID)
   }
 }
 
-static void Spike_emxEnsureCapacity_char_T(emxArray_char_T_Spike_T *emxArray,
-  int32_T oldNumel)
+void SpikeModelClass::Spike_emxEnsureCapacity_char_T(emxArray_char_T_Spike_T
+  *emxArray, int32_T oldNumel)
 {
   int32_T newNumel;
   int32_T i;
@@ -637,7 +537,7 @@ static void Spike_emxEnsureCapacity_char_T(emxArray_char_T_Spike_T *emxArray,
 }
 
 /* Function for MATLAB Function: '<Root>/Read Throttle' */
-static void Spike_readfile_e(emxArray_char_T_Spike_T *y)
+void SpikeModelClass::Spike_readfile_e(emxArray_char_T_Spike_T *y)
 {
   int32_T remaining;
   int32_T b_index;
@@ -852,8 +752,8 @@ static void Spike_readfile_e(emxArray_char_T_Spike_T *y)
   }
 }
 
-static void Spi_emxEnsureCapacity_boolean_T(emxArray_boolean_T_Spike_T *emxArray,
-  int32_T oldNumel)
+void SpikeModelClass::Spi_emxEnsureCapacity_boolean_T(emxArray_boolean_T_Spike_T
+  *emxArray, int32_T oldNumel)
 {
   int32_T newNumel;
   int32_T i;
@@ -896,7 +796,7 @@ static void Spi_emxEnsureCapacity_boolean_T(emxArray_boolean_T_Spike_T *emxArray
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_isstrprop(const emxArray_char_T_Spike_T *x,
+void SpikeModelClass::Spike_isstrprop(const emxArray_char_T_Spike_T *x,
   emxArray_boolean_T_Spike_T *y)
 {
   int32_T k;
@@ -924,7 +824,7 @@ static void Spike_isstrprop(const emxArray_char_T_Spike_T *x,
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static boolean_T Spike_ifWhileCond(const boolean_T x[2])
+boolean_T SpikeModelClass::Spike_ifWhileCond(const boolean_T x[2])
 {
   boolean_T y;
   int32_T k;
@@ -944,8 +844,8 @@ static boolean_T Spike_ifWhileCond(const boolean_T x[2])
   return y;
 }
 
-static void Spike_emxInit_real_T(emxArray_real_T_Spike_T **pEmxArray, int32_T
-  numDimensions)
+void SpikeModelClass::Spike_emxInit_real_T(emxArray_real_T_Spike_T **pEmxArray,
+  int32_T numDimensions)
 {
   emxArray_real_T_Spike_T *emxArray;
   int32_T i;
@@ -961,8 +861,8 @@ static void Spike_emxInit_real_T(emxArray_real_T_Spike_T **pEmxArray, int32_T
   }
 }
 
-static void Spike_emxEnsureCapacity_real_T(emxArray_real_T_Spike_T *emxArray,
-  int32_T oldNumel)
+void SpikeModelClass::Spike_emxEnsureCapacity_real_T(emxArray_real_T_Spike_T
+  *emxArray, int32_T oldNumel)
 {
   int32_T newNumel;
   int32_T i;
@@ -1005,32 +905,38 @@ static void Spike_emxEnsureCapacity_real_T(emxArray_real_T_Spike_T *emxArray,
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_char(const emxArray_real_T_Spike_T *varargin_1,
+void SpikeModelClass::Spike_char(const emxArray_real_T_Spike_T *varargin_1,
   emxArray_char_T_Spike_T *y)
 {
   int32_T loop_ub;
   int32_T i;
-  real_T tmp;
+  real_T u;
   i = y->size[0] * y->size[1];
   y->size[0] = 1;
   y->size[1] = varargin_1->size[1];
   Spike_emxEnsureCapacity_char_T(y, i);
   loop_ub = varargin_1->size[1] - 1;
   for (i = 0; i <= loop_ub; i++) {
-    tmp = trunc(varargin_1->data[i]);
-    if (rtIsNaN(tmp) || rtIsInf(tmp)) {
-      tmp = 0.0;
+    u = varargin_1->data[i];
+    if (u < 0.0) {
+      u = std::ceil(u);
     } else {
-      tmp = fmod(tmp, 256.0);
+      u = std::floor(u);
     }
 
-    y->data[i] = (int8_T)(tmp < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-tmp :
-                          (int32_T)(int8_T)(uint8_T)tmp);
+    if (rtIsNaN(u) || rtIsInf(u)) {
+      u = 0.0;
+    } else {
+      u = std::fmod(u, 256.0);
+    }
+
+    y->data[i] = (int8_T)(u < 0.0 ? (int32_T)(int8_T)-(int8_T)(uint8_T)-u :
+                          (int32_T)(int8_T)(uint8_T)u);
   }
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_copysign(emxArray_char_T_Spike_T *s1, const
+void SpikeModelClass::Spike_copysign(emxArray_char_T_Spike_T *s1, const
   emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, int32_T *idx, boolean_T
   *success)
 {
@@ -1069,8 +975,8 @@ static void Spike_copysign(emxArray_char_T_Spike_T *s1, const
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_readNonFinite(const emxArray_char_T_Spike_T *s, int32_T *k,
-  int32_T n, boolean_T *b_finite, real_T *fv)
+void SpikeModelClass::Spike_readNonFinite(const emxArray_char_T_Spike_T *s,
+  int32_T *k, int32_T n, boolean_T *b_finite, real_T *fv)
 {
   *b_finite = true;
   *fv = 0.0;
@@ -1094,8 +1000,9 @@ static void Spike_readNonFinite(const emxArray_char_T_Spike_T *s, int32_T *k,
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static boolean_T Spike_copydigits(emxArray_char_T_Spike_T *s1, int32_T *idx,
-  const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T allowpoint)
+boolean_T SpikeModelClass::Spike_copydigits(emxArray_char_T_Spike_T *s1, int32_T
+  *idx, const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T
+  allowpoint)
 {
   boolean_T success;
   boolean_T haspoint;
@@ -1129,8 +1036,8 @@ static boolean_T Spike_copydigits(emxArray_char_T_Spike_T *s1, int32_T *idx,
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static boolean_T Spike_copyexponent(emxArray_char_T_Spike_T *s1, int32_T *idx,
-  const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n)
+boolean_T SpikeModelClass::Spike_copyexponent(emxArray_char_T_Spike_T *s1,
+  int32_T *idx, const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n)
 {
   boolean_T success;
   success = true;
@@ -1157,8 +1064,8 @@ static boolean_T Spike_copyexponent(emxArray_char_T_Spike_T *s1, int32_T *idx,
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_skipspaces(const emxArray_char_T_Spike_T *s, int32_T *k,
-  int32_T n)
+void SpikeModelClass::Spike_skipspaces(const emxArray_char_T_Spike_T *s, int32_T
+  *k, int32_T n)
 {
   static const boolean_T b[128] = { true, false, false, false, false, false,
     false, false, false, true, true, true, true, true, false, false, false,
@@ -1180,8 +1087,8 @@ static void Spike_skipspaces(const emxArray_char_T_Spike_T *s, int32_T *k,
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static boolean_T Spike_copysign_k(emxArray_char_T_Spike_T *s1, int32_T *idx,
-  const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n)
+boolean_T SpikeModelClass::Spike_copysign_k(emxArray_char_T_Spike_T *s1, int32_T
+  *idx, const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n)
 {
   boolean_T success;
   boolean_T isneg;
@@ -1223,9 +1130,9 @@ static boolean_T Spike_copysign_k(emxArray_char_T_Spike_T *s1, int32_T *idx,
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_readfloat_p(emxArray_char_T_Spike_T *s1, int32_T *idx, const
-  emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T *isimag,
-  boolean_T *b_finite, real_T *nfv, boolean_T *success)
+void SpikeModelClass::Spike_readfloat_p(emxArray_char_T_Spike_T *s1, int32_T
+  *idx, const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T
+  *isimag, boolean_T *b_finite, real_T *nfv, boolean_T *success)
 {
   int32_T b_idx;
   int32_T b_k;
@@ -1276,7 +1183,7 @@ static void Spike_readfloat_p(emxArray_char_T_Spike_T *s1, int32_T *idx, const
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_readfloat(emxArray_char_T_Spike_T *s1, const
+void SpikeModelClass::Spike_readfloat(emxArray_char_T_Spike_T *s1, const
   emxArray_char_T_Spike_T *s, int32_T n, int32_T *idx, int32_T *k, boolean_T
   *isimag, boolean_T *b_finite, real_T *nfv, boolean_T *success)
 {
@@ -1330,7 +1237,7 @@ static void Spike_readfloat(emxArray_char_T_Spike_T *s1, const
   }
 }
 
-static void Spike_emxFree_real_T(emxArray_real_T_Spike_T **pEmxArray)
+void SpikeModelClass::Spike_emxFree_real_T(emxArray_real_T_Spike_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_real_T_Spike_T *)NULL) {
     if (((*pEmxArray)->data != (real_T *)NULL) && (*pEmxArray)->canFreeData) {
@@ -1344,9 +1251,9 @@ static void Spike_emxFree_real_T(emxArray_real_T_Spike_T **pEmxArray)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_readfloat_pk(emxArray_char_T_Spike_T *s1, int32_T *idx, const
-  emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T *isimag,
-  boolean_T *b_finite, real_T *nfv, boolean_T *success)
+void SpikeModelClass::Spike_readfloat_pk(emxArray_char_T_Spike_T *s1, int32_T
+  *idx, const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T
+  *isimag, boolean_T *b_finite, real_T *nfv, boolean_T *success)
 {
   int32_T b_idx;
   int32_T b_k;
@@ -1407,7 +1314,7 @@ static void Spike_readfloat_pk(emxArray_char_T_Spike_T *s1, int32_T *idx, const
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static real_T Spike_sscanfd_d(const emxArray_char_T_Spike_T *s)
+real_T SpikeModelClass::Spike_sscanfd_d(const emxArray_char_T_Spike_T *s)
 {
   real_T out1;
   int32_T nread;
@@ -1420,8 +1327,8 @@ static real_T Spike_sscanfd_d(const emxArray_char_T_Spike_T *s)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_sscanfd(const emxArray_char_T_Spike_T *s, real_T *out1, real_T
-  *out2)
+void SpikeModelClass::Spike_sscanfd(const emxArray_char_T_Spike_T *s, real_T
+  *out1, real_T *out2)
 {
   int32_T nread;
   nread = sscanf(&s->data[0], "%lf %lf", out1, out2);
@@ -1431,7 +1338,7 @@ static void Spike_sscanfd(const emxArray_char_T_Spike_T *s, real_T *out1, real_T
   }
 }
 
-static void Spike_emxFree_char_T(emxArray_char_T_Spike_T **pEmxArray)
+void SpikeModelClass::Spike_emxFree_char_T(emxArray_char_T_Spike_T **pEmxArray)
 {
   if (*pEmxArray != (emxArray_char_T_Spike_T *)NULL) {
     if (((*pEmxArray)->data != (char_T *)NULL) && (*pEmxArray)->canFreeData) {
@@ -1445,7 +1352,7 @@ static void Spike_emxFree_char_T(emxArray_char_T_Spike_T **pEmxArray)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static creal_T Spike_str2double(const emxArray_char_T_Spike_T *s)
+creal_T SpikeModelClass::Spike_str2double(const emxArray_char_T_Spike_T *s)
 {
   creal_T x;
   emxArray_char_T_Spike_T *s1;
@@ -1533,7 +1440,7 @@ static creal_T Spike_str2double(const emxArray_char_T_Spike_T *s)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Throttle' */
-static void Spike_fclose_gy(void)
+void SpikeModelClass::Spike_fclose_gy(void)
 {
   int32_T cst;
   int32_T j;
@@ -1548,7 +1455,7 @@ static void Spike_fclose_gy(void)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static int8_T Spike_filedata(void)
+int8_T SpikeModelClass::Spike_filedata(void)
 {
   int8_T f;
   int32_T k;
@@ -1569,7 +1476,8 @@ static int8_T Spike_filedata(void)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static int8_T Spike_cfopen(const char * cfilename, const char * cpermission)
+int8_T SpikeModelClass::Spike_cfopen(const char * cfilename, const char
+  * cpermission)
 {
   int8_T fileid;
   FILE * filestar;
@@ -1594,7 +1502,7 @@ static int8_T Spike_cfopen(const char * cfilename, const char * cpermission)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static FILE * Spike_fileManager(real_T varargin_1)
+FILE * SpikeModelClass::Spike_fileManager(real_T varargin_1)
 {
   FILE * f;
   int8_T fileid;
@@ -1619,7 +1527,7 @@ static FILE * Spike_fileManager(real_T varargin_1)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_fclose(real_T fileID)
+void SpikeModelClass::Spike_fclose(real_T fileID)
 {
   int8_T fileid;
   int32_T cst;
@@ -1656,7 +1564,7 @@ static void Spike_fclose(real_T fileID)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_readfile(emxArray_char_T_Spike_T *y)
+void SpikeModelClass::Spike_readfile(emxArray_char_T_Spike_T *y)
 {
   int32_T remaining;
   int32_T b_index;
@@ -1872,7 +1780,7 @@ static void Spike_readfile(emxArray_char_T_Spike_T *y)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Aileron' */
-static void Spike_fclose_e(void)
+void SpikeModelClass::Spike_fclose_e(void)
 {
   int32_T cst;
   int32_T j;
@@ -1887,7 +1795,7 @@ static void Spike_fclose_e(void)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail right' */
-static int8_T Spike_filedata_e(void)
+int8_T SpikeModelClass::Spike_filedata_e(void)
 {
   int8_T f;
   int32_T k;
@@ -1908,7 +1816,8 @@ static int8_T Spike_filedata_e(void)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail right' */
-static int8_T Spike_cfopen_m(const char * cfilename, const char * cpermission)
+int8_T SpikeModelClass::Spike_cfopen_m(const char * cfilename, const char
+  * cpermission)
 {
   int8_T fileid;
   FILE * filestar;
@@ -1933,7 +1842,7 @@ static int8_T Spike_cfopen_m(const char * cfilename, const char * cpermission)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail right' */
-static FILE * Spike_fileManager_hw(real_T varargin_1)
+FILE * SpikeModelClass::Spike_fileManager_hw(real_T varargin_1)
 {
   FILE * f;
   int8_T fileid;
@@ -1958,7 +1867,7 @@ static FILE * Spike_fileManager_hw(real_T varargin_1)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail right' */
-static void Spike_fclose_m(real_T fileID)
+void SpikeModelClass::Spike_fclose_m(real_T fileID)
 {
   int8_T fileid;
   int32_T cst;
@@ -1995,7 +1904,7 @@ static void Spike_fclose_m(real_T fileID)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail right' */
-static void Spike_readfile_f(emxArray_char_T_Spike_T *y)
+void SpikeModelClass::Spike_readfile_f(emxArray_char_T_Spike_T *y)
 {
   int32_T remaining;
   int32_T b_index;
@@ -2211,7 +2120,7 @@ static void Spike_readfile_f(emxArray_char_T_Spike_T *y)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail right' */
-static void Spike_fclose_m2(void)
+void SpikeModelClass::Spike_fclose_m2(void)
 {
   int32_T cst;
   int32_T j;
@@ -2226,7 +2135,7 @@ static void Spike_fclose_m2(void)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail left' */
-static int8_T Spike_filedata_i(void)
+int8_T SpikeModelClass::Spike_filedata_i(void)
 {
   int8_T f;
   int32_T k;
@@ -2247,7 +2156,8 @@ static int8_T Spike_filedata_i(void)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail left' */
-static int8_T Spike_cfopen_g(const char * cfilename, const char * cpermission)
+int8_T SpikeModelClass::Spike_cfopen_g(const char * cfilename, const char
+  * cpermission)
 {
   int8_T fileid;
   FILE * filestar;
@@ -2272,7 +2182,7 @@ static int8_T Spike_cfopen_g(const char * cfilename, const char * cpermission)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail left' */
-static FILE * Spike_fileManager_h(real_T varargin_1)
+FILE * SpikeModelClass::Spike_fileManager_h(real_T varargin_1)
 {
   FILE * f;
   int8_T fileid;
@@ -2297,7 +2207,7 @@ static FILE * Spike_fileManager_h(real_T varargin_1)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail left' */
-static void Spike_fclose_d(real_T fileID)
+void SpikeModelClass::Spike_fclose_d(real_T fileID)
 {
   int8_T fileid;
   int32_T cst;
@@ -2334,7 +2244,7 @@ static void Spike_fclose_d(real_T fileID)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail left' */
-static void Spike_readfile_m(emxArray_char_T_Spike_T *y)
+void SpikeModelClass::Spike_readfile_m(emxArray_char_T_Spike_T *y)
 {
   int32_T remaining;
   int32_T b_index;
@@ -2549,7 +2459,8 @@ static void Spike_readfile_m(emxArray_char_T_Spike_T *y)
   }
 }
 
-static void Spike_emxFree_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray)
+void SpikeModelClass::Spike_emxFree_boolean_T(emxArray_boolean_T_Spike_T
+  **pEmxArray)
 {
   if (*pEmxArray != (emxArray_boolean_T_Spike_T *)NULL) {
     if (((*pEmxArray)->data != (boolean_T *)NULL) && (*pEmxArray)->canFreeData)
@@ -2564,7 +2475,7 @@ static void Spike_emxFree_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray)
 }
 
 /* Function for MATLAB Function: '<Root>/Read Tail left' */
-static void Spike_fclose_dh(void)
+void SpikeModelClass::Spike_fclose_dh(void)
 {
   int32_T cst;
   int32_T j;
@@ -2592,15 +2503,15 @@ void rt_mrdivide_U1d1x3_U2d_9vOrDY9Z(const real_T u0[3], const real_T u1[9],
   r1 = 0;
   r2 = 1;
   r3 = 2;
-  maxval = fabs(u1[0]);
-  a21 = fabs(u1[1]);
+  maxval = std::abs(u1[0]);
+  a21 = std::abs(u1[1]);
   if (a21 > maxval) {
     maxval = a21;
     r1 = 1;
     r2 = 0;
   }
 
-  if (fabs(u1[2]) > maxval) {
+  if (std::abs(u1[2]) > maxval) {
     r1 = 2;
     r2 = 1;
     r3 = 0;
@@ -2612,7 +2523,7 @@ void rt_mrdivide_U1d1x3_U2d_9vOrDY9Z(const real_T u0[3], const real_T u1[9],
   A[3 + r3] -= A[3 + r1] * A[r3];
   A[6 + r2] -= A[6 + r1] * A[r2];
   A[6 + r3] -= A[6 + r1] * A[r3];
-  if (fabs(A[3 + r3]) > fabs(A[3 + r2])) {
+  if (std::abs(A[3 + r3]) > std::abs(A[3 + r2])) {
     rtemp = r2 + 1;
     r2 = r3;
     r3 = rtemp - 1;
@@ -2632,7 +2543,7 @@ void rt_mrdivide_U1d1x3_U2d_9vOrDY9Z(const real_T u0[3], const real_T u1[9],
 }
 
 /* Model step function */
-void Spike_step(void)
+void SpikeModelClass::step()
 {
   real_T gravityBody[3];
   int8_T fileid;
@@ -2676,21 +2587,21 @@ void Spike_step(void)
   real_T rtb_Sum2_idx_1_tmp;
   real_T rtb_Sum_o_tmp_0;
   boolean_T exitg1;
-  if (rtmIsMajorTimeStep(Spike_M)) {
+  if (rtmIsMajorTimeStep((&Spike_M))) {
     /* set solver stop time */
-    if (!(Spike_M->Timing.clockTick0+1)) {
-      rtsiSetSolverStopTime(&Spike_M->solverInfo, ((Spike_M->Timing.clockTickH0
-        + 1) * Spike_M->Timing.stepSize0 * 4294967296.0));
+    if (!((&Spike_M)->Timing.clockTick0+1)) {
+      rtsiSetSolverStopTime(&(&Spike_M)->solverInfo, (((&Spike_M)
+        ->Timing.clockTickH0 + 1) * (&Spike_M)->Timing.stepSize0 * 4294967296.0));
     } else {
-      rtsiSetSolverStopTime(&Spike_M->solverInfo, ((Spike_M->Timing.clockTick0 +
-        1) * Spike_M->Timing.stepSize0 + Spike_M->Timing.clockTickH0 *
-        Spike_M->Timing.stepSize0 * 4294967296.0));
+      rtsiSetSolverStopTime(&(&Spike_M)->solverInfo, (((&Spike_M)
+        ->Timing.clockTick0 + 1) * (&Spike_M)->Timing.stepSize0 + (&Spike_M)
+        ->Timing.clockTickH0 * (&Spike_M)->Timing.stepSize0 * 4294967296.0));
     }
   }                                    /* end MajorTimeStep */
 
   /* Update absolute time of base rate at minor time step */
-  if (rtmIsMinorTimeStep(Spike_M)) {
-    Spike_M->Timing.t[0] = rtsiGetT(&Spike_M->solverInfo);
+  if (rtmIsMinorTimeStep((&Spike_M))) {
+    (&Spike_M)->Timing.t[0] = rtsiGetT(&(&Spike_M)->solverInfo);
   }
 
   /* Trigonometry: '<S18>/sincos' incorporates:
@@ -2698,12 +2609,12 @@ void Spike_step(void)
    *  SignalConversion: '<S18>/TmpSignal ConversionAtsincosInport1'
    *  Trigonometry: '<S19>/sincos'
    */
-  rtb_Sum_f[0] = cos(Spike_X.phithetapsi_CSTATE[2]);
-  rtb_Sum2_idx_0 = sin(Spike_X.phithetapsi_CSTATE[2]);
-  rtb_Sum_o_tmp_0 = cos(Spike_X.phithetapsi_CSTATE[1]);
-  rtb_Sum2_idx_1_tmp = sin(Spike_X.phithetapsi_CSTATE[1]);
-  rtb_Sum_o_tmp = cos(Spike_X.phithetapsi_CSTATE[0]);
-  rtb_Sum2_tmp = sin(Spike_X.phithetapsi_CSTATE[0]);
+  rtb_Sum_f[0] = std::cos(Spike_X.phithetapsi_CSTATE[2]);
+  rtb_Sum2_idx_0 = std::sin(Spike_X.phithetapsi_CSTATE[2]);
+  rtb_Sum_o_tmp_0 = std::cos(Spike_X.phithetapsi_CSTATE[1]);
+  rtb_Sum2_idx_1_tmp = std::sin(Spike_X.phithetapsi_CSTATE[1]);
+  rtb_Sum_o_tmp = std::cos(Spike_X.phithetapsi_CSTATE[0]);
+  rtb_Sum2_tmp = std::sin(Spike_X.phithetapsi_CSTATE[0]);
 
   /* Fcn: '<S18>/Fcn11' incorporates:
    *  Trigonometry: '<S18>/sincos'
@@ -3092,7 +3003,7 @@ void Spike_step(void)
     rtb_Sum_o_tmp - Spike_X.pqr_CSTATE[2] * rtb_Sum2_tmp;
   Spike_B.TmpSignalConversionAtphithetaps[2] = (Spike_X.pqr_CSTATE[1] *
     rtb_Sum2_tmp + Spike_X.pqr_CSTATE[2] * rtb_Sum_o_tmp) / rtb_Sum_o_tmp_0;
-  if (rtmIsMajorTimeStep(Spike_M)) {
+  if (rtmIsMajorTimeStep((&Spike_M))) {
     for (b_ii = 0; b_ii < 3; b_ii++) {
       /* Concatenate: '<S12>/Vector Concatenate' incorporates:
        *  Constant: '<S12>/Constant1'
@@ -3138,7 +3049,7 @@ void Spike_step(void)
   }
 
   /* End of Product: '<S22>/Product' */
-  if (rtmIsMajorTimeStep(Spike_M)) {
+  if (rtmIsMajorTimeStep((&Spike_M))) {
     /* Selector: '<S11>/Selector1' */
     for (b_ii = 0; b_ii < 3; b_ii++) {
       Spike_B.Selector1[3 * b_ii] = rtb_VectorConcatenate[6 * b_ii + 3];
@@ -3478,7 +3389,7 @@ void Spike_step(void)
       -29.400000000000002;
   }
 
-  if (rtmIsMajorTimeStep(Spike_M)) {
+  if (rtmIsMajorTimeStep((&Spike_M))) {
     /* Selector: '<S11>/Selector2' */
     for (b_ii = 0; b_ii < 3; b_ii++) {
       Spike_B.Selector2[3 * b_ii] = rtb_VectorConcatenate[6 * b_ii];
@@ -3556,8 +3467,8 @@ void Spike_step(void)
   Spike_B.Sum[2] = (Spike_X.ubvbwb_CSTATE[0] * Spike_X.pqr_CSTATE[1] -
                     Spike_X.ubvbwb_CSTATE[1] * Spike_X.pqr_CSTATE[0]) +
     gravityBody[2] / Spike_P.uDOFEulerAngles_mass_0;
-  if (rtmIsMajorTimeStep(Spike_M)) {
-    rt_ertODEUpdateContinuousStates(&Spike_M->solverInfo);
+  if (rtmIsMajorTimeStep((&Spike_M))) {
+    rt_ertODEUpdateContinuousStates(&(&Spike_M)->solverInfo);
 
     /* Update absolute time for base rate */
     /* The "clockTick0" counts the number of times the code of this task has
@@ -3568,11 +3479,11 @@ void Spike_step(void)
      * The two integers represent the low bits Timing.clockTick0 and the high bits
      * Timing.clockTickH0. When the low bit overflows to 0, the high bits increment.
      */
-    if (!(++Spike_M->Timing.clockTick0)) {
-      ++Spike_M->Timing.clockTickH0;
+    if (!(++(&Spike_M)->Timing.clockTick0)) {
+      ++(&Spike_M)->Timing.clockTickH0;
     }
 
-    Spike_M->Timing.t[0] = rtsiGetSolverStopTime(&Spike_M->solverInfo);
+    (&Spike_M)->Timing.t[0] = rtsiGetSolverStopTime(&(&Spike_M)->solverInfo);
 
     {
       /* Update absolute timer for sample time: [0.2s, 0.0s] */
@@ -3584,19 +3495,19 @@ void Spike_step(void)
        * The two integers represent the low bits Timing.clockTick1 and the high bits
        * Timing.clockTickH1. When the low bit overflows to 0, the high bits increment.
        */
-      Spike_M->Timing.clockTick1++;
-      if (!Spike_M->Timing.clockTick1) {
-        Spike_M->Timing.clockTickH1++;
+      (&Spike_M)->Timing.clockTick1++;
+      if (!(&Spike_M)->Timing.clockTick1) {
+        (&Spike_M)->Timing.clockTickH1++;
       }
     }
   }                                    /* end MajorTimeStep */
 }
 
 /* Derivatives for root system: '<Root>' */
-void Spike_derivatives(void)
+void SpikeModelClass::Spike_derivatives()
 {
   XDot_Spike_T *_rtXdot;
-  _rtXdot = ((XDot_Spike_T *) Spike_M->derivs);
+  _rtXdot = ((XDot_Spike_T *) (&Spike_M)->derivs);
 
   /* Derivatives for Integrator: '<S1>/ub,vb,wb' */
   _rtXdot->ubvbwb_CSTATE[0] = Spike_B.Sum[0];
@@ -3636,7 +3547,7 @@ void Spike_derivatives(void)
 }
 
 /* Model initialize function */
-void Spike_initialize(void)
+void SpikeModelClass::initialize()
 {
   /* Registration code */
 
@@ -3644,39 +3555,42 @@ void Spike_initialize(void)
   rt_InitInfAndNaN(sizeof(real_T));
 
   /* initialize real-time model */
-  (void) memset((void *)Spike_M, 0,
+  (void) memset((void *)(&Spike_M), 0,
                 sizeof(RT_MODEL_Spike_T));
 
   {
     /* Setup solver object */
-    rtsiSetSimTimeStepPtr(&Spike_M->solverInfo, &Spike_M->Timing.simTimeStep);
-    rtsiSetTPtr(&Spike_M->solverInfo, &rtmGetTPtr(Spike_M));
-    rtsiSetStepSizePtr(&Spike_M->solverInfo, &Spike_M->Timing.stepSize0);
-    rtsiSetdXPtr(&Spike_M->solverInfo, &Spike_M->derivs);
-    rtsiSetContStatesPtr(&Spike_M->solverInfo, (real_T **) &Spike_M->contStates);
-    rtsiSetNumContStatesPtr(&Spike_M->solverInfo, &Spike_M->Sizes.numContStates);
-    rtsiSetNumPeriodicContStatesPtr(&Spike_M->solverInfo,
-      &Spike_M->Sizes.numPeriodicContStates);
-    rtsiSetPeriodicContStateIndicesPtr(&Spike_M->solverInfo,
-      &Spike_M->periodicContStateIndices);
-    rtsiSetPeriodicContStateRangesPtr(&Spike_M->solverInfo,
-      &Spike_M->periodicContStateRanges);
-    rtsiSetErrorStatusPtr(&Spike_M->solverInfo, (&rtmGetErrorStatus(Spike_M)));
-    rtsiSetRTModelPtr(&Spike_M->solverInfo, Spike_M);
+    rtsiSetSimTimeStepPtr(&(&Spike_M)->solverInfo, &(&Spike_M)
+                          ->Timing.simTimeStep);
+    rtsiSetTPtr(&(&Spike_M)->solverInfo, &rtmGetTPtr((&Spike_M)));
+    rtsiSetStepSizePtr(&(&Spike_M)->solverInfo, &(&Spike_M)->Timing.stepSize0);
+    rtsiSetdXPtr(&(&Spike_M)->solverInfo, &(&Spike_M)->derivs);
+    rtsiSetContStatesPtr(&(&Spike_M)->solverInfo, (real_T **) &(&Spike_M)
+                         ->contStates);
+    rtsiSetNumContStatesPtr(&(&Spike_M)->solverInfo, &(&Spike_M)
+      ->Sizes.numContStates);
+    rtsiSetNumPeriodicContStatesPtr(&(&Spike_M)->solverInfo, &(&Spike_M)
+      ->Sizes.numPeriodicContStates);
+    rtsiSetPeriodicContStateIndicesPtr(&(&Spike_M)->solverInfo, &(&Spike_M)
+      ->periodicContStateIndices);
+    rtsiSetPeriodicContStateRangesPtr(&(&Spike_M)->solverInfo, &(&Spike_M)
+      ->periodicContStateRanges);
+    rtsiSetErrorStatusPtr(&(&Spike_M)->solverInfo, (&rtmGetErrorStatus((&Spike_M))));
+    rtsiSetRTModelPtr(&(&Spike_M)->solverInfo, (&Spike_M));
   }
 
-  rtsiSetSimTimeStep(&Spike_M->solverInfo, MAJOR_TIME_STEP);
-  Spike_M->intgData.y = Spike_M->odeY;
-  Spike_M->intgData.f[0] = Spike_M->odeF[0];
-  Spike_M->intgData.f[1] = Spike_M->odeF[1];
-  Spike_M->intgData.f[2] = Spike_M->odeF[2];
-  Spike_M->contStates = ((X_Spike_T *) &Spike_X);
-  Spike_M->periodicContStateIndices = ((int_T*) Spike_PeriodicIndX);
-  Spike_M->periodicContStateRanges = ((real_T*) Spike_PeriodicRngX);
-  rtsiSetSolverData(&Spike_M->solverInfo, (void *)&Spike_M->intgData);
-  rtsiSetSolverName(&Spike_M->solverInfo,"ode3");
-  rtmSetTPtr(Spike_M, &Spike_M->Timing.tArray[0]);
-  Spike_M->Timing.stepSize0 = 0.2;
+  rtsiSetSimTimeStep(&(&Spike_M)->solverInfo, MAJOR_TIME_STEP);
+  (&Spike_M)->intgData.y = (&Spike_M)->odeY;
+  (&Spike_M)->intgData.f[0] = (&Spike_M)->odeF[0];
+  (&Spike_M)->intgData.f[1] = (&Spike_M)->odeF[1];
+  (&Spike_M)->intgData.f[2] = (&Spike_M)->odeF[2];
+  getRTM()->contStates = ((X_Spike_T *) &Spike_X);
+  getRTM()->periodicContStateIndices = ((int_T*) Spike_PeriodicIndX);
+  getRTM()->periodicContStateRanges = ((real_T*) Spike_PeriodicRngX);
+  rtsiSetSolverData(&(&Spike_M)->solverInfo, (void *)&(&Spike_M)->intgData);
+  rtsiSetSolverName(&(&Spike_M)->solverInfo,"ode3");
+  rtmSetTPtr(getRTM(), &(&Spike_M)->Timing.tArray[0]);
+  (&Spike_M)->Timing.stepSize0 = 0.2;
 
   /* block I/O */
   (void) memset(((void *) &Spike_B), 0,
@@ -3798,7 +3712,73 @@ void Spike_initialize(void)
 }
 
 /* Model terminate function */
-void Spike_terminate(void)
+void SpikeModelClass::terminate()
 {
   /* (no terminate code required) */
+}
+
+/* Constructor */
+SpikeModelClass::SpikeModelClass()
+{
+  static const P_Spike_T Spike_P_temp = {
+    /* Mask Parameter: uDOFEulerAngles_Vm_0
+     * Referenced by: '<S1>/ub,vb,wb'
+     */
+    { 0.0, 0.0, 0.0 },
+
+    /* Mask Parameter: uDOFEulerAngles_eul_0
+     * Referenced by: '<S10>/phi theta psi'
+     */
+    { 0.0, 0.0, 0.0 },
+
+    /* Mask Parameter: uDOFEulerAngles_inertia
+     * Referenced by: '<S12>/Constant1'
+     */
+    { 0.003534, 0.0, 0.0, 0.0, 0.003788, 0.0, 0.0, 0.0, 0.005818 },
+
+    /* Mask Parameter: uDOFEulerAngles_mass_0
+     * Referenced by: '<S12>/Constant'
+     */
+    1.0,
+
+    /* Mask Parameter: uDOFEulerAngles_pm_0
+     * Referenced by: '<S1>/p,q,r '
+     */
+    { 0.0, 0.0, 0.0 },
+
+    /* Mask Parameter: uDOFEulerAngles_xme_0
+     * Referenced by: '<S1>/xe,ye,ze'
+     */
+    { 0.0, 0.0, 0.0 },
+
+    /* Expression: pi
+     * Referenced by: '<S10>/phi theta psi'
+     */
+    3.1415926535897931,
+
+    /* Expression: -pi
+     * Referenced by: '<S10>/phi theta psi'
+     */
+    -3.1415926535897931,
+
+    /* Expression: zeros(3)
+     * Referenced by: '<S12>/Constant2'
+     */
+    { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+  };                                   /* Modifiable parameters */
+
+  /* Initialize tunable parameters */
+  Spike_P = Spike_P_temp;
+}
+
+/* Destructor */
+SpikeModelClass::~SpikeModelClass()
+{
+  /* Currently there is no destructor body generated.*/
+}
+
+/* Real-Time Model get method */
+RT_MODEL_Spike_T * SpikeModelClass::getRTM()
+{
+  return (&Spike_M);
 }
