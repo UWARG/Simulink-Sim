@@ -12,7 +12,7 @@ end
 
 %% Import Digital Datcom Data 
 %
-statdyn = datcomimport(datcomfile);
+statdyn = datcomimport("../datcomFile/asbSkyHoggDatcom.out");
 
 %% Filling Out Derivative Tables
 %
