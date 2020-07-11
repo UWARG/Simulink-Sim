@@ -26,7 +26,7 @@ void SimulatedAirspeed :: GetResult(airspeedData_t *Data)
     std::string line, previousLine;
     std::string returnChar ("\n");
 
-    airspeedFile.open("airspeed.txt");
+    airspeedFile.open("SimulationResults/SensorOutputs/airspeed.txt");
 
     int i = 0;
 
