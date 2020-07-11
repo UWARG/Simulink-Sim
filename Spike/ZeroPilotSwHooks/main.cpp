@@ -1,6 +1,6 @@
 #define SIMULATION
 
-#include "airspeed.hpp"
+#include "SendInstructionsToSafety.hpp"
 
 #include <iostream>
 #include <cstdio>
@@ -8,19 +8,14 @@
 int main(void)
 {
 
-	airspeedData_t data;
+	SendToSafety_Init();
 
-	Simulated airspeedSim;
+	float testData[4] = {0,0,0,50};
 
-	airspeedSim.GetResult(&data);
-
-	std::cout << data.airspeed << std::endl;
+	for (int i = 0; i < 100; i++)
+	{
+		SendToSafety_Execute(testData);
+	}
 
 	return 0;
 }
-
-/**
- * Functions for communicating actuator commands to the safety chip,
- * which in turn, sends the data out to the actuators.
- * Author: Anthony Berbari
- */

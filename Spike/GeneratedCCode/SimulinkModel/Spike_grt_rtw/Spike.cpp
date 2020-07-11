@@ -6,9 +6,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.144
+ * Model version              : 1.155
  * Simulink Coder version : 9.0 (R2018b) 24-May-2018
- * C++ source code generated on : Sat Jul 11 02:16:51 2020
+ * C++ source code generated on : Sat Jul 11 03:25:26 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -661,8 +661,7 @@ void SpikeModelClass::Spike_readfile(emxArray_char_T_Spike_T *y)
   int16_T bdims_idx_0;
   int32_T i;
   boolean_T exitg1;
-  fileid = Spike_cfopen("../SimulationResults/ActuatorCommands/aileron.txt",
-                        "rb");
+  fileid = Spike_cfopen("ActuatorCommands/aileron.txt", "rb");
   wherefrom = SEEK_END;
   filestar = Spike_fileManager((real_T)fileid);
   if ((fileid == 0) || (fileid == 1) || (fileid == 2)) {
@@ -1668,8 +1667,7 @@ void SpikeModelClass::Spike_readfile_e(emxArray_char_T_Spike_T *y)
   int16_T bdims_idx_0;
   int32_T i;
   boolean_T exitg1;
-  fileid = Spike_cfopen_j("../SimulationResults/ActuatorCommands/tailRight.txt",
-    "rb");
+  fileid = Spike_cfopen_j("ActuatorCommands/tailRight.txt", "rb");
   wherefrom = SEEK_END;
   filestar = Spike_fileManager_c((real_T)fileid);
   if ((fileid == 0) || (fileid == 1) || (fileid == 2)) {
@@ -2009,8 +2007,7 @@ void SpikeModelClass::Spike_readfile_d(emxArray_char_T_Spike_T *y)
   int16_T bdims_idx_0;
   int32_T i;
   boolean_T exitg1;
-  fileid = Spike_cfopen_k("../SimulationResults/ActuatorCommands/tailLeft.txt",
-    "rb");
+  fileid = Spike_cfopen_k("ActuatorCommands/tailLeft.txt", "rb");
   wherefrom = SEEK_END;
   filestar = Spike_fileManager_p((real_T)fileid);
   if ((fileid == 0) || (fileid == 1) || (fileid == 2)) {
@@ -2350,8 +2347,7 @@ void SpikeModelClass::Spike_readfile_m(emxArray_char_T_Spike_T *y)
   int16_T bdims_idx_0;
   int32_T i;
   boolean_T exitg1;
-  fileid = Spike_cfopen_b("../SimulationResults/ActuatorCommands/throttle.txt",
-    "rb");
+  fileid = Spike_cfopen_b("ActuatorCommands/throttle.txt", "rb");
   wherefrom = SEEK_END;
   filestar = Spike_fileManager_h((real_T)fileid);
   if ((fileid == 0) || (fileid == 1) || (fileid == 2)) {
@@ -3537,18 +3533,18 @@ void SpikeModelClass::step()
    *  Integrator: '<S1>/xe,ye,ze'
    *  Sqrt: '<S7>/Airspeed'
    */
-  fileid = Spike_cfopen_m("airspeed.txt", "ab");
-  b_fileid = Spike_cfopen_m("angleOfAttack.txt", "ab");
-  c_fileid = Spike_cfopen_m("altitude.txt", "ab");
-  d_fileid = Spike_cfopen_m("roll.txt", "ab");
-  e_fileid = Spike_cfopen_m("pitch.txt", "ab");
-  f_fileid = Spike_cfopen_m("yaw.txt", "ab");
-  g_fileid = Spike_cfopen_m("accX.txt", "ab");
-  h_fileid = Spike_cfopen_m("accY.txt", "ab");
-  i_fileid = Spike_cfopen_m("accZ.txt", "ab");
-  j_fileid = Spike_cfopen_m("gyrX.txt", "ab");
-  k_fileid = Spike_cfopen_m("gyrY.txt", "ab");
-  l_fileid = Spike_cfopen_m("gyrZ.txt", "ab");
+  fileid = Spike_cfopen_m("SensorOutputs/airspeed.txt", "ab");
+  b_fileid = Spike_cfopen_m("SensorOutputs/angleOfAttack.txt", "ab");
+  c_fileid = Spike_cfopen_m("SensorOutputs/altitude.txt", "ab");
+  d_fileid = Spike_cfopen_m("SensorOutputs/roll.txt", "ab");
+  e_fileid = Spike_cfopen_m("SensorOutputs/pitch.txt", "ab");
+  f_fileid = Spike_cfopen_m("SensorOutputs/yaw.txt", "ab");
+  g_fileid = Spike_cfopen_m("SensorOutputs/accX.txt", "ab");
+  h_fileid = Spike_cfopen_m("SensorOutputs/accY.txt", "ab");
+  i_fileid = Spike_cfopen_m("SensorOutputs/accZ.txt", "ab");
+  j_fileid = Spike_cfopen_m("SensorOutputs/gyrX.txt", "ab");
+  k_fileid = Spike_cfopen_m("SensorOutputs/gyrY.txt", "ab");
+  l_fileid = Spike_cfopen_m("SensorOutputs/gyrZ.txt", "ab");
   b_NULL = NULL;
   if ((fileid > 22) || (fileid < 0)) {
     fileid = -1;
@@ -4333,9 +4329,9 @@ void SpikeModelClass::step()
     (&Spike_M)->Timing.t[0] = rtsiGetSolverStopTime(&(&Spike_M)->solverInfo);
 
     {
-      /* Update absolute timer for sample time: [0.2s, 0.0s] */
+      /* Update absolute timer for sample time: [0.02s, 0.0s] */
       /* The "clockTick1" counts the number of times the code of this task has
-       * been executed. The resolution of this integer timer is 0.2, which is the step size
+       * been executed. The resolution of this integer timer is 0.02, which is the step size
        * of the task. Size of "clockTick1" ensures timer will not overflow during the
        * application lifespan selected.
        * Timer of this task consists of two 32 bit unsigned integers.
@@ -4437,7 +4433,7 @@ void SpikeModelClass::initialize()
   rtsiSetSolverData(&(&Spike_M)->solverInfo, (void *)&(&Spike_M)->intgData);
   rtsiSetSolverName(&(&Spike_M)->solverInfo,"ode3");
   rtmSetTPtr(getRTM(), &(&Spike_M)->Timing.tArray[0]);
-  (&Spike_M)->Timing.stepSize0 = 0.2;
+  (&Spike_M)->Timing.stepSize0 = 0.02;
 
   /* block I/O */
   (void) memset(((void *) &Spike_B), 0,

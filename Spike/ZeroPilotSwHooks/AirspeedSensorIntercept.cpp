@@ -1,3 +1,4 @@
+#if 0
 #include "airspeed.hpp"
 
 #include <iostream>
@@ -26,7 +27,7 @@ void SimulatedAirspeed :: GetResult(airspeedData_t *Data)
     std::string line, previousLine;
     std::string returnChar ("\n");
 
-    airspeedFile.open("SimulationResults/SensorOutputs/airspeed.txt");
+    airspeedFile.open("SensorOutputs/airspeed.txt");
 
     int i = 0;
 
@@ -44,3 +45,4 @@ void SimulatedAirspeed :: GetResult(airspeedData_t *Data)
     Data->isDataNew = true;
     Data->sensorStatus = 0;
 }
+#endif
