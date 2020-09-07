@@ -9,32 +9,22 @@
  * Code
  **********************************************************************************************************************/
 
-void SimulatedIMU :: Init()
+void SimulatedIMU :: GetResult(IMUData_t &Data)
 {
-    return;
-}
+    Data.accx = this->getNewestDataPoint("SensorOutputs/accX.txt");
+    Data.accy = this->getNewestDataPoint("SensorOutputs/accY.txt");
+    Data.accz = this->getNewestDataPoint("SensorOutputs/accZ.txt");
 
-void SimulatedIMU :: Begin_Measuring()
-{
-    return;
-}
+    Data.gyrx = this->getNewestDataPoint("SensorOutputs/gyrX.txt");
+    Data.gyry = this->getNewestDataPoint("SensorOutputs/gyrY.txt");
+    Data.gyrz = this->getNewestDataPoint("SensorOutputs/gyrZ.txt");
 
-void SimulatedIMU :: GetResult(airspeedData_t *Data)
-{
-    Data->accx = this.getNewestDataPoint("SensorOutputs/accX.txt");
-    Data->accY = this.getNewestDataPoint("SensorOutputs/accY.txt");
-    Data->accZ = this.getNewestDataPoint("SensorOutputs/accZ.txt");
+    Data.magx = this->getNewestDataPoint("SensorOutputs/magX.txt");
+    Data.magy = this->getNewestDataPoint("SensorOutputs/magY.txt");
+    Data.magz = this->getNewestDataPoint("SensorOutputs/magZ.txt");
 
-    Data->gyrx = this.getNewestDataPoint("SensorOutputs/gyrX.txt");
-    Data->gyrY = this.getNewestDataPoint("SensorOutputs/gyrY.txt");
-    Data->gyrZ = this.getNewestDataPoint("SensorOutputs/gyrZ.txt");
-
-    Data->magx = this.getNewestDataPoint("SensorOutputs/magX.txt");
-    Data->magY = this.getNewestDataPoint("SensorOutputs/magY.txt");
-    Data->magZ = this.getNewestDataPoint("SensorOutputs/magZ.txt");
-
-    Data->isDataNew = true;
-    Data->status = 0;
+    Data.isDataNew = true;
+    Data.sensorStatus = 0;
 }
 
 float SimulatedIMU :: getNewestDataPoint(const char * fileName)

@@ -10,6 +10,8 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/GeneratedCCode/R2018b/rtw/c/src
   ${CMAKE_CURRENT_SOURCE_DIR}/GeneratedCCode/R2018b/rtw/c/src/ext_mode/common
   ${CMAKE_CURRENT_SOURCE_DIR}/GeneratedCCode/R2018b/simulink/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../ZeroPilot-SW/Autopilot/AttitudeManager
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../ZeroPilot-SW/Autopilot/Inc
 
 )
 

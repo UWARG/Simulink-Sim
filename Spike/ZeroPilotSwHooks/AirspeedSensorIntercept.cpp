@@ -1,4 +1,4 @@
-#if 0
+
 #include "airspeed.hpp"
 
 #include <iostream>
@@ -20,7 +20,7 @@ void SimulatedAirspeed :: Begin_Measuring()
     return;
 }
 
-void SimulatedAirspeed :: GetResult(airspeedData_t *Data)
+void SimulatedAirspeed :: GetResult(airspeedData_t &Data)
 {
     std::ifstream airspeedFile;
 
@@ -28,8 +28,6 @@ void SimulatedAirspeed :: GetResult(airspeedData_t *Data)
     std::string returnChar ("\n");
 
     airspeedFile.open("SensorOutputs/airspeed.txt");
-
-    int i = 0;
 
     do
     {
@@ -41,8 +39,7 @@ void SimulatedAirspeed :: GetResult(airspeedData_t *Data)
 
     airspeedFile.close();
 
-    Data->airspeed = std::stof(previousLine);
-    Data->isDataNew = true;
-    Data->sensorStatus = 0;
+    Data.airspeed = std::stof(previousLine);
+    Data.isDataNew = true;
+    Data.sensorStatus = 0;
 }
-#endif
