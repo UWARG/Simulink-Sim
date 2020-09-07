@@ -24,10 +24,10 @@ static SpikeModelClass Spike;
 void SendToSafety_Init(void)
 {
 
-    throttleFile.open("ActuatorCommands/throttle.txt", std::fstream::out);
-    aileronFile.open("ActuatorCommands/aileron.txt", std::fstream::out);
-    tailLeftFile.open("ActuatorCommands/tailLeft.txt", std::fstream::out);
-    tailRightFile.open("ActuatorCommands/tailRight.txt", std::fstream::out);
+    throttleFile.open("SimulationResults/ActuatorCommands/throttle.txt", std::fstream::out);
+    aileronFile.open("SimulationResults/ActuatorCommands/aileron.txt", std::fstream::out);
+    tailLeftFile.open("SimulationResults/ActuatorCommands/tailLeft.txt", std::fstream::out);
+    tailRightFile.open("SimulationResults/ActuatorCommands/tailRight.txt", std::fstream::out);
 
     throttleFile << "";
     aileronFile << "";
@@ -47,10 +47,10 @@ void SendToSafety_Init(void)
 SendToSafety_error_t SendToSafety_Execute(float *channelOut)
 {
 
-    throttleFile.open("ActuatorCommands/throttle.txt", std::fstream::app);
-    aileronFile.open("ActuatorCommands/aileron.txt", std::fstream::app);
-    tailLeftFile.open("ActuatorCommands/tailLeft.txt", std::fstream::app);
-    tailRightFile.open("ActuatorCommands/tailRight.txt", std::fstream::app);
+    throttleFile.open("SimulationResults/ActuatorCommands/throttle.txt", std::fstream::app);
+    aileronFile.open("SimulationResults/ActuatorCommands/aileron.txt", std::fstream::app);
+    tailLeftFile.open("SimulationResults/ActuatorCommands/tailLeft.txt", std::fstream::app);
+    tailRightFile.open("SimulationResults/ActuatorCommands/tailRight.txt", std::fstream::app);
 
     throttleFile << channelOut[THROTTLE_OUT_CHANNEL] << " ";
     aileronFile << channelOut[AILERON_OUT_CHANNEL] << " ";
