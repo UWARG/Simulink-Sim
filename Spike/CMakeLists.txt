@@ -27,12 +27,10 @@ set(CXX_SOURCES
 )
 
 ###### THESE FOLDERS SHOULD BE CREATED INSIDE THE DIRECTORY WHERE THE FINAL EXE IS RUN FROM
-add_custom_target(make-results-dir ALL
-  COMMAND ${CMAKE_COMMAND} -E make_directory "SimulationResults")
 add_custom_target(make-ActuatorCommand-dir ALL
-  COMMAND ${CMAKE_COMMAND} -E make_directory "SimulationResults/ActuatorCommands")
+  COMMAND ${CMAKE_COMMAND} -E make_directory "ActuatorCommands")
 add_custom_target(make-SensorOutput-dir ALL
-  COMMAND ${CMAKE_COMMAND} -E make_directory "SimulationResults/SensorOutputs")
+  COMMAND ${CMAKE_COMMAND} -E make_directory "SensorOutputs")
 
 add_executable(attempt ${CXX_SOURCES})
 

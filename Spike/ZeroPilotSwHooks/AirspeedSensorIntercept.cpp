@@ -22,6 +22,20 @@ void SimulatedAirspeed :: Begin_Measuring()
 
 void SimulatedAirspeed :: GetResult(airspeedData_t &Data)
 {
+    static bool firstCall = true;
+
+    if (firstCall)  // TODO this is a shit solution, but the issue is that this data is not ready until we do a step of the model.
+                    // But we cannot do a step of the model until the state machine gives it instructions.
+                    // But the state machine cannot give it instructions until it knows where the aircraft is.
+    {
+        Data.airspeed = 50;
+        Data.isDataNew = true;
+        Data.sensorStatus = 0;
+
+        firstCall = false;
+        return;
+    }
+
     std::ifstream airspeedFile;
 
     std::string line, previousLine;
@@ -35,7 +49,7 @@ void SimulatedAirspeed :: GetResult(airspeedData_t &Data)
 
         getline(airspeedFile, line);
     }
-    while (line.length() == 8);
+    while (!line.empty());
 
     airspeedFile.close();
 
