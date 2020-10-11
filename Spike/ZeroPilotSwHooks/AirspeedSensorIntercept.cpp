@@ -10,11 +10,6 @@
  * Code
  **********************************************************************************************************************/
 
-void SimulatedAirspeed :: Init()
-{
-    return;
-}
-
 void SimulatedAirspeed :: Begin_Measuring()
 {
     return;
