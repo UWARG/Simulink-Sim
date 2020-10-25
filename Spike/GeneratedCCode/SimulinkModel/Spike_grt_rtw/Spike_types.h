@@ -1,14 +1,15 @@
 /*
  * Spike_types.h
  *
- * Classroom License -- for classroom instructional use only.  Not for
- * government, commercial, academic research, or other organizational use.
+ * Academic License - for use in teaching, academic research, and meeting
+ * course requirements at degree granting institutions only.  Not for
+ * government, commercial, or other organizational use.
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.155
- * Simulink Coder version : 9.0 (R2018b) 24-May-2018
- * C++ source code generated on : Sat Jul 11 03:25:26 2020
+ * Model version              : 1.162
+ * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
+ * C++ source code generated on : Sun Oct 25 15:00:48 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -22,53 +23,13 @@
 #include "rtwtypes.h"
 #include "multiword_types.h"
 
+/* Model Code Variants */
+
 /* Custom Type definition for MATLAB Function: '<Root>/WriteToFile' */
 #include <stdio.h>
 
 /* Custom Type definition for MATLAB Function: '<Root>/Read Throttle' */
 #include <stdio.h>
-
-/* Custom Type definition for MATLAB Function: '<Root>/WriteToFile' */
-#ifndef struct_tag_sL6LJlPlxhdTxZzXh5NTaQC
-#define struct_tag_sL6LJlPlxhdTxZzXh5NTaQC
-
-struct tag_sL6LJlPlxhdTxZzXh5NTaQC
-{
-  int32_T intNumBits;
-};
-
-#endif                                 /*struct_tag_sL6LJlPlxhdTxZzXh5NTaQC*/
-
-#ifndef typedef_sL6LJlPlxhdTxZzXh5NTaQC_Spike_T
-#define typedef_sL6LJlPlxhdTxZzXh5NTaQC_Spike_T
-
-typedef struct tag_sL6LJlPlxhdTxZzXh5NTaQC sL6LJlPlxhdTxZzXh5NTaQC_Spike_T;
-
-#endif                                 /*typedef_sL6LJlPlxhdTxZzXh5NTaQC_Spike_T*/
-
-/* Custom Type definition for MATLAB Function: '<Root>/Read Throttle' */
-#ifndef struct_tag_su2dYx4D5wygFoF57GWu6uG
-#define struct_tag_su2dYx4D5wygFoF57GWu6uG
-
-struct tag_su2dYx4D5wygFoF57GWu6uG
-{
-  int32_T charSize;
-  int32_T shortSize;
-  int32_T intSize;
-  int32_T longSize;
-  int32_T longlongSize;
-};
-
-#endif                                 /*struct_tag_su2dYx4D5wygFoF57GWu6uG*/
-
-#ifndef typedef_su2dYx4D5wygFoF57GWu6uG_Spike_T
-#define typedef_su2dYx4D5wygFoF57GWu6uG_Spike_T
-
-typedef struct tag_su2dYx4D5wygFoF57GWu6uG su2dYx4D5wygFoF57GWu6uG_Spike_T;
-
-#endif                                 /*typedef_su2dYx4D5wygFoF57GWu6uG_Spike_T*/
-
-#include <stddef.h>
 #ifndef struct_emxArray_char_T
 #define struct_emxArray_char_T
 
@@ -110,27 +71,6 @@ struct emxArray_boolean_T
 typedef struct emxArray_boolean_T emxArray_boolean_T_Spike_T;
 
 #endif                                 /*typedef_emxArray_boolean_T_Spike_T*/
-
-#ifndef struct_emxArray_int32_T
-#define struct_emxArray_int32_T
-
-struct emxArray_int32_T
-{
-  int32_T *data;
-  int32_T *size;
-  int32_T allocatedSize;
-  int32_T numDimensions;
-  boolean_T canFreeData;
-};
-
-#endif                                 /*struct_emxArray_int32_T*/
-
-#ifndef typedef_emxArray_int32_T_Spike_T
-#define typedef_emxArray_int32_T_Spike_T
-
-typedef struct emxArray_int32_T emxArray_int32_T_Spike_T;
-
-#endif                                 /*typedef_emxArray_int32_T_Spike_T*/
 
 #ifndef struct_emxArray_uint8_T
 #define struct_emxArray_uint8_T

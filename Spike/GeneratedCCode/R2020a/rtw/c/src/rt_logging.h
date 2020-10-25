@@ -16,7 +16,11 @@
 #include "rtwtypes.h"
 #include "builtin_typeid_types.h"
 #include "multiword_types.h"
+#ifdef IS_RAPID_ACCEL
+#include "matrix.h"
+#else
 #include "rt_mxclassid.h"
+#endif
 #include "rtw_matlogging.h"
 
 #ifndef TMW_NAME_LENGTH_MAX

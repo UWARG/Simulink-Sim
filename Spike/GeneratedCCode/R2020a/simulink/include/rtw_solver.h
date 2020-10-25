@@ -117,6 +117,7 @@ typedef struct _ssSolverInfo_tag {
     int_T       ignoredZcDiagnostic;
     int_T       maskedZcDiagnostic;
     boolean_T   isOutputMethodComputed;
+    int_T       reservedInt;
 } ssSolverInfo;
 
 /* Support old name RTWSolverInfo */

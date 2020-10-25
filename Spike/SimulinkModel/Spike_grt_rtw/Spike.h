@@ -1,14 +1,15 @@
 /*
  * Spike.h
  *
- * Classroom License -- for classroom instructional use only.  Not for
- * government, commercial, academic research, or other organizational use.
+ * Academic License - for use in teaching, academic research, and meeting
+ * course requirements at degree granting institutions only.  Not for
+ * government, commercial, or other organizational use.
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.144
- * Simulink Coder version : 9.0 (R2018b) 24-May-2018
- * C++ source code generated on : Sat Jul 11 02:16:51 2020
+ * Model version              : 1.162
+ * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
+ * C++ source code generated on : Sun Oct 25 15:00:48 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -19,25 +20,21 @@
 
 #ifndef RTW_HEADER_Spike_h_
 #define RTW_HEADER_Spike_h_
-#include <string.h>
+#include <cstring>
 #include <cmath>
+#include <cstdlib>
 #include <math.h>
-#include <stdlib.h>
-#ifndef Spike_COMMON_INCLUDES_
-# define Spike_COMMON_INCLUDES_
 #include <stdio.h>
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#endif                                 /* Spike_COMMON_INCLUDES_ */
-
 #include "Spike_types.h"
 
 /* Shared type includes */
 #include "multiword_types.h"
-#include "rtGetInf.h"
-#include "rt_nonfinite.h"
 #include "rtGetNaN.h"
+#include "rt_nonfinite.h"
+#include "rtGetInf.h"
 #include "rt_defines.h"
 
 /* Macros for accessing real-time model data structure */
@@ -194,10 +191,10 @@ typedef struct {
   int32_T altitude_DWORK1_p;           /* '<Root>/(altitude)' */
   boolean_T eml_autoflush[20];         /* '<Root>/WriteToFile' */
   FILE * eml_openfiles[20];            /* '<Root>/Read Aileron' */
-  FILE * eml_openfiles_k[20];          /* '<Root>/Read Tail left' */
-  FILE * eml_openfiles_p[20];          /* '<Root>/Read Tail right' */
-  FILE * eml_openfiles_b[20];          /* '<Root>/Read Throttle' */
-  FILE * eml_openfiles_j[20];          /* '<Root>/WriteToFile' */
+  FILE * eml_openfiles_j[20];          /* '<Root>/Read Tail left' */
+  FILE * eml_openfiles_l[20];          /* '<Root>/Read Tail right' */
+  FILE * eml_openfiles_m[20];          /* '<Root>/Read Throttle' */
+  FILE * eml_openfiles_g[20];          /* '<Root>/WriteToFile' */
 } DW_Spike_T;
 
 /* Continuous states (default storage) */
@@ -241,33 +238,39 @@ typedef struct {
 
 /* Parameters (default storage) */
 struct P_Spike_T_ {
-  real_T AerodynamicForcesandMoments_S;/* Mask Parameter: AerodynamicForcesandMoments_S
-                                        * Referenced by: '<S4>/reference area'
-                                        */
-  real_T AerodynamicForcesandMoments_S_g;/* Mask Parameter: AerodynamicForcesandMoments_S_g
-                                          * Referenced by: '<S3>/reference area'
-                                          */
+  real_T AerodynamicForcesandMoments_S;
+                                /* Mask Parameter: AerodynamicForcesandMoments_S
+                                 * Referenced by: '<S4>/reference area'
+                                 */
+  real_T AerodynamicForcesandMoments_S_g;
+                              /* Mask Parameter: AerodynamicForcesandMoments_S_g
+                               * Referenced by: '<S3>/reference area'
+                               */
   real_T uDOFEulerAngles_Vm_0[3];      /* Mask Parameter: uDOFEulerAngles_Vm_0
                                         * Referenced by: '<S1>/ub,vb,wb'
                                         */
-  real_T AerodynamicForcesandMoments_b;/* Mask Parameter: AerodynamicForcesandMoments_b
-                                        * Referenced by: '<S4>/Constant'
-                                        */
-  real_T AerodynamicForcesandMoments_b_h;/* Mask Parameter: AerodynamicForcesandMoments_b_h
-                                          * Referenced by: '<S3>/Constant'
-                                          */
-  real_T AerodynamicForcesandMoments_cba;/* Mask Parameter: AerodynamicForcesandMoments_cba
-                                          * Referenced by: '<S4>/Constant1'
-                                          */
-  real_T AerodynamicForcesandMoments_c_h;/* Mask Parameter: AerodynamicForcesandMoments_c_h
-                                          * Referenced by: '<S3>/Constant1'
-                                          */
+  real_T AerodynamicForcesandMoments_b;
+                                /* Mask Parameter: AerodynamicForcesandMoments_b
+                                 * Referenced by: '<S4>/Constant'
+                                 */
+  real_T AerodynamicForcesandMoments_b_h;
+                              /* Mask Parameter: AerodynamicForcesandMoments_b_h
+                               * Referenced by: '<S3>/Constant'
+                               */
+  real_T AerodynamicForcesandMoments_cba;
+                              /* Mask Parameter: AerodynamicForcesandMoments_cba
+                               * Referenced by: '<S4>/Constant1'
+                               */
+  real_T AerodynamicForcesandMoments_c_h;
+                              /* Mask Parameter: AerodynamicForcesandMoments_c_h
+                               * Referenced by: '<S3>/Constant1'
+                               */
   real_T uDOFEulerAngles_eul_0[3];     /* Mask Parameter: uDOFEulerAngles_eul_0
                                         * Referenced by: '<S17>/phi theta psi'
                                         */
-  real_T uDOFEulerAngles_inertia[9];   /* Mask Parameter: uDOFEulerAngles_inertia
-                                        * Referenced by: '<S19>/Constant1'
-                                        */
+  real_T uDOFEulerAngles_inertia[9];  /* Mask Parameter: uDOFEulerAngles_inertia
+                                       * Referenced by: '<S19>/Constant1'
+                                       */
   real_T uDOFEulerAngles_mass_0;       /* Mask Parameter: uDOFEulerAngles_mass_0
                                         * Referenced by: '<S19>/Constant'
                                         */
@@ -307,9 +310,9 @@ struct P_Spike_T_ {
   real_T altitude_BreakpointsData[3];  /* Expression: aero{1}.alt
                                         * Referenced by: '<S2>/(altitude)'
                                         */
-  real_T clroll_Table[81];             /* Expression: permute(aero{2}.clroll,[1  2  3])
-                                        * Referenced by: '<S35>/clroll'
-                                        */
+  real_T clroll_Table[81];      /* Expression: permute(aero{2}.clroll,[1  2  3])
+                                 * Referenced by: '<S35>/clroll'
+                                 */
   real_T alpha_BreakpointsData[12];    /* Expression: aero{1}.alpha
                                         * Referenced by: '<S2>/(alpha)'
                                         */
@@ -322,18 +325,18 @@ struct P_Spike_T_ {
   real_T delta_BreakpointsData[7];     /* Expression: aero{1}.delta
                                         * Referenced by: '<S2>/(delta)'
                                         */
-  real_T DCDI_Table[756];              /* Expression: permute(aero{1}.dcdi_sym,[1 3 4 2 ])
-                                        * Referenced by: '<S36>/DCDI'
-                                        */
+  real_T DCDI_Table[756];    /* Expression: permute(aero{1}.dcdi_sym,[1 3 4 2 ])
+                              * Referenced by: '<S36>/DCDI'
+                              */
   real_T Constant1_Value_l;            /* Expression: 0
                                         * Referenced by: '<S36>/Constant1'
                                         */
-  real_T DCL_Table[63];                /* Expression: permute(aero{1}.dcl_sym,[1  2  3])
-                                        * Referenced by: '<S36>/DCL'
-                                        */
-  real_T DCm_Table[63];                /* Expression: permute(aero{1}.dcm_sym,[1  2  3])
-                                        * Referenced by: '<S36>/DCm'
-                                        */
+  real_T DCL_Table[63];        /* Expression: permute(aero{1}.dcl_sym,[1  2  3])
+                                * Referenced by: '<S36>/DCL'
+                                */
+  real_T DCm_Table[63];        /* Expression: permute(aero{1}.dcm_sym,[1  2  3])
+                                * Referenced by: '<S36>/DCm'
+                                */
   real_T Constant1_Value_n;            /* Expression: 0
                                         * Referenced by: '<S37>/Constant1'
                                         */
@@ -352,15 +355,15 @@ struct P_Spike_T_ {
   real_T altitude_BreakpointsData_i[3];/* Expression: aero{1}.alt
                                         * Referenced by: '<Root>/(altitude)'
                                         */
-  real_T CD_Table[108];                /* Expression: permute(aero{1}.cd,[1  2  3])
-                                        * Referenced by: '<Root>/CD'
-                                        */
-  real_T CYb_Table[108];               /* Expression: permute(aero{1}.cyb,[1  2  3])
-                                        * Referenced by: '<Root>/CYb'
-                                        */
-  real_T CL_Table[108];                /* Expression: permute(aero{1}.cl,[1  2  3])
-                                        * Referenced by: '<Root>/CL'
-                                        */
+  real_T CD_Table[108];             /* Expression: permute(aero{1}.cd,[1  2  3])
+                                     * Referenced by: '<Root>/CD'
+                                     */
+  real_T CYb_Table[108];           /* Expression: permute(aero{1}.cyb,[1  2  3])
+                                    * Referenced by: '<Root>/CYb'
+                                    */
+  real_T CL_Table[108];             /* Expression: permute(aero{1}.cl,[1  2  3])
+                                     * Referenced by: '<Root>/CL'
+                                     */
   real_T Gain1_Gain_e;                 /* Expression: -1
                                         * Referenced by: '<Root>/Gain1'
                                         */
@@ -370,9 +373,9 @@ struct P_Spike_T_ {
   real_T Constant2_Value_f[9];         /* Expression: zeros(3)
                                         * Referenced by: '<S19>/Constant2'
                                         */
-  real_T Xcp_Table[108];               /* Expression: permute(aero{1}.xcp,[1  2  3])
-                                        * Referenced by: '<S2>/Xcp'
-                                        */
+  real_T Xcp_Table[108];           /* Expression: permute(aero{1}.xcp,[1  2  3])
+                                    * Referenced by: '<S2>/Xcp'
+                                    */
   real_T Gain_Gain_e;                  /* Expression: aero{1}.cbar
                                         * Referenced by: '<S2>/Gain'
                                         */
@@ -388,15 +391,15 @@ struct P_Spike_T_ {
   real_T zero3_Value[3];               /* Expression: [0 0 0]
                                         * Referenced by: '<Root>/zero3'
                                         */
-  real_T Clb_Table[108];               /* Expression: permute(aero{1}.clb,[1  2  3])
-                                        * Referenced by: '<Root>/Clb'
-                                        */
-  real_T Cm_Table[108];                /* Expression: permute(aero{1}.cm,[1  2  3])
-                                        * Referenced by: '<Root>/Cm'
-                                        */
-  real_T Cnb_Table[108];               /* Expression: permute(aero{1}.cnb,[1  2  3])
-                                        * Referenced by: '<Root>/Cnb'
-                                        */
+  real_T Clb_Table[108];           /* Expression: permute(aero{1}.clb,[1  2  3])
+                                    * Referenced by: '<Root>/Clb'
+                                    */
+  real_T Cm_Table[108];             /* Expression: permute(aero{1}.cm,[1  2  3])
+                                     * Referenced by: '<Root>/Cm'
+                                     */
+  real_T Cnb_Table[108];           /* Expression: permute(aero{1}.cnb,[1  2  3])
+                                    * Referenced by: '<Root>/Cnb'
+                                    */
   real_T Gain2_Gain;                   /* Expression: -1
                                         * Referenced by: '<Root>/Gain2'
                                         */
@@ -509,7 +512,7 @@ class SpikeModelClass {
   /* private data and function members */
  private:
   /* Tunable parameters */
-  P_Spike_T Spike_P;
+  static P_Spike_T Spike_P;
 
   /* Block signals */
   B_Spike_T Spike_B;
@@ -526,10 +529,6 @@ class SpikeModelClass {
   /* private member function(s) for subsystem '<Root>'*/
   void Spike_emxInit_char_T(emxArray_char_T_Spike_T **pEmxArray, int32_T
     numDimensions);
-  void Spike_emxInit_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray, int32_T
-    numDimensions);
-  void Spike_emxInit_int32_T(emxArray_int32_T_Spike_T **pEmxArray, int32_T
-    numDimensions);
   int8_T Spike_filedata(void);
   int8_T Spike_cfopen(const char * cfilename, const char * cpermission);
   FILE * Spike_fileManager(real_T varargin_1);
@@ -537,75 +536,71 @@ class SpikeModelClass {
     numDimensions);
   void Spike_emxEnsureCapacity_uint8_T(emxArray_uint8_T_Spike_T *emxArray,
     int32_T oldNumel);
-  void Spike_emxEnsureCapacity_int32_T(emxArray_int32_T_Spike_T *emxArray,
-    int32_T oldNumel);
   void Spike_emxFree_uint8_T(emxArray_uint8_T_Spike_T **pEmxArray);
-  void Spike_emxFree_int32_T(emxArray_int32_T_Spike_T **pEmxArray);
-  void Spike_fclose(real_T fileID);
+  int32_T Spike_cfclose(real_T fid);
   void Spike_emxEnsureCapacity_char_T(emxArray_char_T_Spike_T *emxArray, int32_T
     oldNumel);
   void Spike_readfile(emxArray_char_T_Spike_T *y);
+  void Spike_emxInit_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray, int32_T
+    numDimensions);
+  void Spike_deblank(const emxArray_char_T_Spike_T *x, emxArray_char_T_Spike_T
+                     *y);
   void Spi_emxEnsureCapacity_boolean_T(emxArray_boolean_T_Spike_T *emxArray,
     int32_T oldNumel);
-  void Spike_isstrprop(const emxArray_char_T_Spike_T *x,
-                       emxArray_boolean_T_Spike_T *y);
+  void Spike_isspace(const emxArray_char_T_Spike_T *x,
+                     emxArray_boolean_T_Spike_T *y);
+  void Spike_emxFree_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray);
+  void Spike_string_extractAfter(const emxArray_char_T_Spike_T *obj_Value, const
+    real_T startStr_data[], emxArray_char_T_Spike_T *extracted_Value);
   void Spike_emxInit_real_T(emxArray_real_T_Spike_T **pEmxArray, int32_T
     numDimensions);
   void Spike_emxEnsureCapacity_real_T(emxArray_real_T_Spike_T *emxArray, int32_T
     oldNumel);
   void Spike_char(const emxArray_real_T_Spike_T *varargin_1,
                   emxArray_char_T_Spike_T *y);
-  void Spike_copysign(emxArray_char_T_Spike_T *s1, const emxArray_char_T_Spike_T
-                      *s, int32_T *k, int32_T n, int32_T *idx, boolean_T
-                      *success);
+  void Spike_skipspaces(const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
+  void Spike_copysign(emxArray_char_T_Spike_T *s1, int32_T *idx, const
+                      emxArray_char_T_Spike_T *s, int32_T *k, int32_T n,
+                      boolean_T *foundsign, boolean_T *success);
+  boolean_T Spike_isUnitImag(const emxArray_char_T_Spike_T *s, int32_T k,
+    int32_T n);
   void Spike_readNonFinite(const emxArray_char_T_Spike_T *s, int32_T *k, int32_T
     n, boolean_T *b_finite, real_T *fv);
   boolean_T Spike_copydigits(emxArray_char_T_Spike_T *s1, int32_T *idx, const
     emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T allowpoint);
   boolean_T Spike_copyexponent(emxArray_char_T_Spike_T *s1, int32_T *idx, const
     emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
-  void Spike_skipspaces(const emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
-  boolean_T Spike_copysign_d(emxArray_char_T_Spike_T *s1, int32_T *idx, const
-    emxArray_char_T_Spike_T *s, int32_T *k, int32_T n);
-  void Spike_readfloat_j(emxArray_char_T_Spike_T *s1, int32_T *idx, const
-    emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T *isimag,
-    boolean_T *b_finite, real_T *nfv, boolean_T *success);
-  void Spike_readfloat(emxArray_char_T_Spike_T *s1, const
-                       emxArray_char_T_Spike_T *s, int32_T n, int32_T *idx,
-                       int32_T *k, boolean_T *isimag, boolean_T *b_finite,
-                       real_T *nfv, boolean_T *success);
+  void Spike_skipspaces_a(const emxArray_char_T_Spike_T *s, int32_T *k, int32_T
+    n);
+  void Spike_readfloat(emxArray_char_T_Spike_T *s1, int32_T *idx, const
+                       emxArray_char_T_Spike_T *s, int32_T *k, int32_T n,
+                       boolean_T allowimag, boolean_T *isimag, boolean_T
+                       *b_finite, real_T *nfv, boolean_T *foundsign, boolean_T
+                       *success);
   void Spike_emxFree_real_T(emxArray_real_T_Spike_T **pEmxArray);
-  void Spike_readfloat_ju(emxArray_char_T_Spike_T *s1, int32_T *idx, const
-    emxArray_char_T_Spike_T *s, int32_T *k, int32_T n, boolean_T *isimag,
-    boolean_T *b_finite, real_T *nfv, boolean_T *success);
-  real_T Spike_sscanfd_o(const emxArray_char_T_Spike_T *s);
+  real_T Spike_sscanfd_k(const emxArray_char_T_Spike_T *s);
   void Spike_sscanfd(const emxArray_char_T_Spike_T *s, real_T *out1, real_T
                      *out2);
   void Spike_emxFree_char_T(emxArray_char_T_Spike_T **pEmxArray);
   creal_T Spike_str2double(const emxArray_char_T_Spike_T *s);
-  void Spike_fclose_g(void);
-  int8_T Spike_filedata_p(void);
-  int8_T Spike_cfopen_j(const char * cfilename, const char * cpermission);
-  FILE * Spike_fileManager_c(real_T varargin_1);
-  void Spike_fclose_f(real_T fileID);
-  void Spike_readfile_e(emxArray_char_T_Spike_T *y);
-  void Spike_fclose_f0(void);
-  int8_T Spike_filedata_g(void);
-  int8_T Spike_cfopen_k(const char * cfilename, const char * cpermission);
-  FILE * Spike_fileManager_p(real_T varargin_1);
-  void Spike_fclose_p(real_T fileID);
-  void Spike_readfile_d(emxArray_char_T_Spike_T *y);
-  void Spike_fclose_pn(void);
-  int8_T Spike_filedata_p2(void);
+  real_T Spike_lastStr2double(const emxArray_char_T_Spike_T *str);
+  int8_T Spike_filedata_f(void);
   int8_T Spike_cfopen_b(const char * cfilename, const char * cpermission);
-  FILE * Spike_fileManager_h(real_T varargin_1);
-  void Spike_fclose_l(real_T fileID);
-  void Spike_readfile_m(emxArray_char_T_Spike_T *y);
-  void Spike_fclose_lh(void);
-  void Spike_emxFree_boolean_T(emxArray_boolean_T_Spike_T **pEmxArray);
-  int8_T Spike_filedata_m(void);
-  int8_T Spike_cfopen_m(const char * cfilename, const char * cpermission);
-  void Spike_fclose_d(void);
+  FILE * Spike_fileManager_o(real_T varargin_1);
+  int32_T Spike_cfclose_a(real_T fid);
+  void Spike_readfile_b(emxArray_char_T_Spike_T *y);
+  int8_T Spike_filedata_d(void);
+  int8_T Spike_cfopen_a(const char * cfilename, const char * cpermission);
+  FILE * Spike_fileManager_c(real_T varargin_1);
+  int32_T Spike_cfclose_p(real_T fid);
+  void Spike_readfile_e(emxArray_char_T_Spike_T *y);
+  int8_T Spike_filedata_dy(void);
+  int8_T Spike_cfopen_i(const char * cfilename, const char * cpermission);
+  FILE * Spike_fileManager_l(real_T varargin_1);
+  int32_T Spike_cfclose_o(real_T fid);
+  void Spike_readfile_a(emxArray_char_T_Spike_T *y);
+  int8_T Spike_filedata_o(void);
+  int8_T Spike_cfopen_e(const char * cfilename, const char * cpermission);
 
   /* Continuous states update member function*/
   void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si );
