@@ -26,7 +26,7 @@ void SimulatedIMU :: GetResult(IMUData_t &Data)
         Data.gyry = 0;
         Data.gyrz = 0;
 
-        Data.magx = 1;
+        Data.magx = 0;
         Data.magy = 0;
         Data.magz = 0;
 
