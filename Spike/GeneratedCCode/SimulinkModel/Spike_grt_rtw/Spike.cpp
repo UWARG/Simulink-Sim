@@ -7,9 +7,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.162
+ * Model version              : 1.168
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Sun Oct 25 15:00:48 2020
+ * C++ source code generated on : Thu Oct 29 12:19:37 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -282,6 +282,44 @@ real_T rt_atan2d_snf(real_T u0, real_T u1)
     }
   } else {
     y = atan2(u0, u1);
+  }
+
+  return y;
+}
+
+real_T rt_modd_snf(real_T u0, real_T u1)
+{
+  real_T y;
+  boolean_T yEq;
+  real_T q;
+  y = u0;
+  if (u1 == 0.0) {
+    if (u0 == 0.0) {
+      y = u1;
+    }
+  } else if (rtIsNaN(u0) || rtIsNaN(u1) || rtIsInf(u0)) {
+    y = (rtNaN);
+  } else if (u0 == 0.0) {
+    y = 0.0 / u1;
+  } else if (rtIsInf(u1)) {
+    if ((u1 < 0.0) != (u0 < 0.0)) {
+      y = u1;
+    }
+  } else {
+    y = std::fmod(u0, u1);
+    yEq = (y == 0.0);
+    if ((!yEq) && (u1 > std::floor(u1))) {
+      q = std::abs(u0 / u1);
+      yEq = !(std::abs(q - std::floor(q + 0.5)) > DBL_EPSILON * q);
+    }
+
+    if (yEq) {
+      y = u1 * 0.0;
+    } else {
+      if ((u0 < 0.0) != (u1 < 0.0)) {
+        y += u1;
+      }
+    }
   }
 
   return y;
@@ -2674,24 +2712,27 @@ void SpikeModelClass::step()
   int8_T j_fileid;
   int8_T k_fileid;
   int8_T l_fileid;
+  int8_T m_fileid;
+  int8_T n_fileid;
   FILE * f;
-  boolean_T a;
   int32_T iU;
-  real_T rtb_fm_n;
   real_T rtb_referencearea;
-  real_T rtb_referencearea_k;
+  real_T rtb_sqrt;
   real_T rtb_fh;
   real_T rtb_fm;
   int32_T rtb_idxm;
   int32_T rtb_idxh;
   int32_T rtb_idxa;
-  real_T rtb_Gain;
+  real_T rtb_Gain_j;
   real_T rtb_ixk;
   real_T rtb_jxi;
   int32_T rtb_idxh_p;
-  real_T rtb_Sideslip_c;
   real_T rtb_kxj;
   real_T rtb_Gain2;
+  boolean_T rtb_Compare_f;
+  real_T rtb_Switch;
+  real_T rtb_Abs1;
+  real_T rtb_Sum_m;
   real_T frac[3];
   int32_T bpIndex[3];
   real_T frac_0[4];
@@ -2727,13 +2768,14 @@ void SpikeModelClass::step()
   real_T rtb_Sum_d_idx_3;
   real_T rtb_Sum_d_idx_4;
   real_T rtb_Sum_d_idx_5;
-  real_T rtb_Sum1_idx_0;
+  real_T rtb_Sum_f_idx_0;
+  real_T rtb_Sum1_n_idx_0;
   creal_T tmp_3;
   creal_T tmp_4;
   real_T frac_b;
   real_T frac_tmp;
-  real_T rtb_Sum1_idx_2_tmp;
-  real_T rtb_Sum1_idx_1_tmp;
+  real_T rtb_Sum1_n_idx_2_tmp;
+  real_T rtb_Sum1_n_idx_1_tmp;
   real_T frac_tmp_0;
   int32_T rtb_VectorConcatenate_tmp;
   real_T rtb_kxj_tmp;
@@ -2755,55 +2797,307 @@ void SpikeModelClass::step()
     (&Spike_M)->Timing.t[0] = rtsiGetT(&(&Spike_M)->solverInfo);
   }
 
-  /* Product: '<S101>/Product1' incorporates:
+  /* Product: '<S124>/Product1' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S102>/Product1'
+   *  Product: '<S125>/Product1'
    */
   rtb_fh = Spike_X.ubvbwb_CSTATE[1] * Spike_X.ubvbwb_CSTATE[1];
 
-  /* Product: '<S101>/Product2' incorporates:
+  /* Product: '<S124>/Product2' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S102>/Product2'
+   *  Product: '<S125>/Product2'
    */
   rtb_fm = Spike_X.ubvbwb_CSTATE[2] * Spike_X.ubvbwb_CSTATE[2];
 
-  /* Sum: '<S101>/Sum' incorporates:
+  /* Sum: '<S124>/Sum' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S101>/Product'
-   *  Product: '<S101>/Product1'
-   *  Product: '<S101>/Product2'
-   *  Sum: '<S98>/Sum'
+   *  Product: '<S124>/Product'
+   *  Product: '<S124>/Product1'
+   *  Product: '<S124>/Product2'
+   *  Sum: '<S99>/Sum'
    */
   rtb_referencearea = (Spike_X.ubvbwb_CSTATE[0] * Spike_X.ubvbwb_CSTATE[0] +
                        rtb_fh) + rtb_fm;
 
-  /* Sqrt: '<S7>/Airspeed' incorporates:
-   *  Sqrt: '<S63>/Airspeed'
-   *  Sum: '<S101>/Sum'
+  /* Sqrt: '<S8>/Airspeed' incorporates:
+   *  Sqrt: '<S64>/Airspeed'
+   *  Sum: '<S124>/Sum'
    */
   rtb_Gain2 = std::sqrt(rtb_referencearea);
 
-  /* Trigonometry: '<S7>/Incidence' incorporates:
+  /* Trigonometry: '<S8>/Incidence' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Trigonometry: '<S78>/Incidence'
+   *  Trigonometry: '<S79>/Incidence'
    */
   rtb_kxj_tmp = rt_atan2d_snf(Spike_X.ubvbwb_CSTATE[2], Spike_X.ubvbwb_CSTATE[0]);
 
   /* Gain: '<Root>/Gain' incorporates:
-   *  Trigonometry: '<S7>/Incidence'
+   *  Trigonometry: '<S8>/Incidence'
    */
-  Gain = Spike_P.Gain_Gain * rtb_kxj_tmp;
+  Gain = Spike_P.Gain_Gain_h * rtb_kxj_tmp;
+  if (rtmIsMajorTimeStep((&Spike_M))) {
+    /* UnitConversion: '<S117>/Unit Conversion' incorporates:
+     *  Constant: '<S7>/ref_rotation'
+     */
+    /* Unit Conversion - from: deg to: rad
+       Expression: output = (0.0174533*input) + (0) */
+    rtb_sqrt = 0.017453292519943295 * Spike_P.FlatEarthtoLLA_psi;
+
+    /* Trigonometry: '<S102>/SinCos' */
+    Spike_B.SinCos_o1 = std::sin(rtb_sqrt);
+    Spike_B.SinCos_o2 = std::cos(rtb_sqrt);
+
+    /* Sum: '<S120>/Sum' incorporates:
+     *  Constant: '<S120>/Constant'
+     *  Constant: '<S120>/f'
+     */
+    rtb_sqrt = Spike_P.f_Value - Spike_P.Constant_Value_j;
+
+    /* Sqrt: '<S121>/sqrt' incorporates:
+     *  Constant: '<S121>/Constant'
+     *  Product: '<S121>/Product1'
+     *  Sum: '<S121>/Sum1'
+     */
+    rtb_sqrt = std::sqrt(Spike_P.Constant_Value_i - rtb_sqrt * rtb_sqrt);
+
+    /* Switch: '<S113>/Switch' incorporates:
+     *  Abs: '<S113>/Abs'
+     *  Bias: '<S113>/Bias'
+     *  Bias: '<S113>/Bias1'
+     *  Constant: '<S113>/Constant2'
+     *  Constant: '<S114>/Constant'
+     *  Constant: '<S7>/ref_position'
+     *  Math: '<S113>/Math Function1'
+     *  RelationalOperator: '<S114>/Compare'
+     */
+    if (std::abs(Spike_P.FlatEarthtoLLA_LL0[0]) >
+        Spike_P.CompareToConstant_const) {
+      rtb_Switch = rt_modd_snf(Spike_P.FlatEarthtoLLA_LL0[0] +
+        Spike_P.Bias_Bias_o, Spike_P.Constant2_Value) + Spike_P.Bias1_Bias_jw;
+    } else {
+      rtb_Switch = Spike_P.FlatEarthtoLLA_LL0[0];
+    }
+
+    /* End of Switch: '<S113>/Switch' */
+
+    /* Abs: '<S110>/Abs1' */
+    rtb_Abs1 = std::abs(rtb_Switch);
+
+    /* RelationalOperator: '<S112>/Compare' incorporates:
+     *  Constant: '<S112>/Constant'
+     */
+    rtb_Compare_f = (rtb_Abs1 > Spike_P.CompareToConstant_const_n);
+
+    /* Switch: '<S110>/Switch' incorporates:
+     *  Bias: '<S110>/Bias'
+     *  Bias: '<S110>/Bias1'
+     *  Gain: '<S110>/Gain'
+     *  Product: '<S110>/Divide1'
+     */
+    if (rtb_Compare_f) {
+      /* Signum: '<S110>/Sign1' */
+      if (rtb_Switch < 0.0) {
+        rtb_Switch = -1.0;
+      } else if (rtb_Switch > 0.0) {
+        rtb_Switch = 1.0;
+      } else if (rtb_Switch == 0.0) {
+        rtb_Switch = 0.0;
+      } else {
+        rtb_Switch = (rtNaN);
+      }
+
+      /* End of Signum: '<S110>/Sign1' */
+      Spike_B.Switch = ((rtb_Abs1 + Spike_P.Bias_Bias_n) * Spike_P.Gain_Gain_g +
+                        Spike_P.Bias1_Bias_a) * rtb_Switch;
+    } else {
+      Spike_B.Switch = rtb_Switch;
+    }
+
+    /* End of Switch: '<S110>/Switch' */
+
+    /* UnitConversion: '<S118>/Unit Conversion' */
+    /* Unit Conversion - from: deg to: rad
+       Expression: output = (0.0174533*input) + (0) */
+    rtb_Switch = 0.017453292519943295 * Spike_B.Switch;
+
+    /* Trigonometry: '<S119>/Trigonometric Function1' */
+    rtb_Abs1 = std::sin(rtb_Switch);
+
+    /* Product: '<S119>/Product1' incorporates:
+     *  Product: '<S116>/Product2'
+     */
+    rtb_sqrt *= rtb_sqrt;
+
+    /* Sum: '<S119>/Sum1' incorporates:
+     *  Constant: '<S119>/Constant'
+     *  Product: '<S119>/Product1'
+     */
+    rtb_Abs1 = Spike_P.Constant_Value_l - rtb_sqrt * rtb_Abs1 * rtb_Abs1;
+
+    /* Product: '<S116>/Product1' incorporates:
+     *  Constant: '<S116>/Constant1'
+     *  Sqrt: '<S116>/sqrt'
+     */
+    rtb_Sum_f_idx_0 = Spike_P.Constant1_Value_k / std::sqrt(rtb_Abs1);
+
+    /* Trigonometry: '<S116>/Trigonometric Function1' incorporates:
+     *  Constant: '<S116>/Constant'
+     *  Constant: '<S116>/Constant2'
+     *  Product: '<S116>/Product3'
+     *  Sum: '<S116>/Sum1'
+     */
+    Spike_B.TrigonometricFunction1 = rt_atan2d_snf(Spike_P.Constant2_Value_d,
+      (Spike_P.Constant_Value_h - rtb_sqrt) * rtb_Sum_f_idx_0 / rtb_Abs1);
+
+    /* Trigonometry: '<S116>/Trigonometric Function2' incorporates:
+     *  Constant: '<S116>/Constant3'
+     *  Product: '<S116>/Product4'
+     *  Trigonometry: '<S116>/Trigonometric Function'
+     */
+    Spike_B.TrigonometricFunction2 = rt_atan2d_snf(Spike_P.Constant3_Value,
+      rtb_Sum_f_idx_0 * std::cos(rtb_Switch));
+
+    /* Switch: '<S101>/Switch1' incorporates:
+     *  Constant: '<S101>/Constant'
+     *  Constant: '<S101>/Constant1'
+     */
+    if (rtb_Compare_f) {
+      rtb_sqrt = Spike_P.Constant_Value;
+    } else {
+      rtb_sqrt = Spike_P.Constant1_Value;
+    }
+
+    /* End of Switch: '<S101>/Switch1' */
+
+    /* Sum: '<S101>/Sum' incorporates:
+     *  Constant: '<S7>/ref_position'
+     */
+    rtb_sqrt += Spike_P.FlatEarthtoLLA_LL0[1];
+
+    /* Switch: '<S111>/Switch' incorporates:
+     *  Abs: '<S111>/Abs'
+     *  Bias: '<S111>/Bias'
+     *  Bias: '<S111>/Bias1'
+     *  Constant: '<S111>/Constant2'
+     *  Constant: '<S115>/Constant'
+     *  Math: '<S111>/Math Function1'
+     *  RelationalOperator: '<S115>/Compare'
+     */
+    if (std::abs(rtb_sqrt) > Spike_P.CompareToConstant_const_c) {
+      Spike_B.Switch_i = rt_modd_snf(rtb_sqrt + Spike_P.Bias_Bias_f,
+        Spike_P.Constant2_Value_g) + Spike_P.Bias1_Bias_b;
+    } else {
+      Spike_B.Switch_i = rtb_sqrt;
+    }
+
+    /* End of Switch: '<S111>/Switch' */
+  }
+
+  /* Sum: '<S7>/Sum' incorporates:
+   *  Integrator: '<S1>/xe,ye,ze'
+   *  Product: '<S102>/rad lat'
+   *  Product: '<S102>/x*cos'
+   *  Product: '<S102>/y*sin'
+   *  Sum: '<S102>/Sum'
+   *  UnitConversion: '<S103>/Unit Conversion'
+   */
+  /* Unit Conversion - from: rad to: deg
+     Expression: output = (57.2958*input) + (0) */
+  rtb_Sum_f_idx_0 = (Spike_X.xeyeze_CSTATE[0] * Spike_B.SinCos_o2 -
+                     Spike_X.xeyeze_CSTATE[1] * Spike_B.SinCos_o1) *
+    Spike_B.TrigonometricFunction1 * 57.295779513082323 + Spike_B.Switch;
+
+  /* Switch: '<S107>/Switch' incorporates:
+   *  Abs: '<S107>/Abs'
+   *  Bias: '<S107>/Bias'
+   *  Bias: '<S107>/Bias1'
+   *  Constant: '<S107>/Constant2'
+   *  Constant: '<S108>/Constant'
+   *  Math: '<S107>/Math Function1'
+   *  RelationalOperator: '<S108>/Compare'
+   */
+  if (std::abs(rtb_Sum_f_idx_0) > Spike_P.CompareToConstant_const_e) {
+    rtb_Sum_f_idx_0 = rt_modd_snf(rtb_Sum_f_idx_0 + Spike_P.Bias_Bias_m,
+      Spike_P.Constant2_Value_e) + Spike_P.Bias1_Bias_j;
+  }
+
+  /* End of Switch: '<S107>/Switch' */
+
+  /* Abs: '<S104>/Abs1' */
+  rtb_sqrt = std::abs(rtb_Sum_f_idx_0);
+
+  /* Switch: '<S104>/Switch' incorporates:
+   *  Bias: '<S104>/Bias'
+   *  Bias: '<S104>/Bias1'
+   *  Constant: '<S100>/Constant'
+   *  Constant: '<S100>/Constant1'
+   *  Constant: '<S106>/Constant'
+   *  Gain: '<S104>/Gain'
+   *  Product: '<S104>/Divide1'
+   *  RelationalOperator: '<S106>/Compare'
+   *  Switch: '<S100>/Switch1'
+   */
+  if (rtb_sqrt > Spike_P.CompareToConstant_const_p) {
+    /* Signum: '<S104>/Sign1' */
+    if (rtb_Sum_f_idx_0 < 0.0) {
+      rtb_Sum_d_idx_3 = -1.0;
+    } else if (rtb_Sum_f_idx_0 > 0.0) {
+      rtb_Sum_d_idx_3 = 1.0;
+    } else if (rtb_Sum_f_idx_0 == 0.0) {
+      rtb_Sum_d_idx_3 = 0.0;
+    } else {
+      rtb_Sum_d_idx_3 = (rtNaN);
+    }
+
+    /* End of Signum: '<S104>/Sign1' */
+    rtb_Sum_f_idx_0 = ((rtb_sqrt + Spike_P.Bias_Bias) * Spike_P.Gain_Gain +
+                       Spike_P.Bias1_Bias) * rtb_Sum_d_idx_3;
+    rtb_sqrt = Spike_P.Constant_Value_o;
+  } else {
+    rtb_sqrt = Spike_P.Constant1_Value_d;
+  }
+
+  /* End of Switch: '<S104>/Switch' */
+
+  /* Sum: '<S100>/Sum' incorporates:
+   *  Integrator: '<S1>/xe,ye,ze'
+   *  Product: '<S102>/rad long '
+   *  Product: '<S102>/x*sin'
+   *  Product: '<S102>/y*cos'
+   *  Sum: '<S102>/Sum1'
+   *  Sum: '<S7>/Sum'
+   *  UnitConversion: '<S103>/Unit Conversion'
+   */
+  rtb_Sum_m = ((Spike_X.xeyeze_CSTATE[0] * Spike_B.SinCos_o1 +
+                Spike_X.xeyeze_CSTATE[1] * Spike_B.SinCos_o2) *
+               Spike_B.TrigonometricFunction2 * 57.295779513082323 +
+               Spike_B.Switch_i) + rtb_sqrt;
+
+  /* Switch: '<S105>/Switch' incorporates:
+   *  Abs: '<S105>/Abs'
+   *  Bias: '<S105>/Bias'
+   *  Bias: '<S105>/Bias1'
+   *  Constant: '<S105>/Constant2'
+   *  Constant: '<S109>/Constant'
+   *  Math: '<S105>/Math Function1'
+   *  RelationalOperator: '<S109>/Compare'
+   */
+  if (std::abs(rtb_Sum_m) > Spike_P.CompareToConstant_const_h) {
+    rtb_Sum_m = rt_modd_snf(rtb_Sum_m + Spike_P.Bias_Bias_k,
+      Spike_P.Constant2_Value_h) + Spike_P.Bias1_Bias_g;
+  }
+
+  /* End of Switch: '<S105>/Switch' */
 
   /* Gain: '<S6>/1//2rhoV^2' incorporates:
    *  Constant: '<Root>/Constant2'
    *  Product: '<S6>/Product2'
    */
-  rtb_referencearea_k = rtb_referencearea * Spike_P.Constant2_Value *
+  rtb_sqrt = rtb_referencearea * Spike_P.Constant2_Value_n *
     Spike_P.u2rhoV2_Gain;
 
   /* Gain: '<S4>/reference area' */
-  rtb_referencearea = Spike_P.AerodynamicForcesandMoments_S *
-    rtb_referencearea_k;
+  rtb_referencearea = Spike_P.AerodynamicForcesandMoments_S * rtb_sqrt;
   Spike_emxInit_char_T(&s, 2);
   if (rtmIsMajorTimeStep((&Spike_M))) {
     /* MATLAB Function: '<Root>/Read Aileron' */
@@ -2812,7 +3106,7 @@ void SpikeModelClass::step()
 
     /* PreLookup: '<S2>/(deltal)' incorporates:
      *  MATLAB Function: '<Root>/Read Aileron'
-     *  UnitConversion: '<S40>/Unit Conversion'
+     *  UnitConversion: '<S41>/Unit Conversion'
      */
     /* Unit Conversion - from: rad to: deg
        Expression: output = (57.2958*input) + (0) */
@@ -2821,18 +3115,18 @@ void SpikeModelClass::step()
       &Spike_DW.deltal_DWORK1);
   }
 
-  /* Product: '<S8>/Product1' incorporates:
+  /* Product: '<S9>/Product1' incorporates:
    *  Constant: '<Root>/Constant1'
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S102>/Product'
-   *  Sqrt: '<S8>/vt'
-   *  Sum: '<S102>/Sum'
+   *  Product: '<S125>/Product'
+   *  Sqrt: '<S9>/vt'
+   *  Sum: '<S125>/Sum'
    */
-  rtb_fm_n = std::sqrt((Spike_X.ubvbwb_CSTATE[0] * Spike_X.ubvbwb_CSTATE[0] +
-                        rtb_fh) + rtb_fm) / Spike_P.Constant1_Value_g;
+  rtb_Switch = std::sqrt((Spike_X.ubvbwb_CSTATE[0] * Spike_X.ubvbwb_CSTATE[0] +
+    rtb_fh) + rtb_fm) / Spike_P.Constant1_Value_g;
 
   /* PreLookup: '<S2>/(Mach)' */
-  rtb_idxm = plook_s32dd_binxp(rtb_fm_n, Spike_P.Mach_BreakpointsData, 2U,
+  rtb_idxm = plook_s32dd_binxp(rtb_Switch, Spike_P.Mach_BreakpointsData, 2U,
     &rtb_fm, &Spike_DW.Mach_DWORK1);
 
   /* PreLookup: '<S2>/(altitude)' incorporates:
@@ -2841,27 +3135,27 @@ void SpikeModelClass::step()
   rtb_idxh = plook_s32dd_binxp(Spike_X.xeyeze_CSTATE[2],
     Spike_P.altitude_BreakpointsData, 2U, &rtb_fh, &Spike_DW.altitude_DWORK1);
 
-  /* Interpolation_n-D: '<S35>/clroll' */
+  /* Interpolation_n-D: '<S36>/clroll' */
   frac[0] = Spike_B.fdelL;
   frac[1] = rtb_fm;
   frac[2] = rtb_fh;
   bpIndex[0] = Spike_B.idxdelL;
   bpIndex[1] = rtb_idxm;
   bpIndex[2] = rtb_idxh;
-  rtb_Sideslip_c = intrp3d_s32dl_pw(bpIndex, frac, Spike_P.clroll_Table,
+  rtb_Abs1 = intrp3d_s32dl_pw(bpIndex, frac, Spike_P.clroll_Table,
     Spike_P.clroll_dimSize);
 
-  /* UnitConversion: '<S38>/Unit Conversion' */
+  /* UnitConversion: '<S39>/Unit Conversion' */
   /* Unit Conversion - from: rad to: deg
      Expression: output = (57.2958*input) + (0) */
-  rtb_Gain = 57.295779513082323 * Gain;
+  rtb_Gain_j = 57.295779513082323 * Gain;
 
   /* PreLookup: '<S2>/(alpha)' */
-  rtb_idxa = plook_s32dd_binxp(rtb_Gain, Spike_P.alpha_BreakpointsData, 11U,
-    &rtb_Gain, &Spike_DW.alpha_DWORK1);
+  rtb_idxa = plook_s32dd_binxp(rtb_Gain_j, Spike_P.alpha_BreakpointsData, 11U,
+    &rtb_Gain_j, &Spike_DW.alpha_DWORK1);
 
-  /* Interpolation_n-D: '<S35>/CmYaw ' */
-  frac_0[0] = rtb_Gain;
+  /* Interpolation_n-D: '<S36>/CmYaw ' */
+  frac_0[0] = rtb_Gain_j;
   frac_0[1] = Spike_B.fdelL;
   frac_0[2] = rtb_fm;
   frac_0[3] = rtb_fh;
@@ -2984,7 +3278,7 @@ void SpikeModelClass::step()
      *  MATLAB Function: '<Root>/Read Tail left'
      *  MATLAB Function: '<Root>/Read Tail right'
      *  MATLAB Function: '<Root>/SeperateYawAndPitch'
-     *  UnitConversion: '<S39>/Unit Conversion'
+     *  UnitConversion: '<S40>/Unit Conversion'
      */
     /* Unit Conversion - from: rad to: deg
        Expression: output = (57.2958*input) + (0) */
@@ -2995,8 +3289,8 @@ void SpikeModelClass::step()
     Spike_emxFree_char_T(&b_s);
   }
 
-  /* Interpolation_n-D: '<S36>/DCDI' */
-  frac_1[0] = rtb_Gain;
+  /* Interpolation_n-D: '<S37>/DCDI' */
+  frac_1[0] = rtb_Gain_j;
   frac_1[1] = rtb_fm;
   frac_1[2] = rtb_fh;
   frac_1[3] = Spike_B.fde;
@@ -3007,7 +3301,7 @@ void SpikeModelClass::step()
   rtb_ixk = intrp4d_s32dl_pw(bpIndex_1, frac_1, Spike_P.DCDI_Table,
     Spike_P.DCDI_dimSize);
 
-  /* Interpolation_n-D: '<S36>/DCL' */
+  /* Interpolation_n-D: '<S37>/DCL' */
   frac_2[0] = Spike_B.fde;
   frac_2[1] = rtb_fm;
   frac_2[2] = rtb_fh;
@@ -3017,7 +3311,7 @@ void SpikeModelClass::step()
   latestData = intrp3d_s32dl_pw(bpIndex_2, frac_2, Spike_P.DCL_Table,
     Spike_P.DCL_dimSize);
 
-  /* Interpolation_n-D: '<S36>/DCm' */
+  /* Interpolation_n-D: '<S37>/DCm' */
   frac_3[0] = Spike_B.fde;
   frac_3[1] = rtb_fm;
   frac_3[2] = rtb_fh;
@@ -3028,31 +3322,32 @@ void SpikeModelClass::step()
     Spike_P.DCm_dimSize);
 
   /* Sum: '<S2>/Sum' incorporates:
-   *  Constant: '<S35>/Constant1'
    *  Constant: '<S36>/Constant1'
    *  Constant: '<S37>/Constant1'
+   *  Constant: '<S38>/Constant1'
    */
-  rtb_Sum_d_idx_3 = (rtb_Sideslip_c + Spike_P.Constant1_Value_l) +
+  rtb_Sum_d_idx_3 = (rtb_Abs1 + Spike_P.Constant1_Value_l) +
     Spike_P.Constant1_Value_n;
-  rtb_Sum_d_idx_4 = (Spike_P.Constant1_Value + latestData_0) +
+  rtb_Sum_d_idx_4 = (Spike_P.Constant1_Value_p + latestData_0) +
     Spike_P.Constant1_Value_n;
   rtb_Sum_d_idx_5 = (rtb_jxi + Spike_P.Constant1_Value_l) +
     Spike_P.Constant1_Value_n;
 
   /* Product: '<S4>/Product' incorporates:
-   *  Constant: '<S35>/Constant1'
    *  Constant: '<S36>/Constant1'
    *  Constant: '<S37>/Constant1'
+   *  Constant: '<S38>/Constant1'
    *  Gain: '<S4>/coefAdjust'
    *  Sum: '<S2>/Sum'
    */
-  frac[0] = ((Spike_P.Constant1_Value + rtb_ixk) + Spike_P.Constant1_Value_n) *
+  frac[0] = ((Spike_P.Constant1_Value_p + rtb_ixk) + Spike_P.Constant1_Value_n) *
     Spike_P.coefAdjust_Gain[0] * rtb_referencearea;
-  frac[1] = ((Spike_P.Constant1_Value + Spike_P.Constant1_Value_l) +
+  frac[1] = ((Spike_P.Constant1_Value_p + Spike_P.Constant1_Value_l) +
              Spike_P.Constant1_Value_n) * Spike_P.coefAdjust_Gain[1] *
     rtb_referencearea;
-  frac[2] = ((Spike_P.Constant1_Value + latestData) + Spike_P.Constant1_Value_n)
-    * Spike_P.coefAdjust_Gain[2] * rtb_referencearea;
+  frac[2] = ((Spike_P.Constant1_Value_p + latestData) +
+             Spike_P.Constant1_Value_n) * Spike_P.coefAdjust_Gain[2] *
+    rtb_referencearea;
   if (rtmIsMajorTimeStep((&Spike_M))) {
     /* MATLAB Function: '<Root>/Read Throttle' */
     Spike_readfile_a(s);
@@ -3068,134 +3363,134 @@ void SpikeModelClass::step()
 
   Spike_emxFree_char_T(&s);
 
-  /* Trigonometry: '<S25>/sincos' incorporates:
-   *  Integrator: '<S17>/phi theta psi'
-   *  SignalConversion generated from: '<S25>/sincos'
-   *  Trigonometry: '<S26>/sincos'
+  /* Trigonometry: '<S26>/sincos' incorporates:
+   *  Integrator: '<S18>/phi theta psi'
+   *  SignalConversion generated from: '<S26>/sincos'
+   *  Trigonometry: '<S27>/sincos'
    */
-  rtb_Sum1_idx_0 = std::cos(Spike_X.phithetapsi_CSTATE[2]);
+  rtb_Sum1_n_idx_0 = std::cos(Spike_X.phithetapsi_CSTATE[2]);
   frac_2[0] = std::sin(Spike_X.phithetapsi_CSTATE[2]);
-  rtb_Sum1_idx_1_tmp = std::cos(Spike_X.phithetapsi_CSTATE[1]);
+  rtb_Sum1_n_idx_1_tmp = std::cos(Spike_X.phithetapsi_CSTATE[1]);
   frac_tmp_0 = std::sin(Spike_X.phithetapsi_CSTATE[1]);
-  rtb_Sum1_idx_2_tmp = std::cos(Spike_X.phithetapsi_CSTATE[0]);
+  rtb_Sum1_n_idx_2_tmp = std::cos(Spike_X.phithetapsi_CSTATE[0]);
   frac_tmp = std::sin(Spike_X.phithetapsi_CSTATE[0]);
 
-  /* Fcn: '<S25>/Fcn11' incorporates:
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn11' incorporates:
+   *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate[0] = rtb_Sum1_idx_1_tmp * rtb_Sum1_idx_0;
+  VectorConcatenate[0] = rtb_Sum1_n_idx_1_tmp * rtb_Sum1_n_idx_0;
 
-  /* Fcn: '<S25>/Fcn21' incorporates:
-   *  Fcn: '<S25>/Fcn22'
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn21' incorporates:
+   *  Fcn: '<S26>/Fcn22'
+   *  Trigonometry: '<S26>/sincos'
    */
-  latestData_0 = frac_tmp * frac_tmp_0;
-  VectorConcatenate[1] = latestData_0 * rtb_Sum1_idx_0 - rtb_Sum1_idx_2_tmp *
+  rtb_Abs1 = frac_tmp * frac_tmp_0;
+  VectorConcatenate[1] = rtb_Abs1 * rtb_Sum1_n_idx_0 - rtb_Sum1_n_idx_2_tmp *
     frac_2[0];
 
-  /* Fcn: '<S25>/Fcn31' incorporates:
-   *  Fcn: '<S25>/Fcn32'
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn31' incorporates:
+   *  Fcn: '<S26>/Fcn32'
+   *  Trigonometry: '<S26>/sincos'
    */
-  latestData = rtb_Sum1_idx_2_tmp * frac_tmp_0;
-  VectorConcatenate[2] = latestData * rtb_Sum1_idx_0 + frac_tmp * frac_2[0];
+  latestData_0 = rtb_Sum1_n_idx_2_tmp * frac_tmp_0;
+  VectorConcatenate[2] = latestData_0 * rtb_Sum1_n_idx_0 + frac_tmp * frac_2[0];
 
-  /* Fcn: '<S25>/Fcn12' incorporates:
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn12' incorporates:
+   *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate[3] = rtb_Sum1_idx_1_tmp * frac_2[0];
+  VectorConcatenate[3] = rtb_Sum1_n_idx_1_tmp * frac_2[0];
 
-  /* Fcn: '<S25>/Fcn22' incorporates:
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn22' incorporates:
+   *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate[4] = latestData_0 * frac_2[0] + rtb_Sum1_idx_2_tmp *
-    rtb_Sum1_idx_0;
+  VectorConcatenate[4] = rtb_Abs1 * frac_2[0] + rtb_Sum1_n_idx_2_tmp *
+    rtb_Sum1_n_idx_0;
 
-  /* Fcn: '<S25>/Fcn32' incorporates:
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn32' incorporates:
+   *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate[5] = latestData * frac_2[0] - frac_tmp * rtb_Sum1_idx_0;
+  VectorConcatenate[5] = latestData_0 * frac_2[0] - frac_tmp * rtb_Sum1_n_idx_0;
 
-  /* Fcn: '<S25>/Fcn13' incorporates:
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn13' incorporates:
+   *  Trigonometry: '<S26>/sincos'
    */
   VectorConcatenate[6] = -frac_tmp_0;
 
-  /* Fcn: '<S25>/Fcn23' incorporates:
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn23' incorporates:
+   *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate[7] = frac_tmp * rtb_Sum1_idx_1_tmp;
+  VectorConcatenate[7] = frac_tmp * rtb_Sum1_n_idx_1_tmp;
 
-  /* Fcn: '<S25>/Fcn33' incorporates:
-   *  Trigonometry: '<S25>/sincos'
+  /* Fcn: '<S26>/Fcn33' incorporates:
+   *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate[8] = rtb_Sum1_idx_2_tmp * rtb_Sum1_idx_1_tmp;
+  VectorConcatenate[8] = rtb_Sum1_n_idx_2_tmp * rtb_Sum1_n_idx_1_tmp;
 
-  /* Product: '<S63>/Product' incorporates:
+  /* Product: '<S64>/Product' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S7>/Product'
+   *  Product: '<S8>/Product'
    */
-  rtb_Sum1_idx_0 = Spike_X.ubvbwb_CSTATE[1] / rtb_Gain2;
-  latestData = rtb_Sum1_idx_0;
+  rtb_Sum1_n_idx_0 = Spike_X.ubvbwb_CSTATE[1] / rtb_Gain2;
+  latestData = rtb_Sum1_n_idx_0;
 
-  /* Trigonometry: '<S63>/Sideslip' incorporates:
-   *  Product: '<S63>/Product'
+  /* Trigonometry: '<S64>/Sideslip' incorporates:
+   *  Product: '<S64>/Product'
    */
-  if (rtb_Sum1_idx_0 > 1.0) {
+  if (rtb_Sum1_n_idx_0 > 1.0) {
     latestData = 1.0;
   } else {
-    if (rtb_Sum1_idx_0 < -1.0) {
+    if (rtb_Sum1_n_idx_0 < -1.0) {
       latestData = -1.0;
     }
   }
 
-  /* SignalConversion generated from: '<S62>/sincos' incorporates:
-   *  Trigonometry: '<S63>/Sideslip'
+  /* SignalConversion generated from: '<S63>/sincos' incorporates:
+   *  Trigonometry: '<S64>/Sideslip'
    */
   rtb_jxi = std::asin(latestData);
 
-  /* Trigonometry: '<S62>/sincos' incorporates:
-   *  Trigonometry: '<S7>/Incidence'
+  /* Trigonometry: '<S63>/sincos' incorporates:
+   *  Trigonometry: '<S8>/Incidence'
    */
-  latestData_0 = std::cos(rtb_kxj_tmp);
-  latestData = std::sin(rtb_kxj_tmp);
-  rtb_Sideslip_c = std::cos(rtb_jxi);
+  rtb_Abs1 = std::cos(rtb_kxj_tmp);
+  latestData_0 = std::sin(rtb_kxj_tmp);
+  latestData = std::cos(rtb_jxi);
   rtb_jxi = std::sin(rtb_jxi);
 
-  /* Product: '<S64>/u(3)*u(4)' */
-  Spike_B.VectorConcatenate_n[0] = latestData_0 * rtb_Sideslip_c;
+  /* Product: '<S65>/u(3)*u(4)' */
+  Spike_B.VectorConcatenate_n[0] = rtb_Abs1 * latestData;
 
-  /* UnaryMinus: '<S67>/Unary Minus' incorporates:
-   *  Product: '<S67>/u(2)*u(3)'
+  /* UnaryMinus: '<S68>/Unary Minus' incorporates:
+   *  Product: '<S68>/u(2)*u(3)'
    */
-  Spike_B.VectorConcatenate_n[1] = -(rtb_jxi * latestData_0);
+  Spike_B.VectorConcatenate_n[1] = -(rtb_jxi * rtb_Abs1);
 
-  /* UnaryMinus: '<S70>/Unary Minus' */
-  Spike_B.VectorConcatenate_n[2] = -latestData;
+  /* UnaryMinus: '<S71>/Unary Minus' */
+  Spike_B.VectorConcatenate_n[2] = -latestData_0;
 
-  /* SignalConversion generated from: '<S73>/Vector Concatenate' */
+  /* SignalConversion generated from: '<S74>/Vector Concatenate' */
   Spike_B.VectorConcatenate_n[3] = rtb_jxi;
 
-  /* SignalConversion generated from: '<S73>/Vector Concatenate' */
-  Spike_B.VectorConcatenate_n[4] = rtb_Sideslip_c;
+  /* SignalConversion generated from: '<S74>/Vector Concatenate' */
+  Spike_B.VectorConcatenate_n[4] = latestData;
   if (rtmIsMajorTimeStep((&Spike_M))) {
-    /* Constant: '<S71>/Constant' */
-    Spike_B.VectorConcatenate_n[5] = Spike_P.Constant_Value;
+    /* Constant: '<S72>/Constant' */
+    Spike_B.VectorConcatenate_n[5] = Spike_P.Constant_Value_lm;
   }
 
-  /* Product: '<S66>/u(1)*u(4)' */
-  Spike_B.VectorConcatenate_n[6] = latestData * rtb_Sideslip_c;
+  /* Product: '<S67>/u(1)*u(4)' */
+  Spike_B.VectorConcatenate_n[6] = latestData_0 * latestData;
 
-  /* UnaryMinus: '<S69>/Unary Minus' incorporates:
-   *  Product: '<S69>/u(1)*u(2)'
+  /* UnaryMinus: '<S70>/Unary Minus' incorporates:
+   *  Product: '<S70>/u(1)*u(2)'
    */
-  Spike_B.VectorConcatenate_n[7] = -(latestData * rtb_jxi);
+  Spike_B.VectorConcatenate_n[7] = -(latestData_0 * rtb_jxi);
 
-  /* SignalConversion generated from: '<S73>/Vector Concatenate' */
-  Spike_B.VectorConcatenate_n[8] = latestData_0;
+  /* SignalConversion generated from: '<S74>/Vector Concatenate' */
+  Spike_B.VectorConcatenate_n[8] = rtb_Abs1;
 
   /* Gain: '<S3>/reference area' */
-  rtb_referencearea_k *= Spike_P.AerodynamicForcesandMoments_S_g;
+  rtb_sqrt *= Spike_P.AerodynamicForcesandMoments_S_g;
 
   /* UnitConversion: '<S5>/Unit Conversion' */
   /* Unit Conversion - from: rad to: deg
@@ -3207,8 +3502,8 @@ void SpikeModelClass::step()
                         &latestData_0, &Spike_DW.alpha_DWORK1_n);
 
   /* PreLookup: '<Root>/(Mach)' */
-  idx = plook_s32dd_binxp(rtb_fm_n, Spike_P.Mach_BreakpointsData_e, 2U,
-    &rtb_fm_n, &Spike_DW.Mach_DWORK1_m);
+  idx = plook_s32dd_binxp(rtb_Switch, Spike_P.Mach_BreakpointsData_e, 2U,
+    &rtb_Switch, &Spike_DW.Mach_DWORK1_m);
 
   /* PreLookup: '<Root>/(altitude)' incorporates:
    *  Integrator: '<S1>/xe,ye,ze'
@@ -3219,7 +3514,7 @@ void SpikeModelClass::step()
 
   /* Interpolation_n-D: '<Root>/CD' */
   frac_4[0] = latestData_0;
-  frac_4[1] = rtb_fm_n;
+  frac_4[1] = rtb_Switch;
   frac_4[2] = latestData;
   bpIndex_4[0] = k;
   bpIndex_4[1] = idx;
@@ -3229,7 +3524,7 @@ void SpikeModelClass::step()
 
   /* Interpolation_n-D: '<Root>/CYb' */
   frac_5[0] = latestData_0;
-  frac_5[1] = rtb_fm_n;
+  frac_5[1] = rtb_Switch;
   frac_5[2] = latestData;
   bpIndex_5[0] = k;
   bpIndex_5[1] = idx;
@@ -3237,25 +3532,25 @@ void SpikeModelClass::step()
   rtb_jxi = intrp3d_s32dl_pw(bpIndex_5, frac_5, Spike_P.CYb_Table,
     Spike_P.CYb_dimSize);
 
-  /* Trigonometry: '<S7>/Sideslip' */
-  if (rtb_Sum1_idx_0 > 1.0) {
-    rtb_Sum1_idx_0 = 1.0;
+  /* Trigonometry: '<S8>/Sideslip' */
+  if (rtb_Sum1_n_idx_0 > 1.0) {
+    rtb_Sum1_n_idx_0 = 1.0;
   } else {
-    if (rtb_Sum1_idx_0 < -1.0) {
-      rtb_Sum1_idx_0 = -1.0;
+    if (rtb_Sum1_n_idx_0 < -1.0) {
+      rtb_Sum1_n_idx_0 = -1.0;
     }
   }
 
-  rtb_Sideslip_c = std::asin(rtb_Sum1_idx_0);
+  rtb_Abs1 = std::asin(rtb_Sum1_n_idx_0);
 
-  /* End of Trigonometry: '<S7>/Sideslip' */
+  /* End of Trigonometry: '<S8>/Sideslip' */
 
   /* Product: '<Root>/Product2' */
-  rtb_jxi *= rtb_Sideslip_c;
+  rtb_jxi *= rtb_Abs1;
 
   /* Interpolation_n-D: '<Root>/CL' */
   frac_6[0] = latestData_0;
-  frac_6[1] = rtb_fm_n;
+  frac_6[1] = rtb_Switch;
   frac_6[2] = latestData;
   bpIndex_6[0] = k;
   bpIndex_6[1] = idx;
@@ -3269,19 +3564,19 @@ void SpikeModelClass::step()
   /* Product: '<S3>/Product' incorporates:
    *  Gain: '<S3>/coefAdjust'
    */
-  rtb_Sum1_idx_0 = Spike_P.coefAdjust_Gain_h[0] * rtb_ixk * rtb_referencearea_k;
-  rtb_jxi = Spike_P.coefAdjust_Gain_h[1] * rtb_jxi * rtb_referencearea_k;
-  rtb_kxj = Spike_P.coefAdjust_Gain_h[2] * rtb_kxj * rtb_referencearea_k;
+  rtb_Sum1_n_idx_0 = Spike_P.coefAdjust_Gain_h[0] * rtb_ixk * rtb_sqrt;
+  rtb_jxi = Spike_P.coefAdjust_Gain_h[1] * rtb_jxi * rtb_sqrt;
+  rtb_kxj = Spike_P.coefAdjust_Gain_h[2] * rtb_kxj * rtb_sqrt;
 
-  /* Sum: '<S20>/Sum' incorporates:
+  /* Sum: '<S21>/Sum' incorporates:
    *  Integrator: '<S1>/p,q,r '
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S33>/i x j'
-   *  Product: '<S33>/j x k'
-   *  Product: '<S33>/k x i'
-   *  Product: '<S34>/i x k'
-   *  Product: '<S34>/j x i'
-   *  Product: '<S34>/k x j'
+   *  Product: '<S34>/i x j'
+   *  Product: '<S34>/j x k'
+   *  Product: '<S34>/k x i'
+   *  Product: '<S35>/i x k'
+   *  Product: '<S35>/j x i'
+   *  Product: '<S35>/k x j'
    */
   frac_2[0] = Spike_X.ubvbwb_CSTATE[1] * Spike_X.pqr_CSTATE[2] -
     Spike_X.ubvbwb_CSTATE[2] * Spike_X.pqr_CSTATE[1];
@@ -3312,41 +3607,47 @@ void SpikeModelClass::step()
     frac_b += VectorConcatenate_0 * -9.8;
 
     /* Sum: '<S1>/Sum' incorporates:
-     *  Constant: '<S19>/Constant'
+     *  Constant: '<S20>/Constant'
      *  MATLAB Function: '<Root>/gravity'
-     *  Math: '<S43>/Transpose'
+     *  Math: '<S44>/Transpose'
      *  Product: '<S1>/Product'
-     *  Product: '<S43>/Product'
+     *  Product: '<S44>/Product'
      *  Sum: '<Root>/Add'
      */
     Spike_B.Sum[iU] = (((frac[iU] + Spike_B.forces[iU]) + rtb_ixk) +
                        (Spike_B.VectorConcatenate_n[3 * iU + 2] * rtb_kxj +
                         (Spike_B.VectorConcatenate_n[3 * iU + 1] * rtb_jxi +
-                         Spike_B.VectorConcatenate_n[3 * iU] * rtb_Sum1_idx_0)))
+                         Spike_B.VectorConcatenate_n[3 * iU] * rtb_Sum1_n_idx_0)))
       / Spike_P.uDOFEulerAngles_mass_0 + frac_2[iU];
 
     /* MATLAB Function: '<Root>/WriteToFile' */
-    frac_4[iU] = frac_b;
+    frac_5[iU] = frac_b;
   }
 
   /* MATLAB Function: '<Root>/WriteToFile' incorporates:
-   *  Integrator: '<S17>/phi theta psi'
+   *  Constant: '<Root>/Constant'
+   *  Integrator: '<S18>/phi theta psi'
    *  Integrator: '<S1>/p,q,r '
    *  Integrator: '<S1>/xe,ye,ze'
-   *  Sqrt: '<S7>/Airspeed'
+   *  SignalConversion generated from: '<S15>/ SFunction '
+   *  Sqrt: '<S8>/Airspeed'
+   *  Sum: '<S7>/Sum1'
+   *  UnaryMinus: '<S7>/Ze2height'
    */
   fileid = Spike_cfopen_e("SensorOutputs/airspeed.txt", "ab");
   b_fileid = Spike_cfopen_e("SensorOutputs/angleOfAttack.txt", "ab");
-  c_fileid = Spike_cfopen_e("SensorOutputs/altitude.txt", "ab");
-  d_fileid = Spike_cfopen_e("SensorOutputs/roll.txt", "ab");
-  e_fileid = Spike_cfopen_e("SensorOutputs/pitch.txt", "ab");
-  f_fileid = Spike_cfopen_e("SensorOutputs/yaw.txt", "ab");
-  g_fileid = Spike_cfopen_e("SensorOutputs/accX.txt", "ab");
-  h_fileid = Spike_cfopen_e("SensorOutputs/accY.txt", "ab");
-  i_fileid = Spike_cfopen_e("SensorOutputs/accZ.txt", "ab");
-  j_fileid = Spike_cfopen_e("SensorOutputs/gyrX.txt", "ab");
-  k_fileid = Spike_cfopen_e("SensorOutputs/gyrY.txt", "ab");
-  l_fileid = Spike_cfopen_e("SensorOutputs/gyrZ.txt", "ab");
+  c_fileid = Spike_cfopen_e("SensorOutputs/lattitude.txt", "ab");
+  d_fileid = Spike_cfopen_e("SensorOutputs/longitude.txt", "ab");
+  e_fileid = Spike_cfopen_e("SensorOutputs/altitude.txt", "ab");
+  f_fileid = Spike_cfopen_e("SensorOutputs/roll.txt", "ab");
+  g_fileid = Spike_cfopen_e("SensorOutputs/pitch.txt", "ab");
+  h_fileid = Spike_cfopen_e("SensorOutputs/yaw.txt", "ab");
+  i_fileid = Spike_cfopen_e("SensorOutputs/accX.txt", "ab");
+  j_fileid = Spike_cfopen_e("SensorOutputs/accY.txt", "ab");
+  k_fileid = Spike_cfopen_e("SensorOutputs/accZ.txt", "ab");
+  l_fileid = Spike_cfopen_e("SensorOutputs/gyrX.txt", "ab");
+  m_fileid = Spike_cfopen_e("SensorOutputs/gyrY.txt", "ab");
+  n_fileid = Spike_cfopen_e("SensorOutputs/gyrZ.txt", "ab");
   b_NULL = NULL;
   if ((fileid > 22) || (fileid < 0)) {
     fileid = -1;
@@ -3354,24 +3655,24 @@ void SpikeModelClass::step()
 
   if (fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[fileid - 3];
-    a = Spike_DW.eml_autoflush[fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[fileid - 3];
   } else if (fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
     fprintf(f, "%f\n", rtb_Gain2);
-    if (a) {
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3383,24 +3684,24 @@ void SpikeModelClass::step()
 
   if (b_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[b_fileid - 3];
-    a = Spike_DW.eml_autoflush[b_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[b_fileid - 3];
   } else if (b_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (b_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (b_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
     fprintf(f, "%f\n", Gain);
-    if (a) {
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3412,24 +3713,24 @@ void SpikeModelClass::step()
 
   if (c_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[c_fileid - 3];
-    a = Spike_DW.eml_autoflush[c_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[c_fileid - 3];
   } else if (c_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (c_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (c_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", Spike_X.xeyeze_CSTATE[2]);
-    if (a) {
+    fprintf(f, "%f\n", rtb_Sum_f_idx_0);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3441,24 +3742,24 @@ void SpikeModelClass::step()
 
   if (d_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[d_fileid - 3];
-    a = Spike_DW.eml_autoflush[d_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[d_fileid - 3];
   } else if (d_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (d_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (d_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", Spike_X.phithetapsi_CSTATE[0]);
-    if (a) {
+    fprintf(f, "%f\n", rtb_Sum_m);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3470,24 +3771,24 @@ void SpikeModelClass::step()
 
   if (e_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[e_fileid - 3];
-    a = Spike_DW.eml_autoflush[e_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[e_fileid - 3];
   } else if (e_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (e_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (e_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", Spike_X.phithetapsi_CSTATE[1]);
-    if (a) {
+    fprintf(f, "%f\n", -Spike_X.xeyeze_CSTATE[2] - Spike_P.Constant_Value_m);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3499,24 +3800,24 @@ void SpikeModelClass::step()
 
   if (f_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[f_fileid - 3];
-    a = Spike_DW.eml_autoflush[f_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[f_fileid - 3];
   } else if (f_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (f_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (f_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", Spike_X.phithetapsi_CSTATE[2]);
-    if (a) {
+    fprintf(f, "%f\n", Spike_X.phithetapsi_CSTATE[0]);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3528,24 +3829,24 @@ void SpikeModelClass::step()
 
   if (g_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[g_fileid - 3];
-    a = Spike_DW.eml_autoflush[g_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[g_fileid - 3];
   } else if (g_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (g_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (g_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", frac_4[0] + Spike_B.Sum[0]);
-    if (a) {
+    fprintf(f, "%f\n", Spike_X.phithetapsi_CSTATE[1]);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3557,24 +3858,24 @@ void SpikeModelClass::step()
 
   if (h_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[h_fileid - 3];
-    a = Spike_DW.eml_autoflush[h_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[h_fileid - 3];
   } else if (h_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (h_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (h_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", frac_4[1] + Spike_B.Sum[1]);
-    if (a) {
+    fprintf(f, "%f\n", Spike_X.phithetapsi_CSTATE[2]);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3586,24 +3887,24 @@ void SpikeModelClass::step()
 
   if (i_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[i_fileid - 3];
-    a = Spike_DW.eml_autoflush[i_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[i_fileid - 3];
   } else if (i_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (i_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (i_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", frac_4[2] + Spike_B.Sum[2]);
-    if (a) {
+    fprintf(f, "%f\n", frac_5[0] + Spike_B.Sum[0]);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3615,24 +3916,24 @@ void SpikeModelClass::step()
 
   if (j_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[j_fileid - 3];
-    a = Spike_DW.eml_autoflush[j_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[j_fileid - 3];
   } else if (j_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (j_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (j_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", Spike_X.pqr_CSTATE[0]);
-    if (a) {
+    fprintf(f, "%f\n", frac_5[1] + Spike_B.Sum[1]);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3644,24 +3945,24 @@ void SpikeModelClass::step()
 
   if (k_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[k_fileid - 3];
-    a = Spike_DW.eml_autoflush[k_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[k_fileid - 3];
   } else if (k_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (k_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (k_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
-    fprintf(f, "%f\n", Spike_X.pqr_CSTATE[1]);
-    if (a) {
+    fprintf(f, "%f\n", frac_5[2] + Spike_B.Sum[2]);
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3673,24 +3974,82 @@ void SpikeModelClass::step()
 
   if (l_fileid >= 3) {
     f = Spike_DW.eml_openfiles_g[l_fileid - 3];
-    a = Spike_DW.eml_autoflush[l_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[l_fileid - 3];
   } else if (l_fileid == 0) {
     f = stdin;
-    a = true;
+    rtb_Compare_f = true;
   } else if (l_fileid == 1) {
     f = stdout;
-    a = true;
+    rtb_Compare_f = true;
   } else if (l_fileid == 2) {
     f = stderr;
-    a = true;
+    rtb_Compare_f = true;
   } else {
     f = NULL;
-    a = true;
+    rtb_Compare_f = true;
+  }
+
+  if (!(f == b_NULL)) {
+    fprintf(f, "%f\n", Spike_X.pqr_CSTATE[0]);
+    if (rtb_Compare_f) {
+      fflush(f);
+    }
+  }
+
+  b_NULL = NULL;
+  if ((m_fileid > 22) || (m_fileid < 0)) {
+    m_fileid = -1;
+  }
+
+  if (m_fileid >= 3) {
+    f = Spike_DW.eml_openfiles_g[m_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[m_fileid - 3];
+  } else if (m_fileid == 0) {
+    f = stdin;
+    rtb_Compare_f = true;
+  } else if (m_fileid == 1) {
+    f = stdout;
+    rtb_Compare_f = true;
+  } else if (m_fileid == 2) {
+    f = stderr;
+    rtb_Compare_f = true;
+  } else {
+    f = NULL;
+    rtb_Compare_f = true;
+  }
+
+  if (!(f == b_NULL)) {
+    fprintf(f, "%f\n", Spike_X.pqr_CSTATE[1]);
+    if (rtb_Compare_f) {
+      fflush(f);
+    }
+  }
+
+  b_NULL = NULL;
+  if ((n_fileid > 22) || (n_fileid < 0)) {
+    n_fileid = -1;
+  }
+
+  if (n_fileid >= 3) {
+    f = Spike_DW.eml_openfiles_g[n_fileid - 3];
+    rtb_Compare_f = Spike_DW.eml_autoflush[n_fileid - 3];
+  } else if (n_fileid == 0) {
+    f = stdin;
+    rtb_Compare_f = true;
+  } else if (n_fileid == 1) {
+    f = stdout;
+    rtb_Compare_f = true;
+  } else if (n_fileid == 2) {
+    f = stderr;
+    rtb_Compare_f = true;
+  } else {
+    f = NULL;
+    rtb_Compare_f = true;
   }
 
   if (!(f == b_NULL)) {
     fprintf(f, "%f\n", Spike_X.pqr_CSTATE[2]);
-    if (a) {
+    if (rtb_Compare_f) {
       fflush(f);
     }
   }
@@ -3705,41 +4064,41 @@ void SpikeModelClass::step()
     }
   }
 
-  /* Fcn: '<S26>/phidot' incorporates:
-   *  Fcn: '<S26>/psidot'
+  /* Fcn: '<S27>/phidot' incorporates:
+   *  Fcn: '<S27>/psidot'
    *  Integrator: '<S1>/p,q,r '
    */
   rtb_Gain2 = Spike_X.pqr_CSTATE[1] * frac_tmp;
 
-  /* SignalConversion generated from: '<S17>/phi theta psi' incorporates:
-   *  Fcn: '<S26>/phidot'
-   *  Fcn: '<S26>/psidot'
-   *  Fcn: '<S26>/thetadot'
+  /* SignalConversion generated from: '<S18>/phi theta psi' incorporates:
+   *  Fcn: '<S27>/phidot'
+   *  Fcn: '<S27>/psidot'
+   *  Fcn: '<S27>/thetadot'
    *  Integrator: '<S1>/p,q,r '
    */
   Spike_B.TmpSignalConversionAtphithetaps[0] = (rtb_Gain2 + Spike_X.pqr_CSTATE[2]
-    * rtb_Sum1_idx_2_tmp) * (frac_tmp_0 / rtb_Sum1_idx_1_tmp) +
+    * rtb_Sum1_n_idx_2_tmp) * (frac_tmp_0 / rtb_Sum1_n_idx_1_tmp) +
     Spike_X.pqr_CSTATE[0];
   Spike_B.TmpSignalConversionAtphithetaps[1] = Spike_X.pqr_CSTATE[1] *
-    rtb_Sum1_idx_2_tmp - Spike_X.pqr_CSTATE[2] * frac_tmp;
+    rtb_Sum1_n_idx_2_tmp - Spike_X.pqr_CSTATE[2] * frac_tmp;
   Spike_B.TmpSignalConversionAtphithetaps[2] = (rtb_Gain2 + Spike_X.pqr_CSTATE[2]
-    * rtb_Sum1_idx_2_tmp) / rtb_Sum1_idx_1_tmp;
+    * rtb_Sum1_n_idx_2_tmp) / rtb_Sum1_n_idx_1_tmp;
   if (rtmIsMajorTimeStep((&Spike_M))) {
     for (iU = 0; iU < 3; iU++) {
-      /* Concatenate: '<S19>/Vector Concatenate' incorporates:
-       *  Constant: '<S19>/Constant1'
-       *  Constant: '<S19>/Constant2'
+      /* Concatenate: '<S20>/Vector Concatenate' incorporates:
+       *  Constant: '<S20>/Constant1'
+       *  Constant: '<S20>/Constant2'
        */
       rtb_VectorConcatenate[6 * iU] = Spike_P.uDOFEulerAngles_inertia[3 * iU];
       rtb_VectorConcatenate[6 * iU + 3] = Spike_P.Constant2_Value_f[3 * iU];
 
-      /* Selector: '<S18>/Selector' */
+      /* Selector: '<S19>/Selector' */
       Spike_B.Selector[3 * iU] = rtb_VectorConcatenate[6 * iU];
 
-      /* Concatenate: '<S19>/Vector Concatenate' incorporates:
-       *  Constant: '<S19>/Constant1'
-       *  Constant: '<S19>/Constant2'
-       *  Selector: '<S18>/Selector'
+      /* Concatenate: '<S20>/Vector Concatenate' incorporates:
+       *  Constant: '<S20>/Constant1'
+       *  Constant: '<S20>/Constant2'
+       *  Selector: '<S19>/Selector'
        */
       ii_data = 3 * iU + 1;
       rtb_VectorConcatenate_tmp = 6 * iU + 1;
@@ -3747,14 +4106,14 @@ void SpikeModelClass::step()
         Spike_P.uDOFEulerAngles_inertia[ii_data];
       rtb_VectorConcatenate[6 * iU + 4] = Spike_P.Constant2_Value_f[ii_data];
 
-      /* Selector: '<S18>/Selector' */
+      /* Selector: '<S19>/Selector' */
       Spike_B.Selector[ii_data] =
         rtb_VectorConcatenate[rtb_VectorConcatenate_tmp];
 
-      /* Concatenate: '<S19>/Vector Concatenate' incorporates:
-       *  Constant: '<S19>/Constant1'
-       *  Constant: '<S19>/Constant2'
-       *  Selector: '<S18>/Selector'
+      /* Concatenate: '<S20>/Vector Concatenate' incorporates:
+       *  Constant: '<S20>/Constant1'
+       *  Constant: '<S20>/Constant2'
+       *  Selector: '<S19>/Selector'
        */
       ii_data = 3 * iU + 2;
       rtb_VectorConcatenate_tmp = 6 * iU + 2;
@@ -3762,13 +4121,13 @@ void SpikeModelClass::step()
         Spike_P.uDOFEulerAngles_inertia[ii_data];
       rtb_VectorConcatenate[6 * iU + 5] = Spike_P.Constant2_Value_f[ii_data];
 
-      /* Selector: '<S18>/Selector' */
+      /* Selector: '<S19>/Selector' */
       Spike_B.Selector[ii_data] =
         rtb_VectorConcatenate[rtb_VectorConcatenate_tmp];
     }
   }
 
-  /* Product: '<S29>/Product' incorporates:
+  /* Product: '<S30>/Product' incorporates:
    *  Integrator: '<S1>/p,q,r '
    */
   for (iU = 0; iU < 3; iU++) {
@@ -3777,103 +4136,103 @@ void SpikeModelClass::step()
        Spike_X.pqr_CSTATE[0]);
   }
 
-  /* End of Product: '<S29>/Product' */
+  /* End of Product: '<S30>/Product' */
 
-  /* Product: '<S31>/j x k' */
+  /* Product: '<S32>/j x k' */
   rtb_ixk = frac_2[2];
 
-  /* Product: '<S31>/k x i' */
+  /* Product: '<S32>/k x i' */
   rtb_Gain2 = frac_2[0];
 
-  /* Product: '<S31>/i x j' */
+  /* Product: '<S32>/i x j' */
   Gain = frac_2[1];
 
-  /* Product: '<S32>/k x j' */
-  frac_tmp_0 = frac_2[1];
+  /* Product: '<S33>/k x j' */
+  rtb_Sum_f_idx_0 = frac_2[1];
 
-  /* Product: '<S32>/i x k' */
-  rtb_Sum1_idx_1_tmp = frac_2[2];
+  /* Product: '<S33>/i x k' */
+  rtb_Sum_m = frac_2[2];
 
-  /* Product: '<S32>/j x i' */
-  rtb_Sum1_idx_2_tmp = frac_2[0];
+  /* Product: '<S33>/j x i' */
+  rtb_Sum1_n_idx_1_tmp = frac_2[0];
 
-  /* Sum: '<S28>/Sum' incorporates:
+  /* Sum: '<S29>/Sum' incorporates:
    *  Integrator: '<S1>/p,q,r '
-   *  Product: '<S31>/i x j'
-   *  Product: '<S31>/j x k'
-   *  Product: '<S31>/k x i'
-   *  Product: '<S32>/i x k'
-   *  Product: '<S32>/j x i'
-   *  Product: '<S32>/k x j'
+   *  Product: '<S32>/i x j'
+   *  Product: '<S32>/j x k'
+   *  Product: '<S32>/k x i'
+   *  Product: '<S33>/i x k'
+   *  Product: '<S33>/j x i'
+   *  Product: '<S33>/k x j'
    */
   frac_2[0] = Spike_X.pqr_CSTATE[1] * rtb_ixk - Spike_X.pqr_CSTATE[2] *
-    frac_tmp_0;
+    rtb_Sum_f_idx_0;
   frac_2[1] = Spike_X.pqr_CSTATE[2] * rtb_Gain2 - Spike_X.pqr_CSTATE[0] *
-    rtb_Sum1_idx_1_tmp;
+    rtb_Sum_m;
   frac_2[2] = Spike_X.pqr_CSTATE[0] * Gain - Spike_X.pqr_CSTATE[1] *
-    rtb_Sum1_idx_2_tmp;
+    rtb_Sum1_n_idx_1_tmp;
   if (rtmIsMajorTimeStep((&Spike_M))) {
-    /* Selector: '<S18>/Selector1' */
+    /* Selector: '<S19>/Selector1' */
     for (iU = 0; iU < 3; iU++) {
       Spike_B.Selector1[3 * iU] = rtb_VectorConcatenate[6 * iU + 3];
       Spike_B.Selector1[3 * iU + 1] = rtb_VectorConcatenate[6 * iU + 4];
       Spike_B.Selector1[3 * iU + 2] = rtb_VectorConcatenate[6 * iU + 5];
     }
 
-    /* End of Selector: '<S18>/Selector1' */
+    /* End of Selector: '<S19>/Selector1' */
   }
 
   /* Interpolation_n-D: '<S2>/Xcp' */
-  frac_7[0] = rtb_Gain;
+  frac_7[0] = rtb_Gain_j;
   frac_7[1] = rtb_fm;
   frac_7[2] = rtb_fh;
   bpIndex_7[0] = rtb_idxa;
   bpIndex_7[1] = rtb_idxm;
   bpIndex_7[2] = rtb_idxh;
-  rtb_Gain = intrp3d_s32dl_pw(bpIndex_7, frac_7, Spike_P.Xcp_Table,
+  rtb_Gain_j = intrp3d_s32dl_pw(bpIndex_7, frac_7, Spike_P.Xcp_Table,
     Spike_P.Xcp_dimSize);
 
   /* Gain: '<S2>/Gain' */
-  rtb_Gain *= Spike_P.Gain_Gain_e;
+  rtb_Gain_j *= Spike_P.Gain_Gain_e;
 
-  /* Sum: '<S92>/Sum' incorporates:
+  /* Sum: '<S93>/Sum' incorporates:
    *  Constant: '<S2>/zero1'
-   *  Product: '<S96>/j x k'
-   *  Product: '<S96>/k x i'
+   *  Product: '<S97>/j x k'
+   *  Product: '<S97>/k x i'
    *  Sum: '<S4>/Sum'
    */
   rtb_fh = (0.0 - Spike_P.zero1_Value) * frac[1];
-  rtb_fm = (0.0 - rtb_Gain) * frac[2];
+  rtb_fm = (0.0 - rtb_Gain_j) * frac[2];
 
-  /* Product: '<S96>/i x j' incorporates:
+  /* Product: '<S97>/i x j' incorporates:
    *  Constant: '<S2>/zero1'
-   *  Product: '<S97>/i x k'
+   *  Product: '<S98>/i x k'
    *  Sum: '<S4>/Sum'
    */
-  rtb_Sum1_idx_1_tmp = (0.0 - Spike_P.zero1_Value) * frac[0];
+  rtb_Sum_f_idx_0 = (0.0 - Spike_P.zero1_Value) * frac[0];
 
-  /* Sum: '<S92>/Sum' incorporates:
+  /* Sum: '<S93>/Sum' incorporates:
    *  Constant: '<S2>/zero1'
-   *  Product: '<S97>/j x i'
-   *  Product: '<S97>/k x j'
+   *  Product: '<S98>/j x i'
+   *  Product: '<S98>/k x j'
    *  Sum: '<S4>/Sum'
    */
-  rtb_Sum1_idx_2_tmp = (0.0 - Spike_P.zero1_Value) * frac[2];
-  rtb_Gain = (0.0 - rtb_Gain) * frac[1];
+  rtb_Sum_m = (0.0 - Spike_P.zero1_Value) * frac[2];
+  rtb_Gain_j = (0.0 - rtb_Gain_j) * frac[1];
 
-  /* Product: '<S78>/Product' incorporates:
+  /* Product: '<S79>/Product' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S91>/Product'
-   *  Product: '<S91>/Product1'
-   *  Product: '<S91>/Product2'
-   *  Sqrt: '<S78>/Airspeed'
-   *  Sum: '<S91>/Sum'
+   *  Product: '<S92>/Product'
+   *  Product: '<S92>/Product1'
+   *  Product: '<S92>/Product2'
+   *  Sqrt: '<S79>/Airspeed'
+   *  Sum: '<S92>/Sum'
    */
   rtb_Gain2 = Spike_X.ubvbwb_CSTATE[1] / std::sqrt((Spike_X.ubvbwb_CSTATE[0] *
     Spike_X.ubvbwb_CSTATE[0] + Spike_X.ubvbwb_CSTATE[1] * Spike_X.ubvbwb_CSTATE
     [1]) + Spike_X.ubvbwb_CSTATE[2] * Spike_X.ubvbwb_CSTATE[2]);
 
-  /* Trigonometry: '<S78>/Sideslip' */
+  /* Trigonometry: '<S79>/Sideslip' */
   if (rtb_Gain2 > 1.0) {
     rtb_Gain2 = 1.0;
   } else {
@@ -3882,85 +4241,85 @@ void SpikeModelClass::step()
     }
   }
 
-  /* SignalConversion generated from: '<S77>/sincos' incorporates:
-   *  SignalConversion generated from: '<S47>/sincos'
-   *  Trigonometry: '<S78>/Sideslip'
+  /* SignalConversion generated from: '<S78>/sincos' incorporates:
+   *  SignalConversion generated from: '<S48>/sincos'
+   *  Trigonometry: '<S79>/Sideslip'
    */
   Gain = std::asin(rtb_Gain2);
 
-  /* Trigonometry: '<S77>/sincos' incorporates:
-   *  SignalConversion generated from: '<S77>/sincos'
-   *  Trigonometry: '<S47>/sincos'
+  /* Trigonometry: '<S78>/sincos' incorporates:
+   *  SignalConversion generated from: '<S78>/sincos'
+   *  Trigonometry: '<S48>/sincos'
    */
   rtb_Gain2 = std::cos(rtb_kxj_tmp);
   rtb_kxj_tmp = std::sin(rtb_kxj_tmp);
-  frac_tmp_0 = std::cos(Gain);
+  rtb_Sum1_n_idx_1_tmp = std::cos(Gain);
   Gain = std::sin(Gain);
 
-  /* Product: '<S79>/u(3)*u(4)' incorporates:
-   *  Trigonometry: '<S77>/sincos'
+  /* Product: '<S80>/u(3)*u(4)' incorporates:
+   *  Trigonometry: '<S78>/sincos'
    */
-  Spike_B.VectorConcatenate_i[0] = rtb_Gain2 * frac_tmp_0;
+  Spike_B.VectorConcatenate_i[0] = rtb_Gain2 * rtb_Sum1_n_idx_1_tmp;
 
-  /* UnaryMinus: '<S82>/Unary Minus' incorporates:
-   *  Product: '<S82>/u(2)*u(3)'
-   *  Trigonometry: '<S77>/sincos'
+  /* UnaryMinus: '<S83>/Unary Minus' incorporates:
+   *  Product: '<S83>/u(2)*u(3)'
+   *  Trigonometry: '<S78>/sincos'
    */
   Spike_B.VectorConcatenate_i[1] = -(Gain * rtb_Gain2);
 
-  /* UnaryMinus: '<S85>/Unary Minus' incorporates:
-   *  Trigonometry: '<S77>/sincos'
+  /* UnaryMinus: '<S86>/Unary Minus' incorporates:
+   *  Trigonometry: '<S78>/sincos'
    */
   Spike_B.VectorConcatenate_i[2] = -rtb_kxj_tmp;
 
-  /* SignalConversion generated from: '<S88>/Vector Concatenate' incorporates:
-   *  Trigonometry: '<S77>/sincos'
+  /* SignalConversion generated from: '<S89>/Vector Concatenate' incorporates:
+   *  Trigonometry: '<S78>/sincos'
    */
   Spike_B.VectorConcatenate_i[3] = Gain;
 
-  /* SignalConversion generated from: '<S88>/Vector Concatenate' incorporates:
-   *  Trigonometry: '<S77>/sincos'
+  /* SignalConversion generated from: '<S89>/Vector Concatenate' incorporates:
+   *  Trigonometry: '<S78>/sincos'
    */
-  Spike_B.VectorConcatenate_i[4] = frac_tmp_0;
+  Spike_B.VectorConcatenate_i[4] = rtb_Sum1_n_idx_1_tmp;
   if (rtmIsMajorTimeStep((&Spike_M))) {
-    /* Constant: '<S86>/Constant' */
-    Spike_B.VectorConcatenate_i[5] = Spike_P.Constant_Value_l;
+    /* Constant: '<S87>/Constant' */
+    Spike_B.VectorConcatenate_i[5] = Spike_P.Constant_Value_lx;
   }
 
-  /* Product: '<S81>/u(1)*u(4)' incorporates:
-   *  Trigonometry: '<S77>/sincos'
+  /* Product: '<S82>/u(1)*u(4)' incorporates:
+   *  Trigonometry: '<S78>/sincos'
    */
-  Spike_B.VectorConcatenate_i[6] = rtb_kxj_tmp * frac_tmp_0;
+  Spike_B.VectorConcatenate_i[6] = rtb_kxj_tmp * rtb_Sum1_n_idx_1_tmp;
 
-  /* UnaryMinus: '<S84>/Unary Minus' incorporates:
-   *  Product: '<S84>/u(1)*u(2)'
-   *  Trigonometry: '<S77>/sincos'
+  /* UnaryMinus: '<S85>/Unary Minus' incorporates:
+   *  Product: '<S85>/u(1)*u(2)'
+   *  Trigonometry: '<S78>/sincos'
    */
   Spike_B.VectorConcatenate_i[7] = -(rtb_kxj_tmp * Gain);
 
-  /* SignalConversion generated from: '<S88>/Vector Concatenate' incorporates:
-   *  Trigonometry: '<S77>/sincos'
+  /* SignalConversion generated from: '<S89>/Vector Concatenate' incorporates:
+   *  Trigonometry: '<S78>/sincos'
    */
   Spike_B.VectorConcatenate_i[8] = rtb_Gain2;
 
-  /* Product: '<S49>/u(3)*u(4)' */
-  Spike_B.VectorConcatenate_m[0] = rtb_Gain2 * frac_tmp_0;
+  /* Product: '<S50>/u(3)*u(4)' */
+  Spike_B.VectorConcatenate_m[0] = rtb_Gain2 * rtb_Sum1_n_idx_1_tmp;
 
-  /* UnaryMinus: '<S52>/Unary Minus' incorporates:
-   *  Product: '<S52>/u(2)*u(3)'
+  /* UnaryMinus: '<S53>/Unary Minus' incorporates:
+   *  Product: '<S53>/u(2)*u(3)'
    */
   Spike_B.VectorConcatenate_m[1] = -(Gain * rtb_Gain2);
 
-  /* UnaryMinus: '<S55>/Unary Minus' */
+  /* UnaryMinus: '<S56>/Unary Minus' */
   Spike_B.VectorConcatenate_m[2] = -rtb_kxj_tmp;
 
-  /* SignalConversion generated from: '<S58>/Vector Concatenate' */
+  /* SignalConversion generated from: '<S59>/Vector Concatenate' */
   Spike_B.VectorConcatenate_m[3] = Gain;
 
-  /* SignalConversion generated from: '<S58>/Vector Concatenate' */
-  Spike_B.VectorConcatenate_m[4] = frac_tmp_0;
+  /* SignalConversion generated from: '<S59>/Vector Concatenate' */
+  Spike_B.VectorConcatenate_m[4] = rtb_Sum1_n_idx_1_tmp;
   if (rtmIsMajorTimeStep((&Spike_M))) {
-    /* Constant: '<S56>/Constant' */
+    /* Constant: '<S57>/Constant' */
     Spike_B.VectorConcatenate_m[5] = Spike_P.Constant_Value_e;
 
     /* Sum: '<S3>/Sum' incorporates:
@@ -3971,44 +4330,44 @@ void SpikeModelClass::step()
     Spike_B.Sum_j[2] = Spike_P.zero3_Value[2] - Spike_P.zero3_Value[2];
   }
 
-  /* Product: '<S51>/u(1)*u(4)' */
-  Spike_B.VectorConcatenate_m[6] = rtb_kxj_tmp * frac_tmp_0;
+  /* Product: '<S52>/u(1)*u(4)' */
+  Spike_B.VectorConcatenate_m[6] = rtb_kxj_tmp * rtb_Sum1_n_idx_1_tmp;
 
-  /* UnaryMinus: '<S54>/Unary Minus' incorporates:
-   *  Product: '<S54>/u(1)*u(2)'
+  /* UnaryMinus: '<S55>/Unary Minus' incorporates:
+   *  Product: '<S55>/u(1)*u(2)'
    */
   Spike_B.VectorConcatenate_m[7] = -(rtb_kxj_tmp * Gain);
 
-  /* SignalConversion generated from: '<S58>/Vector Concatenate' */
+  /* SignalConversion generated from: '<S59>/Vector Concatenate' */
   Spike_B.VectorConcatenate_m[8] = rtb_Gain2;
 
-  /* Product: '<S42>/Product' */
+  /* Product: '<S43>/Product' */
   for (iU = 0; iU < 3; iU++) {
     frac[iU] = Spike_B.VectorConcatenate_m[iU + 6] * Spike_B.Sum_j[2] +
       (Spike_B.VectorConcatenate_m[iU + 3] * Spike_B.Sum_j[1] +
        Spike_B.VectorConcatenate_m[iU] * Spike_B.Sum_j[0]);
   }
 
-  /* End of Product: '<S42>/Product' */
+  /* End of Product: '<S43>/Product' */
 
-  /* Sum: '<S41>/Sum' incorporates:
-   *  Product: '<S45>/i x j'
-   *  Product: '<S45>/j x k'
-   *  Product: '<S45>/k x i'
-   *  Product: '<S46>/i x k'
-   *  Product: '<S46>/j x i'
-   *  Product: '<S46>/k x j'
+  /* Sum: '<S42>/Sum' incorporates:
+   *  Product: '<S46>/i x j'
+   *  Product: '<S46>/j x k'
+   *  Product: '<S46>/k x i'
+   *  Product: '<S47>/i x k'
+   *  Product: '<S47>/j x i'
+   *  Product: '<S47>/k x j'
    */
   rtb_kxj_tmp = rtb_jxi * frac[2];
-  frac_tmp_0 = rtb_kxj * frac[0];
-  frac_tmp = rtb_Sum1_idx_0 * frac[1];
+  rtb_Sum1_n_idx_1_tmp = rtb_kxj * frac[0];
+  frac_tmp_0 = rtb_Sum1_n_idx_0 * frac[1];
   rtb_kxj *= frac[1];
-  rtb_ixk = rtb_Sum1_idx_0 * frac[2];
-  VectorConcatenate_0 = rtb_jxi * frac[0];
+  rtb_Sum1_n_idx_2_tmp = rtb_Sum1_n_idx_0 * frac[2];
+  frac_tmp = rtb_jxi * frac[0];
 
   /* Interpolation_n-D: '<Root>/Clb' */
   frac_8[0] = latestData_0;
-  frac_8[1] = rtb_fm_n;
+  frac_8[1] = rtb_Switch;
   frac_8[2] = latestData;
   bpIndex_8[0] = k;
   bpIndex_8[1] = idx;
@@ -4017,11 +4376,11 @@ void SpikeModelClass::step()
     Spike_P.Clb_dimSize);
 
   /* Product: '<Root>/Product1' */
-  rtb_Gain2 *= rtb_Sideslip_c;
+  rtb_Gain2 *= rtb_Abs1;
 
   /* Interpolation_n-D: '<Root>/Cm' */
   frac_9[0] = latestData_0;
-  frac_9[1] = rtb_fm_n;
+  frac_9[1] = rtb_Switch;
   frac_9[2] = latestData;
   bpIndex_9[0] = k;
   bpIndex_9[1] = idx;
@@ -4031,7 +4390,7 @@ void SpikeModelClass::step()
 
   /* Interpolation_n-D: '<Root>/Cnb' */
   frac_a[0] = latestData_0;
-  frac_a[1] = rtb_fm_n;
+  frac_a[1] = rtb_Switch;
   frac_a[2] = latestData;
   bpIndex_a[0] = k;
   bpIndex_a[1] = idx;
@@ -4040,87 +4399,85 @@ void SpikeModelClass::step()
     Spike_P.Cnb_dimSize);
 
   /* Product: '<Root>/Product3' */
-  latestData_0 *= rtb_Sideslip_c;
+  latestData_0 *= rtb_Abs1;
 
   /* Product: '<S3>/Product1' incorporates:
    *  Constant: '<S3>/Constant'
    */
-  rtb_fm_n = Spike_P.AerodynamicForcesandMoments_b_h * rtb_referencearea_k;
+  rtb_Switch = Spike_P.AerodynamicForcesandMoments_b_h * rtb_sqrt;
 
-  /* Sum: '<S41>/Sum' incorporates:
+  /* Sum: '<S42>/Sum' incorporates:
    *  Constant: '<S3>/Constant1'
    *  Product: '<S3>/Product1'
    *  Product: '<S3>/Product3'
    *  Sum: '<S3>/Sum1'
    */
-  rtb_Sum1_idx_0 = rtb_fm_n * rtb_Gain2 + (rtb_kxj_tmp - rtb_kxj);
-  rtb_jxi = Spike_P.AerodynamicForcesandMoments_c_h * rtb_referencearea_k * Gain
-    + (frac_tmp_0 - rtb_ixk);
+  rtb_Sum1_n_idx_0 = rtb_Switch * rtb_Gain2 + (rtb_kxj_tmp - rtb_kxj);
+  rtb_jxi = Spike_P.AerodynamicForcesandMoments_c_h * rtb_sqrt * Gain +
+    (rtb_Sum1_n_idx_1_tmp - rtb_Sum1_n_idx_2_tmp);
 
   /* Sum: '<S3>/Sum1' incorporates:
    *  Product: '<S3>/Product3'
-   *  Sum: '<S41>/Sum'
+   *  Sum: '<S42>/Sum'
    */
-  rtb_referencearea_k = rtb_fm_n * latestData_0 + (frac_tmp -
-    VectorConcatenate_0);
+  rtb_sqrt = rtb_Switch * latestData_0 + (frac_tmp_0 - frac_tmp);
 
-  /* Product: '<S44>/Product' incorporates:
-   *  Math: '<S44>/Transpose'
+  /* Product: '<S45>/Product' incorporates:
+   *  Math: '<S45>/Transpose'
    */
   for (iU = 0; iU < 3; iU++) {
-    frac[iU] = Spike_B.VectorConcatenate_i[3 * iU + 2] * rtb_referencearea_k +
+    frac[iU] = Spike_B.VectorConcatenate_i[3 * iU + 2] * rtb_sqrt +
       (Spike_B.VectorConcatenate_i[3 * iU + 1] * rtb_jxi +
-       Spike_B.VectorConcatenate_i[3 * iU] * rtb_Sum1_idx_0);
+       Spike_B.VectorConcatenate_i[3 * iU] * rtb_Sum1_n_idx_0);
   }
 
-  /* End of Product: '<S44>/Product' */
+  /* End of Product: '<S45>/Product' */
 
   /* Product: '<S4>/Product1' incorporates:
    *  Constant: '<S4>/Constant'
    */
-  frac_tmp_0 = Spike_P.AerodynamicForcesandMoments_b * rtb_referencearea;
+  rtb_sqrt = Spike_P.AerodynamicForcesandMoments_b * rtb_referencearea;
 
   /* Sum: '<Root>/Add1' incorporates:
    *  Constant: '<S4>/Constant1'
    *  Gain: '<Root>/Gain2'
    *  Product: '<S4>/Product1'
    *  Product: '<S4>/Product3'
-   *  Product: '<S96>/i x j'
+   *  Product: '<S97>/i x j'
    *  Sum: '<S4>/Sum1'
-   *  Sum: '<S92>/Sum'
+   *  Sum: '<S93>/Sum'
    */
-  frac_7[0] = (frac_tmp_0 * rtb_Sum_d_idx_3 + (rtb_fh - rtb_Sum1_idx_2_tmp)) +
-    frac[0];
-  frac_7[1] = (Spike_P.AerodynamicForcesandMoments_cba * rtb_referencearea *
-               rtb_Sum_d_idx_4 + (rtb_fm - rtb_Sum1_idx_1_tmp)) +
+  frac_3[0] = (rtb_sqrt * rtb_Sum_d_idx_3 + (rtb_fh - rtb_Sum_m)) + frac[0];
+  frac_3[1] = (Spike_P.AerodynamicForcesandMoments_cba * rtb_referencearea *
+               rtb_Sum_d_idx_4 + (rtb_fm - rtb_Sum_f_idx_0)) +
     Spike_P.Gain2_Gain * frac[1];
-  frac_7[2] = (frac_tmp_0 * rtb_Sum_d_idx_5 + (rtb_Sum1_idx_1_tmp - rtb_Gain)) +
+  frac_3[2] = (rtb_sqrt * rtb_Sum_d_idx_5 + (rtb_Sum_f_idx_0 - rtb_Gain_j)) +
     frac[2];
   for (iU = 0; iU < 3; iU++) {
-    /* Sum: '<S18>/Sum2' incorporates:
+    /* Sum: '<S19>/Sum2' incorporates:
      *  Integrator: '<S1>/p,q,r '
-     *  Product: '<S30>/Product'
+     *  Product: '<S31>/Product'
      */
-    frac_7[iU] = (frac_7[iU] - (Spike_B.Selector1[iU + 6] * Spike_X.pqr_CSTATE[2]
+    frac_3[iU] = (frac_3[iU] - (Spike_B.Selector1[iU + 6] * Spike_X.pqr_CSTATE[2]
       + (Spike_B.Selector1[iU + 3] * Spike_X.pqr_CSTATE[1] +
          Spike_B.Selector1[iU] * Spike_X.pqr_CSTATE[0]))) - frac_2[iU];
   }
 
   if (rtmIsMajorTimeStep((&Spike_M))) {
-    /* Selector: '<S18>/Selector2' */
+    /* Selector: '<S19>/Selector2' */
     for (iU = 0; iU < 3; iU++) {
       Spike_B.Selector2[3 * iU] = rtb_VectorConcatenate[6 * iU];
       Spike_B.Selector2[3 * iU + 1] = rtb_VectorConcatenate[6 * iU + 1];
       Spike_B.Selector2[3 * iU + 2] = rtb_VectorConcatenate[6 * iU + 2];
     }
 
-    /* End of Selector: '<S18>/Selector2' */
+    /* End of Selector: '<S19>/Selector2' */
   }
 
-  /* Product: '<S18>/Product2' */
-  rt_mrdivide_U1d1x3_U2d_9vOrDY9Z(frac_7, Spike_B.Selector2, Spike_B.Product2);
+  /* Product: '<S19>/Product2' */
+  rt_mrdivide_U1d1x3_U2d_9vOrDY9Z(frac_3, Spike_B.Selector2, Spike_B.Product2);
 
-  /* Product: '<S24>/Product' incorporates:
+  /* Product: '<S25>/Product' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
    *  Math: '<S1>/Transpose'
    */
@@ -4133,7 +4490,7 @@ void SpikeModelClass::step()
       Spike_X.ubvbwb_CSTATE[2];
   }
 
-  /* End of Product: '<S24>/Product' */
+  /* End of Product: '<S25>/Product' */
   if (rtmIsMajorTimeStep((&Spike_M))) {
     rt_ertODEUpdateContinuousStates(&(&Spike_M)->solverInfo);
 
@@ -4182,7 +4539,7 @@ void SpikeModelClass::Spike_derivatives()
   /* Derivatives for Integrator: '<S1>/xe,ye,ze' */
   _rtXdot->xeyeze_CSTATE[0] = Spike_B.Product[0];
 
-  /* Derivatives for Integrator: '<S17>/phi theta psi' */
+  /* Derivatives for Integrator: '<S18>/phi theta psi' */
   _rtXdot->phithetapsi_CSTATE[0] = Spike_B.TmpSignalConversionAtphithetaps[0];
 
   /* Derivatives for Integrator: '<S1>/p,q,r ' */
@@ -4194,7 +4551,7 @@ void SpikeModelClass::Spike_derivatives()
   /* Derivatives for Integrator: '<S1>/xe,ye,ze' */
   _rtXdot->xeyeze_CSTATE[1] = Spike_B.Product[1];
 
-  /* Derivatives for Integrator: '<S17>/phi theta psi' */
+  /* Derivatives for Integrator: '<S18>/phi theta psi' */
   _rtXdot->phithetapsi_CSTATE[1] = Spike_B.TmpSignalConversionAtphithetaps[1];
 
   /* Derivatives for Integrator: '<S1>/p,q,r ' */
@@ -4206,7 +4563,7 @@ void SpikeModelClass::Spike_derivatives()
   /* Derivatives for Integrator: '<S1>/xe,ye,ze' */
   _rtXdot->xeyeze_CSTATE[2] = Spike_B.Product[2];
 
-  /* Derivatives for Integrator: '<S17>/phi theta psi' */
+  /* Derivatives for Integrator: '<S18>/phi theta psi' */
   _rtXdot->phithetapsi_CSTATE[2] = Spike_B.TmpSignalConversionAtphithetaps[2];
 
   /* Derivatives for Integrator: '<S1>/p,q,r ' */
@@ -4266,7 +4623,7 @@ void SpikeModelClass::initialize()
     /* InitializeConditions for Integrator: '<S1>/xe,ye,ze' */
     Spike_X.xeyeze_CSTATE[0] = Spike_P.uDOFEulerAngles_xme_0[0];
 
-    /* InitializeConditions for Integrator: '<S17>/phi theta psi' */
+    /* InitializeConditions for Integrator: '<S18>/phi theta psi' */
     Spike_X.phithetapsi_CSTATE[0] = Spike_P.uDOFEulerAngles_eul_0[0];
 
     /* InitializeConditions for Integrator: '<S1>/p,q,r ' */
@@ -4278,7 +4635,7 @@ void SpikeModelClass::initialize()
     /* InitializeConditions for Integrator: '<S1>/xe,ye,ze' */
     Spike_X.xeyeze_CSTATE[1] = Spike_P.uDOFEulerAngles_xme_0[1];
 
-    /* InitializeConditions for Integrator: '<S17>/phi theta psi' */
+    /* InitializeConditions for Integrator: '<S18>/phi theta psi' */
     Spike_X.phithetapsi_CSTATE[1] = Spike_P.uDOFEulerAngles_eul_0[1];
 
     /* InitializeConditions for Integrator: '<S1>/p,q,r ' */
@@ -4290,7 +4647,7 @@ void SpikeModelClass::initialize()
     /* InitializeConditions for Integrator: '<S1>/xe,ye,ze' */
     Spike_X.xeyeze_CSTATE[2] = Spike_P.uDOFEulerAngles_xme_0[2];
 
-    /* InitializeConditions for Integrator: '<S17>/phi theta psi' */
+    /* InitializeConditions for Integrator: '<S18>/phi theta psi' */
     Spike_X.phithetapsi_CSTATE[2] = Spike_P.uDOFEulerAngles_eul_0[2];
 
     /* InitializeConditions for Integrator: '<S1>/p,q,r ' */

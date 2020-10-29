@@ -7,9 +7,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.162
+ * Model version              : 1.168
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Sun Oct 25 15:00:48 2020
+ * C++ source code generated on : Thu Oct 29 12:19:37 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -21,6 +21,7 @@
 #ifndef RTW_HEADER_Spike_h_
 #define RTW_HEADER_Spike_h_
 #include <cstring>
+#include <cfloat>
 #include <cmath>
 #include <cstdlib>
 #include <math.h>
@@ -160,19 +161,25 @@ typedef struct {
   uint8_T buffer_m[65536];
   uint8_T buffer_c[65536];
   uint8_T buffer_k[65536];
+  real_T SinCos_o1;                    /* '<S102>/SinCos' */
+  real_T SinCos_o2;                    /* '<S102>/SinCos' */
+  real_T Switch;                       /* '<S110>/Switch' */
+  real_T TrigonometricFunction1;       /* '<S116>/Trigonometric Function1' */
+  real_T TrigonometricFunction2;       /* '<S116>/Trigonometric Function2' */
+  real_T Switch_i;                     /* '<S111>/Switch' */
   real_T fdelL;                        /* '<S2>/(deltal)' */
   real_T fde;                          /* '<S2>/(delta)' */
-  real_T VectorConcatenate_n[9];       /* '<S73>/Vector Concatenate' */
+  real_T VectorConcatenate_n[9];       /* '<S74>/Vector Concatenate' */
   real_T Sum[3];                       /* '<S1>/Sum' */
-  real_T TmpSignalConversionAtphithetaps[3];/* '<S17>/phidot thetadot psidot' */
-  real_T Selector[9];                  /* '<S18>/Selector' */
-  real_T Selector1[9];                 /* '<S18>/Selector1' */
-  real_T VectorConcatenate_i[9];       /* '<S88>/Vector Concatenate' */
-  real_T VectorConcatenate_m[9];       /* '<S58>/Vector Concatenate' */
+  real_T TmpSignalConversionAtphithetaps[3];/* '<S18>/phidot thetadot psidot' */
+  real_T Selector[9];                  /* '<S19>/Selector' */
+  real_T Selector1[9];                 /* '<S19>/Selector1' */
+  real_T VectorConcatenate_i[9];       /* '<S89>/Vector Concatenate' */
+  real_T VectorConcatenate_m[9];       /* '<S59>/Vector Concatenate' */
   real_T Sum_j[3];                     /* '<S3>/Sum' */
-  real_T Selector2[9];                 /* '<S18>/Selector2' */
-  real_T Product2[3];                  /* '<S18>/Product2' */
-  real_T Product[3];                   /* '<S24>/Product' */
+  real_T Selector2[9];                 /* '<S19>/Selector2' */
+  real_T Product2[3];                  /* '<S19>/Product2' */
+  real_T Product[3];                   /* '<S25>/Product' */
   real_T forces[3];                    /* '<Root>/propulsion' */
   int32_T idxdelL;                     /* '<S2>/(deltal)' */
   int32_T idxde;                       /* '<S2>/(delta)' */
@@ -180,7 +187,7 @@ typedef struct {
 
 /* Block states (default storage) for system '<Root>' */
 typedef struct {
-  real_T Product2_DWORK4[9];           /* '<S18>/Product2' */
+  real_T Product2_DWORK4[9];           /* '<S19>/Product2' */
   int32_T deltal_DWORK1;               /* '<S2>/(deltal)' */
   int32_T Mach_DWORK1;                 /* '<S2>/(Mach)' */
   int32_T altitude_DWORK1;             /* '<S2>/(altitude)' */
@@ -201,7 +208,7 @@ typedef struct {
 typedef struct {
   real_T ubvbwb_CSTATE[3];             /* '<S1>/ub,vb,wb' */
   real_T xeyeze_CSTATE[3];             /* '<S1>/xe,ye,ze' */
-  real_T phithetapsi_CSTATE[3];        /* '<S17>/phi theta psi' */
+  real_T phithetapsi_CSTATE[3];        /* '<S18>/phi theta psi' */
   real_T pqr_CSTATE[3];                /* '<S1>/p,q,r ' */
 } X_Spike_T;
 
@@ -213,7 +220,7 @@ typedef real_T PeriodicRngX_Spike_T[6];
 typedef struct {
   real_T ubvbwb_CSTATE[3];             /* '<S1>/ub,vb,wb' */
   real_T xeyeze_CSTATE[3];             /* '<S1>/xe,ye,ze' */
-  real_T phithetapsi_CSTATE[3];        /* '<S17>/phi theta psi' */
+  real_T phithetapsi_CSTATE[3];        /* '<S18>/phi theta psi' */
   real_T pqr_CSTATE[3];                /* '<S1>/p,q,r ' */
 } XDot_Spike_T;
 
@@ -221,7 +228,7 @@ typedef struct {
 typedef struct {
   boolean_T ubvbwb_CSTATE[3];          /* '<S1>/ub,vb,wb' */
   boolean_T xeyeze_CSTATE[3];          /* '<S1>/xe,ye,ze' */
-  boolean_T phithetapsi_CSTATE[3];     /* '<S17>/phi theta psi' */
+  boolean_T phithetapsi_CSTATE[3];     /* '<S18>/phi theta psi' */
   boolean_T pqr_CSTATE[3];             /* '<S1>/p,q,r ' */
 } XDis_Spike_T;
 
@@ -238,6 +245,9 @@ typedef struct {
 
 /* Parameters (default storage) */
 struct P_Spike_T_ {
+  real_T FlatEarthtoLLA_LL0[2];        /* Mask Parameter: FlatEarthtoLLA_LL0
+                                        * Referenced by: '<S7>/ref_position'
+                                        */
   real_T AerodynamicForcesandMoments_S;
                                 /* Mask Parameter: AerodynamicForcesandMoments_S
                                  * Referenced by: '<S4>/reference area'
@@ -265,38 +275,152 @@ struct P_Spike_T_ {
                               /* Mask Parameter: AerodynamicForcesandMoments_c_h
                                * Referenced by: '<S3>/Constant1'
                                */
+  real_T CompareToConstant_const;     /* Mask Parameter: CompareToConstant_const
+                                       * Referenced by: '<S114>/Constant'
+                                       */
+  real_T CompareToConstant_const_n; /* Mask Parameter: CompareToConstant_const_n
+                                     * Referenced by: '<S112>/Constant'
+                                     */
+  real_T CompareToConstant_const_c; /* Mask Parameter: CompareToConstant_const_c
+                                     * Referenced by: '<S115>/Constant'
+                                     */
+  real_T CompareToConstant_const_e; /* Mask Parameter: CompareToConstant_const_e
+                                     * Referenced by: '<S108>/Constant'
+                                     */
+  real_T CompareToConstant_const_p; /* Mask Parameter: CompareToConstant_const_p
+                                     * Referenced by: '<S106>/Constant'
+                                     */
+  real_T CompareToConstant_const_h; /* Mask Parameter: CompareToConstant_const_h
+                                     * Referenced by: '<S109>/Constant'
+                                     */
   real_T uDOFEulerAngles_eul_0[3];     /* Mask Parameter: uDOFEulerAngles_eul_0
-                                        * Referenced by: '<S17>/phi theta psi'
+                                        * Referenced by: '<S18>/phi theta psi'
                                         */
   real_T uDOFEulerAngles_inertia[9];  /* Mask Parameter: uDOFEulerAngles_inertia
-                                       * Referenced by: '<S19>/Constant1'
+                                       * Referenced by: '<S20>/Constant1'
                                        */
   real_T uDOFEulerAngles_mass_0;       /* Mask Parameter: uDOFEulerAngles_mass_0
-                                        * Referenced by: '<S19>/Constant'
+                                        * Referenced by: '<S20>/Constant'
                                         */
   real_T uDOFEulerAngles_pm_0[3];      /* Mask Parameter: uDOFEulerAngles_pm_0
                                         * Referenced by: '<S1>/p,q,r '
                                         */
+  real_T FlatEarthtoLLA_psi;           /* Mask Parameter: FlatEarthtoLLA_psi
+                                        * Referenced by: '<S7>/ref_rotation'
+                                        */
   real_T uDOFEulerAngles_xme_0[3];     /* Mask Parameter: uDOFEulerAngles_xme_0
                                         * Referenced by: '<S1>/xe,ye,ze'
                                         */
+  real_T Bias_Bias;                    /* Expression: -90
+                                        * Referenced by: '<S104>/Bias'
+                                        */
   real_T Gain_Gain;                    /* Expression: -1
+                                        * Referenced by: '<S104>/Gain'
+                                        */
+  real_T Bias1_Bias;                   /* Expression: +90
+                                        * Referenced by: '<S104>/Bias1'
+                                        */
+  real_T Bias_Bias_m;                  /* Expression: 180
+                                        * Referenced by: '<S107>/Bias'
+                                        */
+  real_T Bias1_Bias_j;                 /* Expression: -180
+                                        * Referenced by: '<S107>/Bias1'
+                                        */
+  real_T Bias_Bias_k;                  /* Expression: 180
+                                        * Referenced by: '<S105>/Bias'
+                                        */
+  real_T Bias1_Bias_g;                 /* Expression: -180
+                                        * Referenced by: '<S105>/Bias1'
+                                        */
+  real_T Constant1_Value;              /* Expression: 0
+                                        * Referenced by: '<S101>/Constant1'
+                                        */
+  real_T Constant_Value;               /* Expression: 180
+                                        * Referenced by: '<S101>/Constant'
+                                        */
+  real_T Bias_Bias_n;                  /* Expression: -90
+                                        * Referenced by: '<S110>/Bias'
+                                        */
+  real_T Gain_Gain_g;                  /* Expression: -1
+                                        * Referenced by: '<S110>/Gain'
+                                        */
+  real_T Bias1_Bias_a;                 /* Expression: +90
+                                        * Referenced by: '<S110>/Bias1'
+                                        */
+  real_T Constant2_Value;              /* Expression: 360
+                                        * Referenced by: '<S113>/Constant2'
+                                        */
+  real_T Bias_Bias_o;                  /* Expression: 180
+                                        * Referenced by: '<S113>/Bias'
+                                        */
+  real_T Bias1_Bias_jw;                /* Expression: -180
+                                        * Referenced by: '<S113>/Bias1'
+                                        */
+  real_T Constant2_Value_g;            /* Expression: 360
+                                        * Referenced by: '<S111>/Constant2'
+                                        */
+  real_T Bias_Bias_f;                  /* Expression: 180
+                                        * Referenced by: '<S111>/Bias'
+                                        */
+  real_T Bias1_Bias_b;                 /* Expression: -180
+                                        * Referenced by: '<S111>/Bias1'
+                                        */
+  real_T Gain_Gain_h;                  /* Expression: -1
                                         * Referenced by: '<Root>/Gain'
                                         */
+  real_T Constant2_Value_d;            /* Expression: 1
+                                        * Referenced by: '<S116>/Constant2'
+                                        */
+  real_T Constant1_Value_k;            /* Expression: R
+                                        * Referenced by: '<S116>/Constant1'
+                                        */
+  real_T Constant_Value_l;             /* Expression: 1
+                                        * Referenced by: '<S119>/Constant'
+                                        */
+  real_T Constant_Value_i;             /* Expression: 1
+                                        * Referenced by: '<S121>/Constant'
+                                        */
+  real_T Constant_Value_j;             /* Expression: F
+                                        * Referenced by: '<S120>/Constant'
+                                        */
+  real_T f_Value;                      /* Expression: 1
+                                        * Referenced by: '<S120>/f'
+                                        */
+  real_T Constant_Value_h;             /* Expression: 1
+                                        * Referenced by: '<S116>/Constant'
+                                        */
+  real_T Constant3_Value;              /* Expression: 1
+                                        * Referenced by: '<S116>/Constant3'
+                                        */
+  real_T Constant2_Value_e;            /* Expression: 360
+                                        * Referenced by: '<S107>/Constant2'
+                                        */
+  real_T Constant_Value_o;             /* Expression: 180
+                                        * Referenced by: '<S100>/Constant'
+                                        */
+  real_T Constant1_Value_d;            /* Expression: 0
+                                        * Referenced by: '<S100>/Constant1'
+                                        */
+  real_T Constant2_Value_h;            /* Expression: 360
+                                        * Referenced by: '<S105>/Constant2'
+                                        */
+  real_T Constant_Value_m;             /* Expression: 0
+                                        * Referenced by: '<Root>/Constant'
+                                        */
   real_T phithetapsi_WrappedStateUpperVa;/* Expression: pi
-                                          * Referenced by: '<S17>/phi theta psi'
+                                          * Referenced by: '<S18>/phi theta psi'
                                           */
   real_T phithetapsi_WrappedStateLowerVa;/* Expression: -pi
-                                          * Referenced by: '<S17>/phi theta psi'
+                                          * Referenced by: '<S18>/phi theta psi'
                                           */
-  real_T Constant2_Value;              /* Expression: 1.2754
+  real_T Constant2_Value_n;            /* Expression: 1.2754
                                         * Referenced by: '<Root>/Constant2'
                                         */
   real_T u2rhoV2_Gain;                 /* Expression: 1/2
                                         * Referenced by: '<S6>/1//2rhoV^2'
                                         */
-  real_T Constant1_Value;              /* Expression: 0
-                                        * Referenced by: '<S35>/Constant1'
+  real_T Constant1_Value_p;            /* Expression: 0
+                                        * Referenced by: '<S36>/Constant1'
                                         */
   real_T deltal_BreakpointsData[9];    /* Expression: aero{2}.deltal
                                         * Referenced by: '<S2>/(deltal)'
@@ -311,13 +435,13 @@ struct P_Spike_T_ {
                                         * Referenced by: '<S2>/(altitude)'
                                         */
   real_T clroll_Table[81];      /* Expression: permute(aero{2}.clroll,[1  2  3])
-                                 * Referenced by: '<S35>/clroll'
+                                 * Referenced by: '<S36>/clroll'
                                  */
   real_T alpha_BreakpointsData[12];    /* Expression: aero{1}.alpha
                                         * Referenced by: '<S2>/(alpha)'
                                         */
   real_T CmYaw_Table[972];             /* Expression: aero{2}.cn_asy
-                                        * Referenced by: '<S35>/CmYaw '
+                                        * Referenced by: '<S36>/CmYaw '
                                         */
   real_T Gain1_Gain;                   /* Expression: -1
                                         * Referenced by: '<S2>/Gain1'
@@ -326,25 +450,25 @@ struct P_Spike_T_ {
                                         * Referenced by: '<S2>/(delta)'
                                         */
   real_T DCDI_Table[756];    /* Expression: permute(aero{1}.dcdi_sym,[1 3 4 2 ])
-                              * Referenced by: '<S36>/DCDI'
+                              * Referenced by: '<S37>/DCDI'
                               */
   real_T Constant1_Value_l;            /* Expression: 0
-                                        * Referenced by: '<S36>/Constant1'
+                                        * Referenced by: '<S37>/Constant1'
                                         */
   real_T DCL_Table[63];        /* Expression: permute(aero{1}.dcl_sym,[1  2  3])
-                                * Referenced by: '<S36>/DCL'
+                                * Referenced by: '<S37>/DCL'
                                 */
   real_T DCm_Table[63];        /* Expression: permute(aero{1}.dcm_sym,[1  2  3])
-                                * Referenced by: '<S36>/DCm'
+                                * Referenced by: '<S37>/DCm'
                                 */
   real_T Constant1_Value_n;            /* Expression: 0
-                                        * Referenced by: '<S37>/Constant1'
+                                        * Referenced by: '<S38>/Constant1'
                                         */
   real_T coefAdjust_Gain[3];           /* Expression: [1  1  1]
                                         * Referenced by: '<S4>/coefAdjust'
                                         */
-  real_T Constant_Value;               /* Expression: 0
-                                        * Referenced by: '<S71>/Constant'
+  real_T Constant_Value_lm;            /* Expression: 0
+                                        * Referenced by: '<S72>/Constant'
                                         */
   real_T alpha_BreakpointsData_d[12];  /* Expression: aero{1}.alpha
                                         * Referenced by: '<Root>/(alpha)'
@@ -371,7 +495,7 @@ struct P_Spike_T_ {
                                         * Referenced by: '<S3>/coefAdjust'
                                         */
   real_T Constant2_Value_f[9];         /* Expression: zeros(3)
-                                        * Referenced by: '<S19>/Constant2'
+                                        * Referenced by: '<S20>/Constant2'
                                         */
   real_T Xcp_Table[108];           /* Expression: permute(aero{1}.xcp,[1  2  3])
                                     * Referenced by: '<S2>/Xcp'
@@ -382,11 +506,11 @@ struct P_Spike_T_ {
   real_T zero1_Value;                  /* Expression: 0
                                         * Referenced by: '<S2>/zero1'
                                         */
-  real_T Constant_Value_l;             /* Expression: 0
-                                        * Referenced by: '<S86>/Constant'
+  real_T Constant_Value_lx;            /* Expression: 0
+                                        * Referenced by: '<S87>/Constant'
                                         */
   real_T Constant_Value_e;             /* Expression: 0
-                                        * Referenced by: '<S56>/Constant'
+                                        * Referenced by: '<S57>/Constant'
                                         */
   real_T zero3_Value[3];               /* Expression: [0 0 0]
                                         * Referenced by: '<Root>/zero3'
@@ -404,19 +528,19 @@ struct P_Spike_T_ {
                                         * Referenced by: '<Root>/Gain2'
                                         */
   uint32_T clroll_dimSize[3];          /* Computed Parameter: clroll_dimSize
-                                        * Referenced by: '<S35>/clroll'
+                                        * Referenced by: '<S36>/clroll'
                                         */
   uint32_T CmYaw_dimSize[4];           /* Computed Parameter: CmYaw_dimSize
-                                        * Referenced by: '<S35>/CmYaw '
+                                        * Referenced by: '<S36>/CmYaw '
                                         */
   uint32_T DCDI_dimSize[4];            /* Computed Parameter: DCDI_dimSize
-                                        * Referenced by: '<S36>/DCDI'
+                                        * Referenced by: '<S37>/DCDI'
                                         */
   uint32_T DCL_dimSize[3];             /* Computed Parameter: DCL_dimSize
-                                        * Referenced by: '<S36>/DCL'
+                                        * Referenced by: '<S37>/DCL'
                                         */
   uint32_T DCm_dimSize[3];             /* Computed Parameter: DCm_dimSize
-                                        * Referenced by: '<S36>/DCm'
+                                        * Referenced by: '<S37>/DCm'
                                         */
   uint32_T CD_dimSize[3];              /* Computed Parameter: CD_dimSize
                                         * Referenced by: '<Root>/CD'
@@ -630,101 +754,124 @@ class SpikeModelClass {
  * '<S4>'   : 'Spike/Aerodynamic Forces and Moments '
  * '<S5>'   : 'Spike/Angle Conversion'
  * '<S6>'   : 'Spike/Dynamic Pressure'
- * '<S7>'   : 'Spike/Incidence, Sideslip, & Airspeed'
- * '<S8>'   : 'Spike/Mach Number'
- * '<S9>'   : 'Spike/Read Aileron'
- * '<S10>'  : 'Spike/Read Tail left'
- * '<S11>'  : 'Spike/Read Tail right'
- * '<S12>'  : 'Spike/Read Throttle'
- * '<S13>'  : 'Spike/SeperateYawAndPitch'
- * '<S14>'  : 'Spike/WriteToFile'
- * '<S15>'  : 'Spike/gravity'
- * '<S16>'  : 'Spike/propulsion'
- * '<S17>'  : 'Spike/6DOF (Euler Angles)/Calculate DCM & Euler Angles'
- * '<S18>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot'
- * '<S19>'  : 'Spike/6DOF (Euler Angles)/Determine Force,  Mass & Inertia'
- * '<S20>'  : 'Spike/6DOF (Euler Angles)/Vbxw'
- * '<S21>'  : 'Spike/6DOF (Euler Angles)/Velocity Conversion'
- * '<S22>'  : 'Spike/6DOF (Euler Angles)/Velocity Conversion1'
- * '<S23>'  : 'Spike/6DOF (Euler Angles)/Velocity Conversion2'
- * '<S24>'  : 'Spike/6DOF (Euler Angles)/transform to Inertial axes '
- * '<S25>'  : 'Spike/6DOF (Euler Angles)/Calculate DCM & Euler Angles/Rotation Angles to Direction Cosine Matrix'
- * '<S26>'  : 'Spike/6DOF (Euler Angles)/Calculate DCM & Euler Angles/phidot thetadot psidot'
- * '<S27>'  : 'Spike/6DOF (Euler Angles)/Calculate DCM & Euler Angles/Rotation Angles to Direction Cosine Matrix/Create 3x3 Matrix'
- * '<S28>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product'
- * '<S29>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/I x w'
- * '<S30>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/I x w1'
- * '<S31>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem'
- * '<S32>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem1'
- * '<S33>'  : 'Spike/6DOF (Euler Angles)/Vbxw/Subsystem'
- * '<S34>'  : 'Spike/6DOF (Euler Angles)/Vbxw/Subsystem1'
- * '<S35>'  : 'Spike/Aerodynamic Coefficients/Aileron'
- * '<S36>'  : 'Spike/Aerodynamic Coefficients/Elevator'
- * '<S37>'  : 'Spike/Aerodynamic Coefficients/Rudder'
- * '<S38>'  : 'Spike/Aerodynamic Coefficients/alpha_rad1'
- * '<S39>'  : 'Spike/Aerodynamic Coefficients/alpha_rad2'
- * '<S40>'  : 'Spike/Aerodynamic Coefficients/alpha_rad3'
- * '<S41>'  : 'Spike/Aerodynamic Forces and Moments/3x3 Cross Product'
- * '<S42>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation'
- * '<S43>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation'
- * '<S44>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation'
- * '<S45>'  : 'Spike/Aerodynamic Forces and Moments/3x3 Cross Product/Subsystem'
- * '<S46>'  : 'Spike/Aerodynamic Forces and Moments/3x3 Cross Product/Subsystem1'
- * '<S47>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind'
- * '<S48>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed'
- * '<S49>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A11'
- * '<S50>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A12'
- * '<S51>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A13'
- * '<S52>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A21'
- * '<S53>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A22'
- * '<S54>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A23'
- * '<S55>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A31'
- * '<S56>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A32'
- * '<S57>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A33'
- * '<S58>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
- * '<S59>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S60>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S61>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/dot'
- * '<S62>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind'
- * '<S63>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed'
- * '<S64>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A11'
- * '<S65>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A12'
- * '<S66>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A13'
- * '<S67>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A21'
- * '<S68>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A22'
- * '<S69>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A23'
- * '<S70>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A31'
- * '<S71>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A32'
- * '<S72>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A33'
- * '<S73>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
- * '<S74>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S75>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S76>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/dot'
- * '<S77>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind'
- * '<S78>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed'
- * '<S79>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A11'
- * '<S80>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A12'
- * '<S81>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A13'
- * '<S82>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A21'
- * '<S83>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A22'
- * '<S84>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A23'
- * '<S85>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A31'
- * '<S86>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A32'
- * '<S87>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A33'
- * '<S88>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
- * '<S89>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S90>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S91>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/dot'
- * '<S92>'  : 'Spike/Aerodynamic Forces and Moments /3x3 Cross Product'
- * '<S93>'  : 'Spike/Aerodynamic Forces and Moments /CG-CP Transformation'
- * '<S94>'  : 'Spike/Aerodynamic Forces and Moments /Force Transformation'
- * '<S95>'  : 'Spike/Aerodynamic Forces and Moments /Moment Transformation'
- * '<S96>'  : 'Spike/Aerodynamic Forces and Moments /3x3 Cross Product/Subsystem'
- * '<S97>'  : 'Spike/Aerodynamic Forces and Moments /3x3 Cross Product/Subsystem1'
- * '<S98>'  : 'Spike/Dynamic Pressure/dot'
- * '<S99>'  : 'Spike/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S100>' : 'Spike/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S101>' : 'Spike/Incidence, Sideslip, & Airspeed/dot'
- * '<S102>' : 'Spike/Mach Number/dot'
+ * '<S7>'   : 'Spike/Flat Earth to LLA'
+ * '<S8>'   : 'Spike/Incidence, Sideslip, & Airspeed'
+ * '<S9>'   : 'Spike/Mach Number'
+ * '<S10>'  : 'Spike/Read Aileron'
+ * '<S11>'  : 'Spike/Read Tail left'
+ * '<S12>'  : 'Spike/Read Tail right'
+ * '<S13>'  : 'Spike/Read Throttle'
+ * '<S14>'  : 'Spike/SeperateYawAndPitch'
+ * '<S15>'  : 'Spike/WriteToFile'
+ * '<S16>'  : 'Spike/gravity'
+ * '<S17>'  : 'Spike/propulsion'
+ * '<S18>'  : 'Spike/6DOF (Euler Angles)/Calculate DCM & Euler Angles'
+ * '<S19>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot'
+ * '<S20>'  : 'Spike/6DOF (Euler Angles)/Determine Force,  Mass & Inertia'
+ * '<S21>'  : 'Spike/6DOF (Euler Angles)/Vbxw'
+ * '<S22>'  : 'Spike/6DOF (Euler Angles)/Velocity Conversion'
+ * '<S23>'  : 'Spike/6DOF (Euler Angles)/Velocity Conversion1'
+ * '<S24>'  : 'Spike/6DOF (Euler Angles)/Velocity Conversion2'
+ * '<S25>'  : 'Spike/6DOF (Euler Angles)/transform to Inertial axes '
+ * '<S26>'  : 'Spike/6DOF (Euler Angles)/Calculate DCM & Euler Angles/Rotation Angles to Direction Cosine Matrix'
+ * '<S27>'  : 'Spike/6DOF (Euler Angles)/Calculate DCM & Euler Angles/phidot thetadot psidot'
+ * '<S28>'  : 'Spike/6DOF (Euler Angles)/Calculate DCM & Euler Angles/Rotation Angles to Direction Cosine Matrix/Create 3x3 Matrix'
+ * '<S29>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product'
+ * '<S30>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/I x w'
+ * '<S31>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/I x w1'
+ * '<S32>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem'
+ * '<S33>'  : 'Spike/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem1'
+ * '<S34>'  : 'Spike/6DOF (Euler Angles)/Vbxw/Subsystem'
+ * '<S35>'  : 'Spike/6DOF (Euler Angles)/Vbxw/Subsystem1'
+ * '<S36>'  : 'Spike/Aerodynamic Coefficients/Aileron'
+ * '<S37>'  : 'Spike/Aerodynamic Coefficients/Elevator'
+ * '<S38>'  : 'Spike/Aerodynamic Coefficients/Rudder'
+ * '<S39>'  : 'Spike/Aerodynamic Coefficients/alpha_rad1'
+ * '<S40>'  : 'Spike/Aerodynamic Coefficients/alpha_rad2'
+ * '<S41>'  : 'Spike/Aerodynamic Coefficients/alpha_rad3'
+ * '<S42>'  : 'Spike/Aerodynamic Forces and Moments/3x3 Cross Product'
+ * '<S43>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation'
+ * '<S44>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation'
+ * '<S45>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation'
+ * '<S46>'  : 'Spike/Aerodynamic Forces and Moments/3x3 Cross Product/Subsystem'
+ * '<S47>'  : 'Spike/Aerodynamic Forces and Moments/3x3 Cross Product/Subsystem1'
+ * '<S48>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind'
+ * '<S49>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed'
+ * '<S50>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A11'
+ * '<S51>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A12'
+ * '<S52>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A13'
+ * '<S53>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A21'
+ * '<S54>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A22'
+ * '<S55>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A23'
+ * '<S56>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A31'
+ * '<S57>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A32'
+ * '<S58>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A33'
+ * '<S59>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
+ * '<S60>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
+ * '<S61>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
+ * '<S62>'  : 'Spike/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/dot'
+ * '<S63>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind'
+ * '<S64>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed'
+ * '<S65>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A11'
+ * '<S66>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A12'
+ * '<S67>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A13'
+ * '<S68>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A21'
+ * '<S69>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A22'
+ * '<S70>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A23'
+ * '<S71>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A31'
+ * '<S72>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A32'
+ * '<S73>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A33'
+ * '<S74>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
+ * '<S75>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
+ * '<S76>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
+ * '<S77>'  : 'Spike/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/dot'
+ * '<S78>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind'
+ * '<S79>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed'
+ * '<S80>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A11'
+ * '<S81>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A12'
+ * '<S82>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A13'
+ * '<S83>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A21'
+ * '<S84>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A22'
+ * '<S85>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A23'
+ * '<S86>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A31'
+ * '<S87>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A32'
+ * '<S88>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A33'
+ * '<S89>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
+ * '<S90>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
+ * '<S91>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
+ * '<S92>'  : 'Spike/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/dot'
+ * '<S93>'  : 'Spike/Aerodynamic Forces and Moments /3x3 Cross Product'
+ * '<S94>'  : 'Spike/Aerodynamic Forces and Moments /CG-CP Transformation'
+ * '<S95>'  : 'Spike/Aerodynamic Forces and Moments /Force Transformation'
+ * '<S96>'  : 'Spike/Aerodynamic Forces and Moments /Moment Transformation'
+ * '<S97>'  : 'Spike/Aerodynamic Forces and Moments /3x3 Cross Product/Subsystem'
+ * '<S98>'  : 'Spike/Aerodynamic Forces and Moments /3x3 Cross Product/Subsystem1'
+ * '<S99>'  : 'Spike/Dynamic Pressure/dot'
+ * '<S100>' : 'Spike/Flat Earth to LLA/LatLong wrap'
+ * '<S101>' : 'Spike/Flat Earth to LLA/LatLong wrap1'
+ * '<S102>' : 'Spike/Flat Earth to LLA/LongLat_offset'
+ * '<S103>' : 'Spike/Flat Earth to LLA/pos_deg'
+ * '<S104>' : 'Spike/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90'
+ * '<S105>' : 'Spike/Flat Earth to LLA/LatLong wrap/Wrap Longitude'
+ * '<S106>' : 'Spike/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Compare To Constant'
+ * '<S107>' : 'Spike/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180'
+ * '<S108>' : 'Spike/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
+ * '<S109>' : 'Spike/Flat Earth to LLA/LatLong wrap/Wrap Longitude/Compare To Constant'
+ * '<S110>' : 'Spike/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90'
+ * '<S111>' : 'Spike/Flat Earth to LLA/LatLong wrap1/Wrap Longitude'
+ * '<S112>' : 'Spike/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Compare To Constant'
+ * '<S113>' : 'Spike/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180'
+ * '<S114>' : 'Spike/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
+ * '<S115>' : 'Spike/Flat Earth to LLA/LatLong wrap1/Wrap Longitude/Compare To Constant'
+ * '<S116>' : 'Spike/Flat Earth to LLA/LongLat_offset/Find Radian//Distance'
+ * '<S117>' : 'Spike/Flat Earth to LLA/LongLat_offset/rotation_rad'
+ * '<S118>' : 'Spike/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/Angle Conversion2'
+ * '<S119>' : 'Spike/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/denom'
+ * '<S120>' : 'Spike/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e'
+ * '<S121>' : 'Spike/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e^4'
+ * '<S122>' : 'Spike/Incidence, Sideslip, & Airspeed/Subsystem'
+ * '<S123>' : 'Spike/Incidence, Sideslip, & Airspeed/Subsystem1'
+ * '<S124>' : 'Spike/Incidence, Sideslip, & Airspeed/dot'
+ * '<S125>' : 'Spike/Mach Number/dot'
  */
 #endif                                 /* RTW_HEADER_Spike_h_ */

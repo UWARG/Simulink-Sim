@@ -7,9 +7,9 @@
  *
  * Code generation for model "Spike".
  *
- * Model version              : 1.162
+ * Model version              : 1.168
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Sun Oct 25 15:00:48 2020
+ * C++ source code generated on : Thu Oct 29 12:19:37 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -23,6 +23,7 @@
 
 /* Block parameters (default storage) */
 P_Spike_T SpikeModelClass::Spike_P = {
+  { 0.0, 0.0 },
   16.2,
   16.2,
 
@@ -31,6 +32,12 @@ P_Spike_T SpikeModelClass::Spike_P = {
   10.8,
   1.32,
   1.32,
+  180.0,
+  90.0,
+  180.0,
+  180.0,
+  90.0,
+  180.0,
 
   { 0.0, 0.0, 0.0 },
 
@@ -38,9 +45,41 @@ P_Spike_T SpikeModelClass::Spike_P = {
   800.0,
 
   { 0.0, 0.0, 0.0 },
+  0.0,
 
   { 0.0, 0.0, 150.0 },
+  -90.0,
   -1.0,
+  90.0,
+  180.0,
+  -180.0,
+  180.0,
+  -180.0,
+  0.0,
+  180.0,
+  -90.0,
+  -1.0,
+  90.0,
+  360.0,
+  180.0,
+  -180.0,
+  360.0,
+  180.0,
+  -180.0,
+  -1.0,
+  1.0,
+  6.378137E+6,
+  1.0,
+  1.0,
+  0.0033528106647474805,
+  1.0,
+  1.0,
+  1.0,
+  360.0,
+  180.0,
+  0.0,
+  360.0,
+  0.0,
   3.1415926535897931,
   -3.1415926535897931,
   1.2754,
