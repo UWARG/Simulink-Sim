@@ -44,27 +44,39 @@ void SendToSafety_Init(void)
     return;
 }
 
-SendToSafety_error_t SendToSafety_Execute(float *channelOut)
+SendToSafety_error_t SendToSafety_Execute(int channel, int percent)
 {
     SendToSafety_error_t errorStruct;
     errorStruct.errorCode = 0;
 
-    throttleFile.open("ActuatorCommands/throttle.txt", std::fstream::app);
-    aileronFile.open("ActuatorCommands/aileron.txt", std::fstream::app);
-    tailLeftFile.open("ActuatorCommands/tailLeft.txt", std::fstream::app);
-    tailRightFile.open("ActuatorCommands/tailRight.txt", std::fstream::app);
+    static int channelOut[4];
+    static int i;
 
-    throttleFile << channelOut[THROTTLE_OUT_CHANNEL] << " ";
-    aileronFile << channelOut[AILERON_OUT_CHANNEL] << " ";
-    tailLeftFile << channelOut[L_TAIL_OUT_CHANNEL] << " ";
-    tailRightFile << channelOut[R_TAIL_OUT_CHANNEL] << " ";
+    channelOut[channel] = percent;
 
-    throttleFile.close();
-    aileronFile.close();
-    tailLeftFile.close();
-    tailRightFile.close();
+    i++;
 
-    Spike.step();
+    if ( i == 4)
+    {
+        i = 0;
+
+        throttleFile.open("ActuatorCommands/throttle.txt", std::fstream::app);
+        aileronFile.open("ActuatorCommands/aileron.txt", std::fstream::app);
+        tailLeftFile.open("ActuatorCommands/tailLeft.txt", std::fstream::app);
+        tailRightFile.open("ActuatorCommands/tailRight.txt", std::fstream::app);
+
+        throttleFile << channelOut[THROTTLE_OUT_CHANNEL] << " ";
+        aileronFile << channelOut[AILERON_OUT_CHANNEL] << " ";
+        tailLeftFile << channelOut[L_TAIL_OUT_CHANNEL] << " ";
+        tailRightFile << channelOut[R_TAIL_OUT_CHANNEL] << " ";
+
+        throttleFile.close();
+        aileronFile.close();
+        tailLeftFile.close();
+        tailRightFile.close();
+
+        Spike.step();
+    }
 
     return errorStruct;
 }
