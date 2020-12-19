@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 1.234
+ * Model version              : 1.259
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Fri Dec 18 19:45:28 2020
+ * C++ source code generated on : Fri Dec 18 20:43:15 2020
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
