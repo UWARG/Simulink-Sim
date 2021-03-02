@@ -19,7 +19,7 @@
 // You can also send the packets to some other machine. Right now, functionality only exists for sending them to local host.
 #define FLIGHTGEAR_UDP_PORT 5500 // this is also defined in the FlightGear startup script. If you change it here, you'll have to change it there too
 
-#define TIME_BETWEEN_PACKETS_MS 40  // FlightGear is set to refresh every 33 ms (configurable in the launch script for FlightGear), anything slower than that should be fine to use. Anything faster, and it will drop packets.
+#define TIME_BETWEEN_PACKETS_MS 20  // FlightGear is set to refresh every 33 ms (configurable in the launch script for FlightGear), anything slower than that should be fine to use. Anything faster, and it will drop packets.
 
 /***********************************************************************************************************************
  * Prototypes
