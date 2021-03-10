@@ -1,8 +1,3 @@
-
-
-#include <QTcpSocket>
-#include <QtNetwork>
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -11,6 +6,8 @@
 
 #include <chrono>
 #include <thread>
+
+#include <boost/asio.hpp>
 
 /***********************************************************************************************************************
  * Definition
@@ -132,12 +129,16 @@ static void fillPackets(char** packets, int numPackets)
 
 static void sendPacketsToFlightGear(char** packets, int numPackets)
 {
-    QUdpSocket *socket = new QUdpSocket();
-    QHostAddress ipaddr = QHostAddress::LocalHost;
+	boost::asio::io_service io_service;
+	boost::asio::ip::udp::socket socket(io_service);	
+	
+	auto remote = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("localhost"), FLIGHTGEAR_UDP_PORT);
+	
+	socket.open(boost::asio::ip::udp::v4());
 
-    for (int i = 0; i < numPackets; i++)
+    for(int i = 0; i < numPackets; i++)
     {
-        socket->writeDatagram(QByteArray((char*)packets[i], strlen(packets[i])), ipaddr, FLIGHTGEAR_UDP_PORT);
+		socket.send_to(boost::asio::buffer((std::string)packets[i]), remote);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(TIME_BETWEEN_PACKETS_MS));
     }
