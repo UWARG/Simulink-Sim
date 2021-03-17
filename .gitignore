@@ -9,3 +9,5 @@ Infinion/SimulinkModel/Infinion_grt_rtw/*
 *.zip
 
 FlightGear/SendToFlightGear/build/*
+
+FlightGear/fgdata/

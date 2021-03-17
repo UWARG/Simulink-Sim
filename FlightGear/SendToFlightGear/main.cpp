@@ -19,7 +19,7 @@
 #define HOST "127.0.0.1"
 #define TIME_BETWEEN_PACKETS_MS 20  // FlightGear is set to refresh every 33 ms (configurable in the launch script for FlightGear), anything slower than that should be fine to use. Anything faster, and it will drop packets.
 
-#define DEBUG false 
+#define DEBUG true 
 
 /***********************************************************************************************************************
  * Prototypes
