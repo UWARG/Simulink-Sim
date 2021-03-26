@@ -11,3 +11,5 @@ Infinion/SimulinkModel/Infinion_grt_rtw/*
 FlightGear/SendToFlightGear/build/*
 
 FlightGear/fgdata/
+
+FlightGear/SendToFlightGear/buildmin/

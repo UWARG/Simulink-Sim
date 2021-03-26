@@ -3,10 +3,8 @@
 #include <string>
 #include <string.h>
 #include <stdio.h>
-
 #include <chrono>
 #include <thread>
-
 #include <boost/asio.hpp>
 
 /***********************************************************************************************************************
