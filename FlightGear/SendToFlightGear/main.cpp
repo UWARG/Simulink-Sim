@@ -1,16 +1,11 @@
-
-
-#include <QTcpSocket>
-#include <QtNetwork>
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <string.h>
 #include <stdio.h>
-
 #include <chrono>
 #include <thread>
+#include <boost/asio.hpp>
 
 /***********************************************************************************************************************
  * Definition
@@ -19,7 +14,10 @@
 // You can also send the packets to some other machine. Right now, functionality only exists for sending them to local host.
 #define FLIGHTGEAR_UDP_PORT 5500 // this is also defined in the FlightGear startup script. If you change it here, you'll have to change it there too
 
+#define HOST "127.0.0.1"
 #define TIME_BETWEEN_PACKETS_MS 20  // FlightGear is set to refresh every 33 ms (configurable in the launch script for FlightGear), anything slower than that should be fine to use. Anything faster, and it will drop packets.
+
+#define DEBUG true 
 
 /***********************************************************************************************************************
  * Prototypes
@@ -119,7 +117,8 @@ static void fillPackets(char** packets, int numPackets)
 
         // This packet format was defined inside the flight gear protocol file: Simulink-Sim/FlightGear/WargFGPacketStructure.xml If you haven't yet, copy that file into FlightGear's protocols folder
         sprintf(packets[i], "%.2f,%.6f,%.6f,%.2f,%.2f,%.2f,\n", std::stof(altitudeLine), std::stof(latLine), std::stof(longLine), std::stof(rollLine), std::stof(pitchLine), std::stof(yawLine));
-
+		
+		if(DEBUG) std::cout << "read: " << packets[i] << std::endl;
     }
 
     rollFile.close();
@@ -132,13 +131,19 @@ static void fillPackets(char** packets, int numPackets)
 
 static void sendPacketsToFlightGear(char** packets, int numPackets)
 {
-    QUdpSocket *socket = new QUdpSocket();
-    QHostAddress ipaddr = QHostAddress::LocalHost;
+	boost::asio::io_service io_service;
+	boost::asio::ip::udp::socket socket(io_service);	
+	
+	boost::asio::ip::address add = boost::asio::ip::address::from_string(HOST);
 
-    for (int i = 0; i < numPackets; i++)
+	boost::asio::ip::udp::endpoint remote(add, FLIGHTGEAR_UDP_PORT);
+	
+	socket.open(boost::asio::ip::udp::v4());
+
+    for(int i = 0; i < numPackets; i++)
     {
-        socket->writeDatagram(QByteArray((char*)packets[i], strlen(packets[i])), ipaddr, FLIGHTGEAR_UDP_PORT);
-
+		socket.send_to(boost::asio::buffer(packets[i], std::strlen(packets[i])), remote);
+		if(DEBUG) std::cout << "sent: " << packets[i] << "to: " << HOST << ":" << FLIGHTGEAR_UDP_PORT << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(TIME_BETWEEN_PACKETS_MS));
     }
 }
