@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 1.260
- * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Thu Apr  1 10:00:51 2021
+ * Model version              : 3.11
+ * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
+ * C++ source code generated on : Thu Apr 29 17:54:18 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -25,15 +25,15 @@
 
 /* Private macros used by the generated code to access rtModel */
 #ifndef rtmIsMajorTimeStep
-# define rtmIsMajorTimeStep(rtm)       (((rtm)->Timing.simTimeStep) == MAJOR_TIME_STEP)
+#define rtmIsMajorTimeStep(rtm)        (((rtm)->Timing.simTimeStep) == MAJOR_TIME_STEP)
 #endif
 
 #ifndef rtmIsMinorTimeStep
-# define rtmIsMinorTimeStep(rtm)       (((rtm)->Timing.simTimeStep) == MINOR_TIME_STEP)
+#define rtmIsMinorTimeStep(rtm)        (((rtm)->Timing.simTimeStep) == MINOR_TIME_STEP)
 #endif
 
 #ifndef rtmSetTPtr
-# define rtmSetTPtr(rtm, val)          ((rtm)->Timing.t = (val))
+#define rtmSetTPtr(rtm, val)           ((rtm)->Timing.t = (val))
 #endif
 
 extern real_T rt_atan2d_snf(real_T u0, real_T u1);

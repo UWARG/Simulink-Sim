@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 1.260
- * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Thu Apr  1 10:00:51 2021
+ * Model version              : 3.11
+ * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
+ * C++ source code generated on : Thu Apr 29 17:54:18 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -39,26 +39,26 @@ extern "C" {
   extern boolean_T rtIsInfF(real32_T value);
   extern boolean_T rtIsNaN(real_T value);
   extern boolean_T rtIsNaNF(real32_T value);
-  typedef struct {
+  struct BigEndianIEEEDouble {
     struct {
       uint32_T wordH;
       uint32_T wordL;
     } words;
-  } BigEndianIEEEDouble;
+  };
 
-  typedef struct {
+  struct LittleEndianIEEEDouble {
     struct {
       uint32_T wordL;
       uint32_T wordH;
     } words;
-  } LittleEndianIEEEDouble;
+  };
 
-  typedef struct {
+  struct IEEESingle {
     union {
       real32_T wordLreal;
       uint32_T wordLuint;
     } wordL;
-  } IEEESingle;
+  };
 
 #ifdef __cplusplus
 

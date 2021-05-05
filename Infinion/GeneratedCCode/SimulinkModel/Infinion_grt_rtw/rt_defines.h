@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 1.260
- * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Thu Apr  1 10:00:51 2021
+ * Model version              : 3.11
+ * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
+ * C++ source code generated on : Thu Apr 29 17:54:18 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -39,15 +39,15 @@
  *   accessed by the function body.
  */
 #ifndef UNUSED_PARAMETER
-# if defined(__LCC__)
-#   define UNUSED_PARAMETER(x)                                   /* do nothing */
-# else
+#if defined(__LCC__)
+#define UNUSED_PARAMETER(x)                                      /* do nothing */
+#else
 
 /*
  * This is the semi-ANSI standard way of indicating that an
  * unused function parameter is required.
  */
-#   define UNUSED_PARAMETER(x)         (void) (x)
-# endif
+#define UNUSED_PARAMETER(x)            (void) (x)
+#endif
 #endif
 #endif                                 /* RTW_HEADER_rt_defines_h_ */

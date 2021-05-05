@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 1.260
- * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Thu Apr  1 10:00:51 2021
+ * Model version              : 3.11
+ * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
+ * C++ source code generated on : Thu Apr 29 17:54:18 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -25,6 +25,8 @@
  *  Includes the appropriate headers when we are using rtModel
  */
 #include "Infinion.h"
+#define MODEL_CLASSNAME                InfinionModelClass
+#define MODEL_STEPNAME                 step
 #define GRTINTERFACE                   0
 
 /*
@@ -32,7 +34,5 @@
  * ROOT_IO_FORMAT: 1 (Structure reference)
  * ROOT_IO_FORMAT: 2 (Part of model data structure)
  */
-# define ROOT_IO_FORMAT                2
-#define MODEL_CLASSNAME                InfinionModelClass
-#define MODEL_STEPNAME                 step
+#define ROOT_IO_FORMAT                 2
 #endif                                 /* RTW_HEADER_rtmodel_h_ */

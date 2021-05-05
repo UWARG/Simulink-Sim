@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 1.260
- * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Thu Apr  1 10:00:51 2021
+ * Model version              : 3.11
+ * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
+ * C++ source code generated on : Thu Apr 29 17:54:18 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -21,9 +21,8 @@
 #ifndef RTWTYPES_H
 #define RTWTYPES_H
 #include "tmwtypes.h"
-#include "simstruc_types.h"
 #ifndef POINTER_T
-# define POINTER_T
+#define POINTER_T
 
 typedef void * pointer_T;
 
@@ -31,12 +30,12 @@ typedef void * pointer_T;
 
 /* Logical type definitions */
 #if (!defined(__cplusplus))
-#  ifndef false
-#   define false                       (0U)
-#  endif
+#ifndef false
+#define false                          (0U)
+#endif
 
-#  ifndef true
-#   define true                        (1U)
-#  endif
+#ifndef true
+#define true                           (1U)
+#endif
 #endif
 #endif                                 /* RTWTYPES_H */
