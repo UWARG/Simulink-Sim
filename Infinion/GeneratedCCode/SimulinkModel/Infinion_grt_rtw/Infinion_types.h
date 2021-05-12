@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 1.260
- * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C++ source code generated on : Thu Apr  1 10:00:51 2021
+ * Model version              : 3.11
+ * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
+ * C++ source code generated on : Thu Apr 29 17:54:18 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -30,10 +30,10 @@
 
 /* Custom Type definition for MATLAB Function: '<Root>/Read Throttle' */
 #include <stdio.h>
-#ifndef struct_emxArray_char_T
-#define struct_emxArray_char_T
+#ifndef struct_emxArray_char_T_Infinion_T
+#define struct_emxArray_char_T_Infinion_T
 
-struct emxArray_char_T
+struct emxArray_char_T_Infinion_T
 {
   char_T *data;
   int32_T *size;
@@ -42,61 +42,12 @@ struct emxArray_char_T
   boolean_T canFreeData;
 };
 
-#endif                                 /*struct_emxArray_char_T*/
+#endif                                 /* struct_emxArray_char_T_Infinion_T */
 
-#ifndef typedef_emxArray_char_T_Infinion_T
-#define typedef_emxArray_char_T_Infinion_T
+#ifndef struct_emxArray_real_T_Infinion_T
+#define struct_emxArray_real_T_Infinion_T
 
-typedef struct emxArray_char_T emxArray_char_T_Infinion_T;
-
-#endif                                 /*typedef_emxArray_char_T_Infinion_T*/
-
-#ifndef struct_emxArray_uint8_T
-#define struct_emxArray_uint8_T
-
-struct emxArray_uint8_T
-{
-  uint8_T *data;
-  int32_T *size;
-  int32_T allocatedSize;
-  int32_T numDimensions;
-  boolean_T canFreeData;
-};
-
-#endif                                 /*struct_emxArray_uint8_T*/
-
-#ifndef typedef_emxArray_uint8_T_Infinion_T
-#define typedef_emxArray_uint8_T_Infinion_T
-
-typedef struct emxArray_uint8_T emxArray_uint8_T_Infinion_T;
-
-#endif                                 /*typedef_emxArray_uint8_T_Infinion_T*/
-
-#ifndef struct_emxArray_boolean_T
-#define struct_emxArray_boolean_T
-
-struct emxArray_boolean_T
-{
-  boolean_T *data;
-  int32_T *size;
-  int32_T allocatedSize;
-  int32_T numDimensions;
-  boolean_T canFreeData;
-};
-
-#endif                                 /*struct_emxArray_boolean_T*/
-
-#ifndef typedef_emxArray_boolean_T_Infinion_T
-#define typedef_emxArray_boolean_T_Infinion_T
-
-typedef struct emxArray_boolean_T emxArray_boolean_T_Infinion_T;
-
-#endif                                 /*typedef_emxArray_boolean_T_Infinion_T*/
-
-#ifndef struct_emxArray_real_T
-#define struct_emxArray_real_T
-
-struct emxArray_real_T
+struct emxArray_real_T_Infinion_T
 {
   real_T *data;
   int32_T *size;
@@ -105,14 +56,35 @@ struct emxArray_real_T
   boolean_T canFreeData;
 };
 
-#endif                                 /*struct_emxArray_real_T*/
+#endif                                 /* struct_emxArray_real_T_Infinion_T */
 
-#ifndef typedef_emxArray_real_T_Infinion_T
-#define typedef_emxArray_real_T_Infinion_T
+#ifndef struct_emxArray_uint8_T_Infinion_T
+#define struct_emxArray_uint8_T_Infinion_T
 
-typedef struct emxArray_real_T emxArray_real_T_Infinion_T;
+struct emxArray_uint8_T_Infinion_T
+{
+  uint8_T *data;
+  int32_T *size;
+  int32_T allocatedSize;
+  int32_T numDimensions;
+  boolean_T canFreeData;
+};
 
-#endif                                 /*typedef_emxArray_real_T_Infinion_T*/
+#endif                                 /* struct_emxArray_uint8_T_Infinion_T */
+
+#ifndef struct_emxArray_boolean_T_Infinion_T
+#define struct_emxArray_boolean_T_Infinion_T
+
+struct emxArray_boolean_T_Infinion_T
+{
+  boolean_T *data;
+  int32_T *size;
+  int32_T allocatedSize;
+  int32_T numDimensions;
+  boolean_T canFreeData;
+};
+
+#endif                                /* struct_emxArray_boolean_T_Infinion_T */
 
 /* Parameters (default storage) */
 typedef struct P_Infinion_T_ P_Infinion_T;

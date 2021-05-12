@@ -344,16 +344,23 @@ static int_T rt_TermModel(MODEL_CLASSNAME & mdl)
     
     {
         const char_T *errStatus = (const char_T *) (rtmGetErrorStatus(mdl.getRTM()));
-        int_T i;
         
         if (errStatus != NULL && strcmp(errStatus, "Simulation finished")) {
             (void)printf("%s\n", errStatus);
+#if defined(MULTITASKING)
+            int_T i;
             for (i = 0; i < NUMST; i++) {
                 if (OverrunFlags[i]) {
                     (void)printf("ISR overrun - sampling rate too"
                                  "fast for sample time index %d.\n", i);
                 }
             }
+#else
+            if (OverrunFlags[0]) {
+                    (void)printf("ISR overrun - base sampling rate too fast.\n");
+                }
+#endif
+            
             return(1);
         }
     }
