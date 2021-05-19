@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 3.11
+ * Model version              : 3.30
  * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
- * C++ source code generated on : Thu Apr 29 17:54:18 2021
+ * C++ source code generated on : Wed May 19 19:08:54 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -160,43 +160,29 @@ struct B_Infinion_T {
   uint8_T buffer_m[65536];
   uint8_T buffer_c[65536];
   uint8_T buffer_k[65536];
-  real_T SinCos_o1;                    /* '<S103>/SinCos' */
-  real_T SinCos_o2;                    /* '<S103>/SinCos' */
-  real_T Switch;                       /* '<S111>/Switch' */
-  real_T TrigonometricFunction1;       /* '<S117>/Trigonometric Function1' */
-  real_T TrigonometricFunction2;       /* '<S117>/Trigonometric Function2' */
-  real_T Switch_i;                     /* '<S112>/Switch' */
-  real_T fdelL;                        /* '<S2>/(deltal)' */
-  real_T fde;                          /* '<S2>/(delta)' */
-  real_T fdelR;                        /* '<S2>/(deltaR)' */
-  real_T VectorConcatenate[9];         /* '<S90>/Vector Concatenate' */
-  real_T VectorConcatenate_m[9];       /* '<S60>/Vector Concatenate' */
+  real_T SinCos_o1;                    /* '<S49>/SinCos' */
+  real_T SinCos_o2;                    /* '<S49>/SinCos' */
+  real_T Switch;                       /* '<S57>/Switch' */
+  real_T TrigonometricFunction1;       /* '<S63>/Trigonometric Function1' */
+  real_T TrigonometricFunction2;       /* '<S63>/Trigonometric Function2' */
+  real_T Switch_i;                     /* '<S58>/Switch' */
   real_T Selector1[9];                 /* '<S19>/Selector1' */
   real_T Selector[9];                  /* '<S19>/Selector' */
   real_T Selector2[9];                 /* '<S19>/Selector2' */
   real_T Product2[3];                  /* '<S19>/Product2' */
   real_T Product[3];                   /* '<S25>/Product' */
-  real_T VectorConcatenate_n[9];       /* '<S75>/Vector Concatenate' */
+  real_T VectorConcatenate_b[9];       /* '<S45>/Vector Concatenate' */
   real_T Sum[3];                       /* '<S1>/Sum' */
   real_T TmpSignalConversionAtphithetaps[3];/* '<S18>/phidot thetadot psidot' */
   real_T forces[3];                    /* '<Root>/propulsion' */
-  int32_T idxdelL;                     /* '<S2>/(deltal)' */
-  int32_T idxde;                       /* '<S2>/(delta)' */
-  int32_T idxdelR;                     /* '<S2>/(deltaR)' */
+  real_T rudder;                       /* '<Root>/Read Rudder' */
+  real_T elevator;                     /* '<Root>/Read Elevator' */
+  real_T aileron;                      /* '<Root>/Read Aileron' */
 };
 
 /* Block states (default storage) for system '<Root>' */
 struct DW_Infinion_T {
   real_T Product2_DWORK4[9];           /* '<S19>/Product2' */
-  int32_T deltal_DWORK1;               /* '<S2>/(deltal)' */
-  int32_T Mach_DWORK1;                 /* '<S2>/(Mach)' */
-  int32_T altitude_DWORK1;             /* '<S2>/(altitude)' */
-  int32_T alpha_DWORK1;                /* '<S2>/(alpha)' */
-  int32_T delta_DWORK1;                /* '<S2>/(delta)' */
-  int32_T deltaR_DWORK1;               /* '<S2>/(deltaR)' */
-  int32_T alpha_DWORK1_n;              /* '<Root>/(alpha)' */
-  int32_T Mach_DWORK1_m;               /* '<Root>/(Mach)' */
-  int32_T altitude_DWORK1_p;           /* '<Root>/(altitude)' */
   boolean_T eml_autoflush[20];         /* '<Root>/WriteToFile' */
   FILE * eml_openfiles[20];            /* '<Root>/Read Aileron' */
   FILE * eml_openfiles_m[20];          /* '<Root>/Read Elevator' */
@@ -247,52 +233,28 @@ struct ODE3_IntgData {
 /* Parameters (default storage) */
 struct P_Infinion_T_ {
   real_T FlatEarthtoLLA_LL0[2];        /* Mask Parameter: FlatEarthtoLLA_LL0
-                                        * Referenced by: '<S7>/ref_position'
+                                        * Referenced by: '<S4>/ref_position'
                                         */
-  real_T AerodynamicForcesandMoments_S;
-                                /* Mask Parameter: AerodynamicForcesandMoments_S
-                                 * Referenced by: '<S4>/reference area'
-                                 */
-  real_T AerodynamicForcesandMoments_S_g;
-                              /* Mask Parameter: AerodynamicForcesandMoments_S_g
-                               * Referenced by: '<S3>/reference area'
-                               */
   real_T uDOFEulerAngles_Vm_0[3];      /* Mask Parameter: uDOFEulerAngles_Vm_0
                                         * Referenced by: '<S1>/ub,vb,wb'
                                         */
-  real_T AerodynamicForcesandMoments_b;
-                                /* Mask Parameter: AerodynamicForcesandMoments_b
-                                 * Referenced by: '<S4>/Constant'
-                                 */
-  real_T AerodynamicForcesandMoments_b_h;
-                              /* Mask Parameter: AerodynamicForcesandMoments_b_h
-                               * Referenced by: '<S3>/Constant'
-                               */
-  real_T AerodynamicForcesandMoments_cba;
-                              /* Mask Parameter: AerodynamicForcesandMoments_cba
-                               * Referenced by: '<S4>/Constant1'
-                               */
-  real_T AerodynamicForcesandMoments_c_h;
-                              /* Mask Parameter: AerodynamicForcesandMoments_c_h
-                               * Referenced by: '<S3>/Constant1'
-                               */
   real_T CompareToConstant_const;     /* Mask Parameter: CompareToConstant_const
-                                       * Referenced by: '<S115>/Constant'
+                                       * Referenced by: '<S61>/Constant'
                                        */
   real_T CompareToConstant_const_n; /* Mask Parameter: CompareToConstant_const_n
-                                     * Referenced by: '<S113>/Constant'
+                                     * Referenced by: '<S59>/Constant'
                                      */
   real_T CompareToConstant_const_c; /* Mask Parameter: CompareToConstant_const_c
-                                     * Referenced by: '<S116>/Constant'
+                                     * Referenced by: '<S62>/Constant'
                                      */
   real_T CompareToConstant_const_e; /* Mask Parameter: CompareToConstant_const_e
-                                     * Referenced by: '<S109>/Constant'
+                                     * Referenced by: '<S55>/Constant'
                                      */
   real_T CompareToConstant_const_p; /* Mask Parameter: CompareToConstant_const_p
-                                     * Referenced by: '<S107>/Constant'
+                                     * Referenced by: '<S53>/Constant'
                                      */
   real_T CompareToConstant_const_h; /* Mask Parameter: CompareToConstant_const_h
-                                     * Referenced by: '<S110>/Constant'
+                                     * Referenced by: '<S56>/Constant'
                                      */
   real_T uDOFEulerAngles_eul_0[3];     /* Mask Parameter: uDOFEulerAngles_eul_0
                                         * Referenced by: '<S18>/phi theta psi'
@@ -307,64 +269,64 @@ struct P_Infinion_T_ {
                                         * Referenced by: '<S1>/p,q,r '
                                         */
   real_T FlatEarthtoLLA_psi;           /* Mask Parameter: FlatEarthtoLLA_psi
-                                        * Referenced by: '<S7>/ref_rotation'
+                                        * Referenced by: '<S4>/ref_rotation'
                                         */
   real_T uDOFEulerAngles_xme_0[3];     /* Mask Parameter: uDOFEulerAngles_xme_0
                                         * Referenced by: '<S1>/xe,ye,ze'
                                         */
   real_T Bias_Bias;                    /* Expression: -90
-                                        * Referenced by: '<S105>/Bias'
+                                        * Referenced by: '<S51>/Bias'
                                         */
   real_T Gain_Gain;                    /* Expression: -1
-                                        * Referenced by: '<S105>/Gain'
+                                        * Referenced by: '<S51>/Gain'
                                         */
   real_T Bias1_Bias;                   /* Expression: +90
-                                        * Referenced by: '<S105>/Bias1'
+                                        * Referenced by: '<S51>/Bias1'
                                         */
   real_T Bias_Bias_m;                  /* Expression: 180
-                                        * Referenced by: '<S108>/Bias'
+                                        * Referenced by: '<S54>/Bias'
                                         */
   real_T Bias1_Bias_j;                 /* Expression: -180
-                                        * Referenced by: '<S108>/Bias1'
+                                        * Referenced by: '<S54>/Bias1'
                                         */
   real_T Bias_Bias_k;                  /* Expression: 180
-                                        * Referenced by: '<S106>/Bias'
+                                        * Referenced by: '<S52>/Bias'
                                         */
   real_T Bias1_Bias_g;                 /* Expression: -180
-                                        * Referenced by: '<S106>/Bias1'
+                                        * Referenced by: '<S52>/Bias1'
                                         */
   real_T Bias_Bias_n;                  /* Expression: -90
-                                        * Referenced by: '<S111>/Bias'
+                                        * Referenced by: '<S57>/Bias'
                                         */
   real_T Gain_Gain_g;                  /* Expression: -1
-                                        * Referenced by: '<S111>/Gain'
+                                        * Referenced by: '<S57>/Gain'
                                         */
   real_T Bias1_Bias_a;                 /* Expression: +90
-                                        * Referenced by: '<S111>/Bias1'
+                                        * Referenced by: '<S57>/Bias1'
                                         */
   real_T Constant2_Value;              /* Expression: 360
-                                        * Referenced by: '<S114>/Constant2'
+                                        * Referenced by: '<S60>/Constant2'
                                         */
   real_T Bias_Bias_o;                  /* Expression: 180
-                                        * Referenced by: '<S114>/Bias'
+                                        * Referenced by: '<S60>/Bias'
                                         */
   real_T Bias1_Bias_jw;                /* Expression: -180
-                                        * Referenced by: '<S114>/Bias1'
+                                        * Referenced by: '<S60>/Bias1'
                                         */
   real_T Constant_Value;               /* Expression: 180
-                                        * Referenced by: '<S102>/Constant'
+                                        * Referenced by: '<S48>/Constant'
                                         */
   real_T Constant1_Value;              /* Expression: 0
-                                        * Referenced by: '<S102>/Constant1'
+                                        * Referenced by: '<S48>/Constant1'
                                         */
   real_T Constant2_Value_g;            /* Expression: 360
-                                        * Referenced by: '<S112>/Constant2'
+                                        * Referenced by: '<S58>/Constant2'
                                         */
   real_T Bias_Bias_f;                  /* Expression: 180
-                                        * Referenced by: '<S112>/Bias'
+                                        * Referenced by: '<S58>/Bias'
                                         */
   real_T Bias1_Bias_b;                 /* Expression: -180
-                                        * Referenced by: '<S112>/Bias1'
+                                        * Referenced by: '<S58>/Bias1'
                                         */
   real_T Gain_Gain_h;                  /* Expression: -1
                                         * Referenced by: '<Root>/Gain'
@@ -373,43 +335,43 @@ struct P_Infinion_T_ {
                                         * Referenced by: '<Root>/HNLLat'
                                         */
   real_T Constant2_Value_d;            /* Expression: 1
-                                        * Referenced by: '<S117>/Constant2'
+                                        * Referenced by: '<S63>/Constant2'
                                         */
   real_T Constant1_Value_k;            /* Expression: R
-                                        * Referenced by: '<S117>/Constant1'
+                                        * Referenced by: '<S63>/Constant1'
                                         */
   real_T Constant_Value_l;             /* Expression: 1
-                                        * Referenced by: '<S120>/Constant'
+                                        * Referenced by: '<S66>/Constant'
                                         */
   real_T Constant_Value_i;             /* Expression: 1
-                                        * Referenced by: '<S122>/Constant'
+                                        * Referenced by: '<S68>/Constant'
                                         */
   real_T Constant_Value_j;             /* Expression: F
-                                        * Referenced by: '<S121>/Constant'
+                                        * Referenced by: '<S67>/Constant'
                                         */
   real_T f_Value;                      /* Expression: 1
-                                        * Referenced by: '<S121>/f'
+                                        * Referenced by: '<S67>/f'
                                         */
   real_T Constant_Value_h;             /* Expression: 1
-                                        * Referenced by: '<S117>/Constant'
+                                        * Referenced by: '<S63>/Constant'
                                         */
   real_T Constant3_Value;              /* Expression: 1
-                                        * Referenced by: '<S117>/Constant3'
+                                        * Referenced by: '<S63>/Constant3'
                                         */
   real_T Constant2_Value_e;            /* Expression: 360
-                                        * Referenced by: '<S108>/Constant2'
+                                        * Referenced by: '<S54>/Constant2'
                                         */
   real_T HNLLong_Value;                /* Expression: -157.924
                                         * Referenced by: '<Root>/HNLLong'
                                         */
   real_T Constant_Value_o;             /* Expression: 180
-                                        * Referenced by: '<S101>/Constant'
+                                        * Referenced by: '<S47>/Constant'
                                         */
   real_T Constant1_Value_d;            /* Expression: 0
-                                        * Referenced by: '<S101>/Constant1'
+                                        * Referenced by: '<S47>/Constant1'
                                         */
   real_T Constant2_Value_h;            /* Expression: 360
-                                        * Referenced by: '<S106>/Constant2'
+                                        * Referenced by: '<S52>/Constant2'
                                         */
   real_T Constant_Value_m;             /* Expression: 0
                                         * Referenced by: '<Root>/Constant'
@@ -423,175 +385,12 @@ struct P_Infinion_T_ {
   real_T phithetapsi_WrappedStateLowerVa;/* Expression: -pi
                                           * Referenced by: '<S18>/phi theta psi'
                                           */
-  real_T Constant2_Value_n;            /* Expression: 1.2754
-                                        * Referenced by: '<Root>/Constant2'
-                                        */
-  real_T u2rhoV2_Gain;                 /* Expression: 1/2
-                                        * Referenced by: '<S6>/1//2rhoV^2'
-                                        */
-  real_T Constant1_Value_p;            /* Expression: 0
-                                        * Referenced by: '<S36>/Constant1'
-                                        */
-  real_T deltal_BreakpointsData[9];    /* Expression: aero{2}.deltal
-                                        * Referenced by: '<S2>/(deltal)'
-                                        */
-  real_T Constant1_Value_g;            /* Expression: 343
-                                        * Referenced by: '<Root>/Constant1'
-                                        */
-  real_T Mach_BreakpointsData[3];      /* Expression: aero{1}.mach
-                                        * Referenced by: '<S2>/(Mach)'
-                                        */
-  real_T altitude_BreakpointsData[3];  /* Expression: aero{1}.alt
-                                        * Referenced by: '<S2>/(altitude)'
-                                        */
-  real_T clroll_Table[81];      /* Expression: permute(aero{2}.clroll,[1  2  3])
-                                 * Referenced by: '<S36>/clroll'
-                                 */
-  real_T alpha_BreakpointsData[12];    /* Expression: aero{1}.alpha
-                                        * Referenced by: '<S2>/(alpha)'
-                                        */
-  real_T CmYaw_Table[972];             /* Expression: aero{2}.cn_asy
-                                        * Referenced by: '<S36>/CmYaw '
-                                        */
-  real_T Gain1_Gain;                   /* Expression: -1
-                                        * Referenced by: '<S2>/Gain1'
-                                        */
-  real_T delta_BreakpointsData[7];     /* Expression: aero{1}.delta
-                                        * Referenced by: '<S2>/(delta)'
-                                        */
-  real_T DCDI_Table[756];    /* Expression: permute(aero{1}.dcdi_sym,[1 3 4 2 ])
-                              * Referenced by: '<S37>/DCDI'
-                              */
-  real_T Constant1_Value_l;            /* Expression: 0
-                                        * Referenced by: '<S37>/Constant1'
-                                        */
-  real_T DCL_Table[63];        /* Expression: permute(aero{1}.dcl_sym,[1  2  3])
-                                * Referenced by: '<S37>/DCL'
-                                */
-  real_T DCm_Table[63];        /* Expression: permute(aero{1}.dcm_sym,[1  2  3])
-                                * Referenced by: '<S37>/DCm'
-                                */
-  real_T Constant1_Value_j;            /* Expression: 0
-                                        * Referenced by: '<S38>/Constant1'
-                                        */
-  real_T Gain2_Gain;                   /* Expression: -1
-                                        * Referenced by: '<S2>/Gain2'
-                                        */
-  real_T deltaR_BreakpointsData[5];    /* Expression: aero{3}.delta
-                                        * Referenced by: '<S2>/(deltaR)'
-                                        */
-  real_T DCmrudder_Table[45];  /* Expression: permute(aero{3}.dcm_sym,[1  2  3])
-                                * Referenced by: '<S38>/DCm (rudder)'
-                                */
-  real_T coefAdjust_Gain[3];           /* Expression: [1  1  1]
-                                        * Referenced by: '<S4>/coefAdjust'
-                                        */
-  real_T Xcp_Table[108];           /* Expression: permute(aero{1}.xcp,[1  2  3])
-                                    * Referenced by: '<S2>/Xcp'
-                                    */
-  real_T Gain_Gain_e;                  /* Expression: aero{1}.cbar
-                                        * Referenced by: '<S2>/Gain'
-                                        */
-  real_T zero1_Value;                  /* Expression: 0
-                                        * Referenced by: '<S2>/zero1'
-                                        */
-  real_T Constant_Value_lx;            /* Expression: 0
-                                        * Referenced by: '<S88>/Constant'
-                                        */
-  real_T alpha_BreakpointsData_d[12];  /* Expression: aero{1}.alpha
-                                        * Referenced by: '<Root>/(alpha)'
-                                        */
-  real_T Mach_BreakpointsData_e[3];    /* Expression: aero{1}.mach
-                                        * Referenced by: '<Root>/(Mach)'
-                                        */
-  real_T altitude_BreakpointsData_i[3];/* Expression: aero{1}.alt
-                                        * Referenced by: '<Root>/(altitude)'
-                                        */
-  real_T CDcoefficientofdrag_Table[108];
-                                    /* Expression: permute(aero{1}.cd,[1  2  3])
-                                     * Referenced by: '<Root>/CD (coefficient of drag)'
-                                     */
-  real_T Constant5_Value;              /* Expression: 0
-                                        * Referenced by: '<Root>/Constant5'
-                                        */
-  real_T CLcoeffcientoflift_Table[108];
-                                    /* Expression: permute(aero{1}.cl,[1  2  3])
-                                     * Referenced by: '<Root>/CL (coeffcient of lift)'
-                                     */
-  real_T Gain1_Gain_e;                 /* Expression: -1
-                                        * Referenced by: '<Root>/Gain1'
-                                        */
-  real_T coefAdjust_Gain_h[3];         /* Expression: [-1 -1 -1]
-                                        * Referenced by: '<S3>/coefAdjust'
-                                        */
-  real_T Constant_Value_e;             /* Expression: 0
-                                        * Referenced by: '<S58>/Constant'
-                                        */
-  real_T zero3_Value[3];               /* Expression: [0 0 0]
-                                        * Referenced by: '<Root>/zero3'
-                                        */
-  real_T Clbderivativeofrollingmomentcoe[108];
-                                   /* Expression: permute(aero{1}.clb,[1  2  3])
-                                    * Referenced by: '<Root>/Clb (derivative of rolling moment coefficient)'
-                                    */
-  real_T Cmpitchingmomentcoefficient_Tab[108];
-                                    /* Expression: permute(aero{1}.cm,[1  2  3])
-                                     * Referenced by: '<Root>/Cm (pitching moment coefficient)'
-                                     */
-  real_T Cnbderivativeofyawingmomentcoef[108];
-                                   /* Expression: permute(aero{1}.cnb,[1  2  3])
-                                    * Referenced by: '<Root>/Cnb (derivative of yawing moment coefficient)'
-                                    */
-  real_T Gain2_Gain_d;                 /* Expression: -1
-                                        * Referenced by: '<Root>/Gain2'
-                                        */
   real_T Constant2_Value_f[9];         /* Expression: zeros(3)
                                         * Referenced by: '<S20>/Constant2'
                                         */
-  real_T Constant_Value_lm;            /* Expression: 0
-                                        * Referenced by: '<S73>/Constant'
+  real_T Constant_Value_jt;            /* Expression: 0
+                                        * Referenced by: '<S43>/Constant'
                                         */
-  uint32_T clroll_dimSize[3];          /* Computed Parameter: clroll_dimSize
-                                        * Referenced by: '<S36>/clroll'
-                                        */
-  uint32_T CmYaw_dimSize[4];           /* Computed Parameter: CmYaw_dimSize
-                                        * Referenced by: '<S36>/CmYaw '
-                                        */
-  uint32_T DCDI_dimSize[4];            /* Computed Parameter: DCDI_dimSize
-                                        * Referenced by: '<S37>/DCDI'
-                                        */
-  uint32_T DCL_dimSize[3];             /* Computed Parameter: DCL_dimSize
-                                        * Referenced by: '<S37>/DCL'
-                                        */
-  uint32_T DCm_dimSize[3];             /* Computed Parameter: DCm_dimSize
-                                        * Referenced by: '<S37>/DCm'
-                                        */
-  uint32_T DCmrudder_dimSize[3];       /* Computed Parameter: DCmrudder_dimSize
-                                        * Referenced by: '<S38>/DCm (rudder)'
-                                        */
-  uint32_T Xcp_dimSize[3];             /* Computed Parameter: Xcp_dimSize
-                                        * Referenced by: '<S2>/Xcp'
-                                        */
-  uint32_T CDcoefficientofdrag_dimSize[3];
-                              /* Computed Parameter: CDcoefficientofdrag_dimSize
-                               * Referenced by: '<Root>/CD (coefficient of drag)'
-                               */
-  uint32_T CLcoeffcientoflift_dimSize[3];
-                               /* Computed Parameter: CLcoeffcientoflift_dimSize
-                                * Referenced by: '<Root>/CL (coeffcient of lift)'
-                                */
-  uint32_T Clbderivativeofrollingmomentc_p[3];
-                          /* Computed Parameter: Clbderivativeofrollingmomentc_p
-                           * Referenced by: '<Root>/Clb (derivative of rolling moment coefficient)'
-                           */
-  uint32_T Cmpitchingmomentcoefficient_dim[3];
-                          /* Computed Parameter: Cmpitchingmomentcoefficient_dim
-                           * Referenced by: '<Root>/Cm (pitching moment coefficient)'
-                           */
-  uint32_T Cnbderivativeofyawingmomentco_p[3];
-                          /* Computed Parameter: Cnbderivativeofyawingmomentco_p
-                           * Referenced by: '<Root>/Cnb (derivative of yawing moment coefficient)'
-                           */
 };
 
 /* Real-time Model Data Structure */
@@ -832,18 +631,18 @@ class InfinionModelClass {
  *
  * '<Root>' : 'Infinion'
  * '<S1>'   : 'Infinion/6DOF (Euler Angles)'
- * '<S2>'   : 'Infinion/Aerodynamic Coefficients'
- * '<S3>'   : 'Infinion/Aerodynamic Forces and Moments'
- * '<S4>'   : 'Infinion/Aerodynamic Forces and Moments '
- * '<S5>'   : 'Infinion/Angle Conversion'
- * '<S6>'   : 'Infinion/Dynamic Pressure'
- * '<S7>'   : 'Infinion/Flat Earth to LLA'
- * '<S8>'   : 'Infinion/Incidence, Sideslip, & Airspeed'
- * '<S9>'   : 'Infinion/Mach Number'
- * '<S10>'  : 'Infinion/Read Aileron'
- * '<S11>'  : 'Infinion/Read Elevator'
- * '<S12>'  : 'Infinion/Read Rudder'
- * '<S13>'  : 'Infinion/Read Throttle'
+ * '<S2>'   : 'Infinion/Direction Cosine Matrix Body to Wind'
+ * '<S3>'   : 'Infinion/Dynamic Pressure'
+ * '<S4>'   : 'Infinion/Flat Earth to LLA'
+ * '<S5>'   : 'Infinion/Incidence, Sideslip, & Airspeed'
+ * '<S6>'   : 'Infinion/Mach Number'
+ * '<S7>'   : 'Infinion/Read Aileron'
+ * '<S8>'   : 'Infinion/Read Elevator'
+ * '<S9>'   : 'Infinion/Read Rudder'
+ * '<S10>'  : 'Infinion/Read Throttle'
+ * '<S11>'  : 'Infinion/SimpleActuators'
+ * '<S12>'  : 'Infinion/SimpleDrag'
+ * '<S13>'  : 'Infinion/SimpleLift'
  * '<S14>'  : 'Infinion/WriteToFile'
  * '<S15>'  : 'Infinion/compute track'
  * '<S16>'  : 'Infinion/gravity'
@@ -866,96 +665,42 @@ class InfinionModelClass {
  * '<S33>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem1'
  * '<S34>'  : 'Infinion/6DOF (Euler Angles)/Vbxw/Subsystem'
  * '<S35>'  : 'Infinion/6DOF (Euler Angles)/Vbxw/Subsystem1'
- * '<S36>'  : 'Infinion/Aerodynamic Coefficients/Aileron'
- * '<S37>'  : 'Infinion/Aerodynamic Coefficients/Elevator'
- * '<S38>'  : 'Infinion/Aerodynamic Coefficients/Rudder'
- * '<S39>'  : 'Infinion/Aerodynamic Coefficients/alpha_rad1'
- * '<S40>'  : 'Infinion/Aerodynamic Coefficients/alpha_rad2'
- * '<S41>'  : 'Infinion/Aerodynamic Coefficients/alpha_rad3'
- * '<S42>'  : 'Infinion/Aerodynamic Coefficients/alpha_rad4'
- * '<S43>'  : 'Infinion/Aerodynamic Forces and Moments/3x3 Cross Product'
- * '<S44>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation'
- * '<S45>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation'
- * '<S46>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation'
- * '<S47>'  : 'Infinion/Aerodynamic Forces and Moments/3x3 Cross Product/Subsystem'
- * '<S48>'  : 'Infinion/Aerodynamic Forces and Moments/3x3 Cross Product/Subsystem1'
- * '<S49>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind'
- * '<S50>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed'
- * '<S51>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A11'
- * '<S52>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A12'
- * '<S53>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A13'
- * '<S54>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A21'
- * '<S55>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A22'
- * '<S56>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A23'
- * '<S57>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A31'
- * '<S58>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A32'
- * '<S59>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/A33'
- * '<S60>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
- * '<S61>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S62>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S63>'  : 'Infinion/Aerodynamic Forces and Moments/CG-CP Transformation/Incidence, Sideslip, & Airspeed/dot'
- * '<S64>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind'
- * '<S65>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed'
- * '<S66>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A11'
- * '<S67>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A12'
- * '<S68>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A13'
- * '<S69>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A21'
- * '<S70>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A22'
- * '<S71>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A23'
- * '<S72>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A31'
- * '<S73>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A32'
- * '<S74>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/A33'
- * '<S75>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
- * '<S76>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S77>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S78>'  : 'Infinion/Aerodynamic Forces and Moments/Force Transformation/Incidence, Sideslip, & Airspeed/dot'
- * '<S79>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind'
- * '<S80>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed'
- * '<S81>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A11'
- * '<S82>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A12'
- * '<S83>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A13'
- * '<S84>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A21'
- * '<S85>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A22'
- * '<S86>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A23'
- * '<S87>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A31'
- * '<S88>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A32'
- * '<S89>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/A33'
- * '<S90>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
- * '<S91>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S92>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S93>'  : 'Infinion/Aerodynamic Forces and Moments/Moment Transformation/Incidence, Sideslip, & Airspeed/dot'
- * '<S94>'  : 'Infinion/Aerodynamic Forces and Moments /3x3 Cross Product'
- * '<S95>'  : 'Infinion/Aerodynamic Forces and Moments /CG-CP Transformation'
- * '<S96>'  : 'Infinion/Aerodynamic Forces and Moments /Force Transformation'
- * '<S97>'  : 'Infinion/Aerodynamic Forces and Moments /Moment Transformation'
- * '<S98>'  : 'Infinion/Aerodynamic Forces and Moments /3x3 Cross Product/Subsystem'
- * '<S99>'  : 'Infinion/Aerodynamic Forces and Moments /3x3 Cross Product/Subsystem1'
- * '<S100>' : 'Infinion/Dynamic Pressure/dot'
- * '<S101>' : 'Infinion/Flat Earth to LLA/LatLong wrap'
- * '<S102>' : 'Infinion/Flat Earth to LLA/LatLong wrap1'
- * '<S103>' : 'Infinion/Flat Earth to LLA/LongLat_offset'
- * '<S104>' : 'Infinion/Flat Earth to LLA/pos_deg'
- * '<S105>' : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90'
- * '<S106>' : 'Infinion/Flat Earth to LLA/LatLong wrap/Wrap Longitude'
- * '<S107>' : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Compare To Constant'
- * '<S108>' : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180'
- * '<S109>' : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
- * '<S110>' : 'Infinion/Flat Earth to LLA/LatLong wrap/Wrap Longitude/Compare To Constant'
- * '<S111>' : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90'
- * '<S112>' : 'Infinion/Flat Earth to LLA/LatLong wrap1/Wrap Longitude'
- * '<S113>' : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Compare To Constant'
- * '<S114>' : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180'
- * '<S115>' : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
- * '<S116>' : 'Infinion/Flat Earth to LLA/LatLong wrap1/Wrap Longitude/Compare To Constant'
- * '<S117>' : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance'
- * '<S118>' : 'Infinion/Flat Earth to LLA/LongLat_offset/rotation_rad'
- * '<S119>' : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/Angle Conversion2'
- * '<S120>' : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/denom'
- * '<S121>' : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e'
- * '<S122>' : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e^4'
- * '<S123>' : 'Infinion/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S124>' : 'Infinion/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S125>' : 'Infinion/Incidence, Sideslip, & Airspeed/dot'
- * '<S126>' : 'Infinion/Mach Number/dot'
+ * '<S36>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A11'
+ * '<S37>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A12'
+ * '<S38>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A13'
+ * '<S39>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A21'
+ * '<S40>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A22'
+ * '<S41>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A23'
+ * '<S42>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A31'
+ * '<S43>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A32'
+ * '<S44>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A33'
+ * '<S45>'  : 'Infinion/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
+ * '<S46>'  : 'Infinion/Dynamic Pressure/dot'
+ * '<S47>'  : 'Infinion/Flat Earth to LLA/LatLong wrap'
+ * '<S48>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1'
+ * '<S49>'  : 'Infinion/Flat Earth to LLA/LongLat_offset'
+ * '<S50>'  : 'Infinion/Flat Earth to LLA/pos_deg'
+ * '<S51>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90'
+ * '<S52>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Wrap Longitude'
+ * '<S53>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Compare To Constant'
+ * '<S54>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180'
+ * '<S55>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
+ * '<S56>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Wrap Longitude/Compare To Constant'
+ * '<S57>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90'
+ * '<S58>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Wrap Longitude'
+ * '<S59>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Compare To Constant'
+ * '<S60>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180'
+ * '<S61>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
+ * '<S62>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Wrap Longitude/Compare To Constant'
+ * '<S63>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance'
+ * '<S64>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/rotation_rad'
+ * '<S65>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/Angle Conversion2'
+ * '<S66>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/denom'
+ * '<S67>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e'
+ * '<S68>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e^4'
+ * '<S69>'  : 'Infinion/Incidence, Sideslip, & Airspeed/Subsystem'
+ * '<S70>'  : 'Infinion/Incidence, Sideslip, & Airspeed/Subsystem1'
+ * '<S71>'  : 'Infinion/Incidence, Sideslip, & Airspeed/dot'
+ * '<S72>'  : 'Infinion/Mach Number/dot'
  */
 #endif                                 /* RTW_HEADER_Infinion_h_ */

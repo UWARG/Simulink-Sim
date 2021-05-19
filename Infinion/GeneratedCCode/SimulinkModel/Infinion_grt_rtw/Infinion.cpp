@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 3.11
+ * Model version              : 3.30
  * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
- * C++ source code generated on : Thu Apr 29 17:54:18 2021
+ * C++ source code generated on : Wed May 19 19:08:54 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -20,143 +20,6 @@
 
 #include "Infinion.h"
 #include "Infinion_private.h"
-
-int32_T plook_s32dd_binxp(real_T u, const real_T bp[], uint32_T maxIndex, real_T
-  *fraction, int32_T *prevIndex)
-{
-  int32_T bpIndex;
-
-  /* Prelookup - Index and Fraction
-     Index Search method: 'binary'
-     Extrapolation method: 'Linear'
-     Use previous index: 'on'
-     Use last breakpoint for index at or above upper limit: 'off'
-     Remove protection against out-of-range input in generated code: 'off'
-   */
-  if (u <= bp[0U]) {
-    bpIndex = 0;
-    *fraction = (u - bp[0U]) / (bp[1U] - bp[0U]);
-  } else if (u < bp[maxIndex]) {
-    bpIndex = binsearch_s32d_prevIdx(u, bp, static_cast<uint32_T>(*prevIndex),
-      maxIndex);
-    *fraction = (u - bp[static_cast<uint32_T>(bpIndex)]) / (bp[bpIndex + 1U] -
-      bp[static_cast<uint32_T>(bpIndex)]);
-  } else {
-    bpIndex = static_cast<int32_T>(maxIndex - 1U);
-    *fraction = (u - bp[maxIndex - 1U]) / (bp[maxIndex] - bp[maxIndex - 1U]);
-  }
-
-  *prevIndex = bpIndex;
-  return bpIndex;
-}
-
-real_T intrp3d_s32dl_pw(const int32_T bpIndex[], const real_T frac[], const
-  real_T table[], const uint32_T stride[])
-{
-  real_T yL_0d0;
-  real_T yL_1d;
-  real_T yL_2d;
-  uint32_T offset_0d;
-  uint32_T offset_2d;
-
-  /* Column-major Interpolation 3-D
-     Interpolation method: 'Linear point-slope'
-     Use last breakpoint for index at or above upper limit: 'off'
-     Overflow mode: 'portable wrapping'
-   */
-  offset_2d = (static_cast<uint32_T>(bpIndex[2U] * static_cast<int32_T>(stride
-    [2U])) + bpIndex[1U] * static_cast<int32_T>(stride[1U])) + bpIndex[0U];
-  yL_0d0 = table[offset_2d];
-  yL_1d = (table[offset_2d + 1U] - yL_0d0) * frac[0U] + yL_0d0;
-  offset_0d = offset_2d + stride[1U];
-  yL_0d0 = table[offset_0d];
-  yL_2d = (((table[offset_0d + 1U] - yL_0d0) * frac[0U] + yL_0d0) - yL_1d) *
-    frac[1U] + yL_1d;
-  offset_2d += stride[2U];
-  yL_0d0 = table[offset_2d];
-  yL_1d = (table[offset_2d + 1U] - yL_0d0) * frac[0U] + yL_0d0;
-  offset_0d = offset_2d + stride[1U];
-  yL_0d0 = table[offset_0d];
-  return (((((table[offset_0d + 1U] - yL_0d0) * frac[0U] + yL_0d0) - yL_1d) *
-           frac[1U] + yL_1d) - yL_2d) * frac[2U] + yL_2d;
-}
-
-real_T intrp4d_s32dl_pw(const int32_T bpIndex[], const real_T frac[], const
-  real_T table[], const uint32_T stride[])
-{
-  real_T yL_0d0;
-  real_T yL_1d;
-  real_T yL_2d;
-  real_T yL_3d;
-  uint32_T offset_0d;
-  uint32_T offset_1d;
-  uint32_T offset_3d;
-
-  /* Column-major Interpolation 4-D
-     Interpolation method: 'Linear point-slope'
-     Use last breakpoint for index at or above upper limit: 'off'
-     Overflow mode: 'portable wrapping'
-   */
-  offset_3d = ((static_cast<uint32_T>(bpIndex[3U] * static_cast<int32_T>(stride
-    [3U])) + bpIndex[2U] * static_cast<int32_T>(stride[2U])) + bpIndex[1U] *
-               static_cast<int32_T>(stride[1U])) + bpIndex[0U];
-  yL_0d0 = table[offset_3d];
-  yL_1d = (table[offset_3d + 1U] - yL_0d0) * frac[0U] + yL_0d0;
-  offset_0d = offset_3d + stride[1U];
-  yL_0d0 = table[offset_0d];
-  yL_2d = (((table[offset_0d + 1U] - yL_0d0) * frac[0U] + yL_0d0) - yL_1d) *
-    frac[1U] + yL_1d;
-  offset_1d = offset_3d + stride[2U];
-  yL_0d0 = table[offset_1d];
-  yL_1d = (table[offset_1d + 1U] - yL_0d0) * frac[0U] + yL_0d0;
-  offset_0d = offset_1d + stride[1U];
-  yL_0d0 = table[offset_0d];
-  yL_3d = (((((table[offset_0d + 1U] - yL_0d0) * frac[0U] + yL_0d0) - yL_1d) *
-            frac[1U] + yL_1d) - yL_2d) * frac[2U] + yL_2d;
-  offset_1d = offset_3d + stride[3U];
-  yL_0d0 = table[offset_1d];
-  yL_1d = (table[offset_1d + 1U] - yL_0d0) * frac[0U] + yL_0d0;
-  offset_0d = offset_1d + stride[1U];
-  yL_0d0 = table[offset_0d];
-  yL_2d = (((table[offset_0d + 1U] - yL_0d0) * frac[0U] + yL_0d0) - yL_1d) *
-    frac[1U] + yL_1d;
-  offset_1d += stride[2U];
-  yL_0d0 = table[offset_1d];
-  yL_1d = (table[offset_1d + 1U] - yL_0d0) * frac[0U] + yL_0d0;
-  offset_0d = offset_1d + stride[1U];
-  yL_0d0 = table[offset_0d];
-  return (((((((table[offset_0d + 1U] - yL_0d0) * frac[0U] + yL_0d0) - yL_1d) *
-             frac[1U] + yL_1d) - yL_2d) * frac[2U] + yL_2d) - yL_3d) * frac[3U]
-    + yL_3d;
-}
-
-int32_T binsearch_s32d_prevIdx(real_T u, const real_T bp[], uint32_T startIndex,
-  uint32_T maxIndex)
-{
-  uint32_T bpIdx;
-  uint32_T found;
-  uint32_T iLeft;
-  uint32_T iRght;
-
-  /* Binary Search using Previous Index */
-  bpIdx = startIndex;
-  iLeft = 0U;
-  iRght = maxIndex;
-  found = 0U;
-  while (found == 0U) {
-    if (u < bp[bpIdx]) {
-      iRght = bpIdx - 1U;
-      bpIdx = ((bpIdx + iLeft) - 1U) >> 1U;
-    } else if (u < bp[bpIdx + 1U]) {
-      found = 1U;
-    } else {
-      iLeft = bpIdx + 1U;
-      bpIdx = ((bpIdx + iRght) + 1U) >> 1U;
-    }
-  }
-
-  return static_cast<int32_T>(bpIdx);
-}
 
 /* State reduction function */
 void local_stateReduction(real_T* x, int_T* p, int_T n, real_T* r)
@@ -3639,67 +3502,44 @@ void InfinionModelClass::step()
   FILE * filestar;
   emxArray_char_T_Infinion_T *s;
   real_T rtb_VectorConcatenate[18];
-  real_T VectorConcatenate_j[9];
-  real_T rtb_Sum_j[6];
-  real_T tmp[6];
-  real_T tmp_0[6];
-  real_T tmp_1[6];
-  real_T frac_0[4];
-  real_T frac_1[4];
-  real_T frac[3];
-  real_T frac_2[3];
-  real_T frac_3[3];
-  real_T frac_4[3];
-  real_T frac_5[3];
-  real_T frac_6[3];
-  real_T frac_7[3];
-  real_T frac_8[3];
-  real_T frac_9[3];
-  real_T frac_a[3];
-  real_T Airspeed_tmp;
+  real_T VectorConcatenate[9];
+  real_T rtb_sincos_o1_b[3];
+  real_T rtb_sincos_o2_a[3];
+  real_T tmp[3];
+  real_T Airspeed;
   real_T Gain;
+  real_T TmpSignalConversionAtSFunctio_0;
+  real_T TmpSignalConversionAtSFunctionI;
   real_T accXFile;
   real_T accYFile;
   real_T accZFile;
+  real_T altitudeFile;
   real_T gyrXFile;
   real_T gyrYFile;
   real_T gyrZFile;
-  real_T latestData;
+  real_T latFile;
+  real_T latSpeedFile;
+  real_T longFile;
+  real_T longSpeedFile;
   real_T pitchFile;
   real_T pitchRateFile;
+  real_T rateOfClimbFile;
   real_T rollFile;
   real_T rollRateFile;
+  real_T rtb_Abs;
   real_T rtb_Abs1;
-  real_T rtb_Sum_d_idx_0_tmp;
-  real_T rtb_Sum_d_idx_1;
   real_T rtb_Sum_f_idx_0;
-  real_T rtb_Sum_f_idx_1;
-  real_T rtb_UnitConversion_a;
-  real_T rtb_ixk;
-  real_T rtb_jxi;
-  real_T rtb_jxi_h;
-  real_T rtb_phidot;
-  real_T rtb_phidot_tmp;
-  real_T rtb_referencearea;
+  real_T rtb_sincos_o1_g_tmp;
+  real_T rtb_sincos_o1_g_tmp_0;
+  real_T rtb_sincos_o2_b_tmp;
   real_T rtb_sqrt;
+  real_T u0;
   real_T yawFile;
   real_T yawRateFile;
-  int32_T bpIndex_0[4];
-  int32_T bpIndex_1[4];
-  int32_T bpIndex[3];
-  int32_T bpIndex_2[3];
-  int32_T bpIndex_3[3];
-  int32_T bpIndex_4[3];
-  int32_T bpIndex_5[3];
-  int32_T bpIndex_6[3];
-  int32_T bpIndex_7[3];
-  int32_T bpIndex_8[3];
-  int32_T bpIndex_9[3];
-  int32_T bpIndex_a[3];
   int32_T i;
-  int32_T rtb_idxa;
-  int32_T rtb_idxh;
-  int32_T rtb_idxm;
+  int32_T rtb_VectorConcatenate_tmp;
+  int32_T rtb_VectorConcatenate_tmp_0;
+  int32_T rtb_VectorConcatenate_tmp_1;
   boolean_T rtb_Compare_f;
   if (rtmIsMajorTimeStep((&Infinion_M))) {
     /* set solver stop time */
@@ -3720,81 +3560,60 @@ void InfinionModelClass::step()
     (&Infinion_M)->Timing.t[0] = rtsiGetT(&(&Infinion_M)->solverInfo);
   }
 
-  /* Product: '<S125>/Product1' incorporates:
+  /* Sqrt: '<S5>/Airspeed' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S126>/Product1'
+   *  Product: '<S71>/Product'
+   *  Product: '<S71>/Product1'
+   *  Product: '<S71>/Product2'
+   *  Sum: '<S71>/Sum'
    */
-  rtb_jxi = Infinion_X.ubvbwb_CSTATE[1] * Infinion_X.ubvbwb_CSTATE[1];
-
-  /* Product: '<S125>/Product2' incorporates:
-   *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S126>/Product2'
-   */
-  rtb_ixk = Infinion_X.ubvbwb_CSTATE[2] * Infinion_X.ubvbwb_CSTATE[2];
-
-  /* Sum: '<S125>/Sum' incorporates:
-   *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S125>/Product'
-   *  Product: '<S125>/Product1'
-   *  Product: '<S125>/Product2'
-   *  Sum: '<S100>/Sum'
-   */
-  rtb_jxi_h = (Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.ubvbwb_CSTATE[0] +
-               rtb_jxi) + rtb_ixk;
-
-  /* Sqrt: '<S8>/Airspeed' incorporates:
-   *  Sqrt: '<S80>/Airspeed'
-   *  Sum: '<S125>/Sum'
-   */
-  Airspeed_tmp = std::sqrt(rtb_jxi_h);
-
-  /* Trigonometry: '<S8>/Incidence' incorporates:
-   *  Integrator: '<S1>/ub,vb,wb'
-   *  Trigonometry: '<S50>/Incidence'
-   */
-  rtb_phidot_tmp = rt_atan2d_snf(Infinion_X.ubvbwb_CSTATE[2],
-    Infinion_X.ubvbwb_CSTATE[0]);
+  Airspeed = std::sqrt((Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.ubvbwb_CSTATE[0]
+                        + Infinion_X.ubvbwb_CSTATE[1] *
+                        Infinion_X.ubvbwb_CSTATE[1]) + Infinion_X.ubvbwb_CSTATE
+                       [2] * Infinion_X.ubvbwb_CSTATE[2]);
 
   /* Gain: '<Root>/Gain' incorporates:
-   *  Trigonometry: '<S8>/Incidence'
+   *  Integrator: '<S1>/ub,vb,wb'
+   *  Trigonometry: '<S5>/Incidence'
    */
-  Gain = Infinion_P.Gain_Gain_h * rtb_phidot_tmp;
+  Gain = Infinion_P.Gain_Gain_h * rt_atan2d_snf(Infinion_X.ubvbwb_CSTATE[2],
+    Infinion_X.ubvbwb_CSTATE[0]);
   if (rtmIsMajorTimeStep((&Infinion_M))) {
-    /* UnitConversion: '<S118>/Unit Conversion' incorporates:
-     *  Constant: '<S7>/ref_rotation'
+    /* UnitConversion: '<S64>/Unit Conversion' incorporates:
+     *  Constant: '<S4>/ref_rotation'
      */
     /* Unit Conversion - from: deg to: rad
        Expression: output = (0.0174533*input) + (0) */
     rtb_sqrt = 0.017453292519943295 * Infinion_P.FlatEarthtoLLA_psi;
 
-    /* Trigonometry: '<S103>/SinCos' */
+    /* Trigonometry: '<S49>/SinCos' */
     Infinion_B.SinCos_o1 = std::sin(rtb_sqrt);
 
-    /* Trigonometry: '<S103>/SinCos' */
+    /* Trigonometry: '<S49>/SinCos' */
     Infinion_B.SinCos_o2 = std::cos(rtb_sqrt);
 
-    /* Sum: '<S121>/Sum' incorporates:
-     *  Constant: '<S121>/Constant'
-     *  Constant: '<S121>/f'
+    /* Sum: '<S67>/Sum' incorporates:
+     *  Constant: '<S67>/Constant'
+     *  Constant: '<S67>/f'
      */
     rtb_sqrt = Infinion_P.f_Value - Infinion_P.Constant_Value_j;
 
-    /* Sqrt: '<S122>/sqrt' incorporates:
-     *  Constant: '<S122>/Constant'
-     *  Product: '<S122>/Product1'
-     *  Sum: '<S122>/Sum1'
+    /* Sqrt: '<S68>/sqrt' incorporates:
+     *  Constant: '<S68>/Constant'
+     *  Product: '<S68>/Product1'
+     *  Sum: '<S68>/Sum1'
      */
     rtb_sqrt = std::sqrt(Infinion_P.Constant_Value_i - rtb_sqrt * rtb_sqrt);
 
-    /* Switch: '<S114>/Switch' incorporates:
-     *  Abs: '<S114>/Abs'
-     *  Bias: '<S114>/Bias'
-     *  Bias: '<S114>/Bias1'
-     *  Constant: '<S114>/Constant2'
-     *  Constant: '<S115>/Constant'
-     *  Constant: '<S7>/ref_position'
-     *  Math: '<S114>/Math Function1'
-     *  RelationalOperator: '<S115>/Compare'
+    /* Switch: '<S60>/Switch' incorporates:
+     *  Abs: '<S60>/Abs'
+     *  Bias: '<S60>/Bias'
+     *  Bias: '<S60>/Bias1'
+     *  Constant: '<S4>/ref_position'
+     *  Constant: '<S60>/Constant2'
+     *  Constant: '<S61>/Constant'
+     *  Math: '<S60>/Math Function1'
+     *  RelationalOperator: '<S61>/Compare'
      */
     if (std::abs(Infinion_P.FlatEarthtoLLA_LL0[0]) >
         Infinion_P.CompareToConstant_const) {
@@ -3805,19 +3624,19 @@ void InfinionModelClass::step()
       rtb_Sum_f_idx_0 = Infinion_P.FlatEarthtoLLA_LL0[0];
     }
 
-    /* End of Switch: '<S114>/Switch' */
+    /* End of Switch: '<S60>/Switch' */
 
-    /* Abs: '<S111>/Abs1' */
+    /* Abs: '<S57>/Abs1' */
     rtb_Abs1 = std::abs(rtb_Sum_f_idx_0);
 
-    /* RelationalOperator: '<S113>/Compare' incorporates:
-     *  Constant: '<S113>/Constant'
+    /* RelationalOperator: '<S59>/Compare' incorporates:
+     *  Constant: '<S59>/Constant'
      */
     rtb_Compare_f = (rtb_Abs1 > Infinion_P.CompareToConstant_const_n);
 
-    /* Switch: '<S111>/Switch' */
+    /* Switch: '<S57>/Switch' */
     if (rtb_Compare_f) {
-      /* Signum: '<S111>/Sign1' */
+      /* Signum: '<S57>/Sign1' */
       if (rtb_Sum_f_idx_0 < 0.0) {
         rtb_Sum_f_idx_0 = -1.0;
       } else if (rtb_Sum_f_idx_0 > 0.0) {
@@ -3828,113 +3647,114 @@ void InfinionModelClass::step()
         rtb_Sum_f_idx_0 = (rtNaN);
       }
 
-      /* End of Signum: '<S111>/Sign1' */
+      /* End of Signum: '<S57>/Sign1' */
 
-      /* Switch: '<S111>/Switch' incorporates:
-       *  Bias: '<S111>/Bias'
-       *  Bias: '<S111>/Bias1'
-       *  Gain: '<S111>/Gain'
-       *  Product: '<S111>/Divide1'
+      /* Switch: '<S57>/Switch' incorporates:
+       *  Bias: '<S57>/Bias'
+       *  Bias: '<S57>/Bias1'
+       *  Gain: '<S57>/Gain'
+       *  Product: '<S57>/Divide1'
        */
       Infinion_B.Switch = ((rtb_Abs1 + Infinion_P.Bias_Bias_n) *
                            Infinion_P.Gain_Gain_g + Infinion_P.Bias1_Bias_a) *
         rtb_Sum_f_idx_0;
     } else {
-      /* Switch: '<S111>/Switch' */
+      /* Switch: '<S57>/Switch' */
       Infinion_B.Switch = rtb_Sum_f_idx_0;
     }
 
-    /* End of Switch: '<S111>/Switch' */
+    /* End of Switch: '<S57>/Switch' */
 
-    /* UnitConversion: '<S119>/Unit Conversion' */
+    /* UnitConversion: '<S65>/Unit Conversion' */
     /* Unit Conversion - from: deg to: rad
        Expression: output = (0.0174533*input) + (0) */
     rtb_Sum_f_idx_0 = 0.017453292519943295 * Infinion_B.Switch;
 
-    /* Trigonometry: '<S120>/Trigonometric Function1' */
+    /* Trigonometry: '<S66>/Trigonometric Function1' */
     rtb_Abs1 = std::sin(rtb_Sum_f_idx_0);
 
-    /* Product: '<S120>/Product1' incorporates:
-     *  Product: '<S117>/Product2'
+    /* Product: '<S66>/Product1' incorporates:
+     *  Product: '<S63>/Product2'
      */
-    rtb_sqrt *= rtb_sqrt;
+    TmpSignalConversionAtSFunctionI = rtb_sqrt * rtb_sqrt;
 
-    /* Sum: '<S120>/Sum1' incorporates:
-     *  Constant: '<S120>/Constant'
-     *  Product: '<S120>/Product1'
+    /* Sum: '<S66>/Sum1' incorporates:
+     *  Constant: '<S66>/Constant'
+     *  Product: '<S66>/Product1'
      */
-    rtb_Abs1 = Infinion_P.Constant_Value_l - rtb_sqrt * rtb_Abs1 * rtb_Abs1;
+    rtb_Abs1 = Infinion_P.Constant_Value_l - TmpSignalConversionAtSFunctionI *
+      rtb_Abs1 * rtb_Abs1;
 
-    /* Product: '<S117>/Product1' incorporates:
-     *  Constant: '<S117>/Constant1'
-     *  Sqrt: '<S117>/sqrt'
+    /* Product: '<S63>/Product1' incorporates:
+     *  Constant: '<S63>/Constant1'
+     *  Sqrt: '<S63>/sqrt'
      */
-    rtb_UnitConversion_a = Infinion_P.Constant1_Value_k / std::sqrt(rtb_Abs1);
+    rtb_Abs = Infinion_P.Constant1_Value_k / std::sqrt(rtb_Abs1);
 
-    /* Trigonometry: '<S117>/Trigonometric Function1' incorporates:
-     *  Constant: '<S117>/Constant'
-     *  Constant: '<S117>/Constant2'
-     *  Product: '<S117>/Product3'
-     *  Sum: '<S117>/Sum1'
+    /* Trigonometry: '<S63>/Trigonometric Function1' incorporates:
+     *  Constant: '<S63>/Constant'
+     *  Constant: '<S63>/Constant2'
+     *  Product: '<S63>/Product3'
+     *  Sum: '<S63>/Sum1'
      */
     Infinion_B.TrigonometricFunction1 = rt_atan2d_snf
-      (Infinion_P.Constant2_Value_d, (Infinion_P.Constant_Value_h - rtb_sqrt) *
-       rtb_UnitConversion_a / rtb_Abs1);
+      (Infinion_P.Constant2_Value_d, (Infinion_P.Constant_Value_h -
+        TmpSignalConversionAtSFunctionI) * rtb_Abs / rtb_Abs1);
 
-    /* Trigonometry: '<S117>/Trigonometric Function2' incorporates:
-     *  Constant: '<S117>/Constant3'
-     *  Product: '<S117>/Product4'
-     *  Trigonometry: '<S117>/Trigonometric Function'
+    /* Trigonometry: '<S63>/Trigonometric Function2' incorporates:
+     *  Constant: '<S63>/Constant3'
+     *  Product: '<S63>/Product4'
+     *  Trigonometry: '<S63>/Trigonometric Function'
      */
     Infinion_B.TrigonometricFunction2 = rt_atan2d_snf(Infinion_P.Constant3_Value,
-      rtb_UnitConversion_a * std::cos(rtb_Sum_f_idx_0));
+      rtb_Abs * std::cos(rtb_Sum_f_idx_0));
 
-    /* Switch: '<S102>/Switch1' incorporates:
-     *  Constant: '<S102>/Constant'
-     *  Constant: '<S102>/Constant1'
+    /* Switch: '<S48>/Switch1' incorporates:
+     *  Constant: '<S48>/Constant'
+     *  Constant: '<S48>/Constant1'
      */
     if (rtb_Compare_f) {
-      rtb_Abs1 = Infinion_P.Constant_Value;
+      rtb_Sum_f_idx_0 = Infinion_P.Constant_Value;
     } else {
-      rtb_Abs1 = Infinion_P.Constant1_Value;
+      rtb_Sum_f_idx_0 = Infinion_P.Constant1_Value;
     }
 
-    /* End of Switch: '<S102>/Switch1' */
+    /* End of Switch: '<S48>/Switch1' */
 
-    /* Sum: '<S102>/Sum' incorporates:
-     *  Constant: '<S7>/ref_position'
+    /* Sum: '<S48>/Sum' incorporates:
+     *  Constant: '<S4>/ref_position'
      */
-    rtb_sqrt = rtb_Abs1 + Infinion_P.FlatEarthtoLLA_LL0[1];
+    rtb_sqrt = rtb_Sum_f_idx_0 + Infinion_P.FlatEarthtoLLA_LL0[1];
 
-    /* Switch: '<S112>/Switch' incorporates:
-     *  Abs: '<S112>/Abs'
-     *  Constant: '<S116>/Constant'
-     *  RelationalOperator: '<S116>/Compare'
+    /* Switch: '<S58>/Switch' incorporates:
+     *  Abs: '<S58>/Abs'
+     *  Constant: '<S62>/Constant'
+     *  RelationalOperator: '<S62>/Compare'
      */
     if (std::abs(rtb_sqrt) > Infinion_P.CompareToConstant_const_c) {
-      /* Switch: '<S112>/Switch' incorporates:
-       *  Bias: '<S112>/Bias'
-       *  Bias: '<S112>/Bias1'
-       *  Constant: '<S112>/Constant2'
-       *  Math: '<S112>/Math Function1'
+      /* Switch: '<S58>/Switch' incorporates:
+       *  Bias: '<S58>/Bias'
+       *  Bias: '<S58>/Bias1'
+       *  Constant: '<S58>/Constant2'
+       *  Math: '<S58>/Math Function1'
        */
       Infinion_B.Switch_i = rt_modd_snf(rtb_sqrt + Infinion_P.Bias_Bias_f,
         Infinion_P.Constant2_Value_g) + Infinion_P.Bias1_Bias_b;
     } else {
-      /* Switch: '<S112>/Switch' */
+      /* Switch: '<S58>/Switch' */
       Infinion_B.Switch_i = rtb_sqrt;
     }
 
-    /* End of Switch: '<S112>/Switch' */
+    /* End of Switch: '<S58>/Switch' */
   }
 
-  /* Sum: '<S7>/Sum' incorporates:
+  /* Sum: '<S4>/Sum' incorporates:
    *  Integrator: '<S1>/xe,ye,ze'
-   *  Product: '<S103>/rad lat'
-   *  Product: '<S103>/x*cos'
-   *  Product: '<S103>/y*sin'
-   *  Sum: '<S103>/Sum'
-   *  UnitConversion: '<S104>/Unit Conversion'
+   *  Product: '<S49>/rad lat'
+   *  Product: '<S49>/x*cos'
+   *  Product: '<S49>/y*sin'
+   *  Sum: '<S49>/Sum'
+   *  UnitConversion: '<S50>/Unit Conversion'
    */
   /* Unit Conversion - from: rad to: deg
      Expression: output = (57.2958*input) + (0) */
@@ -3942,38 +3762,38 @@ void InfinionModelClass::step()
                      Infinion_X.xeyeze_CSTATE[1] * Infinion_B.SinCos_o1) *
     Infinion_B.TrigonometricFunction1 * 57.295779513082323 + Infinion_B.Switch;
 
-  /* Switch: '<S108>/Switch' incorporates:
-   *  Abs: '<S108>/Abs'
-   *  Bias: '<S108>/Bias'
-   *  Bias: '<S108>/Bias1'
-   *  Constant: '<S108>/Constant2'
-   *  Constant: '<S109>/Constant'
-   *  Math: '<S108>/Math Function1'
-   *  RelationalOperator: '<S109>/Compare'
+  /* Switch: '<S54>/Switch' incorporates:
+   *  Abs: '<S54>/Abs'
+   *  Bias: '<S54>/Bias'
+   *  Bias: '<S54>/Bias1'
+   *  Constant: '<S54>/Constant2'
+   *  Constant: '<S55>/Constant'
+   *  Math: '<S54>/Math Function1'
+   *  RelationalOperator: '<S55>/Compare'
    */
   if (std::abs(rtb_Sum_f_idx_0) > Infinion_P.CompareToConstant_const_e) {
     rtb_Sum_f_idx_0 = rt_modd_snf(rtb_Sum_f_idx_0 + Infinion_P.Bias_Bias_m,
       Infinion_P.Constant2_Value_e) + Infinion_P.Bias1_Bias_j;
   }
 
-  /* End of Switch: '<S108>/Switch' */
+  /* End of Switch: '<S54>/Switch' */
 
-  /* Abs: '<S105>/Abs1' */
+  /* Abs: '<S51>/Abs1' */
   rtb_sqrt = std::abs(rtb_Sum_f_idx_0);
 
-  /* Switch: '<S105>/Switch' incorporates:
-   *  Bias: '<S105>/Bias'
-   *  Bias: '<S105>/Bias1'
-   *  Constant: '<S101>/Constant'
-   *  Constant: '<S101>/Constant1'
-   *  Constant: '<S107>/Constant'
-   *  Gain: '<S105>/Gain'
-   *  Product: '<S105>/Divide1'
-   *  RelationalOperator: '<S107>/Compare'
-   *  Switch: '<S101>/Switch1'
+  /* RelationalOperator: '<S53>/Compare' incorporates:
+   *  Constant: '<S53>/Constant'
    */
-  if (rtb_sqrt > Infinion_P.CompareToConstant_const_p) {
-    /* Signum: '<S105>/Sign1' */
+  rtb_Compare_f = (rtb_sqrt > Infinion_P.CompareToConstant_const_p);
+
+  /* Switch: '<S51>/Switch' incorporates:
+   *  Bias: '<S51>/Bias'
+   *  Bias: '<S51>/Bias1'
+   *  Gain: '<S51>/Gain'
+   *  Product: '<S51>/Divide1'
+   */
+  if (rtb_Compare_f) {
+    /* Signum: '<S51>/Sign1' */
     if (rtb_Sum_f_idx_0 < 0.0) {
       rtb_Sum_f_idx_0 = -1.0;
     } else if (rtb_Sum_f_idx_0 > 0.0) {
@@ -3984,639 +3804,92 @@ void InfinionModelClass::step()
       rtb_Sum_f_idx_0 = (rtNaN);
     }
 
-    /* End of Signum: '<S105>/Sign1' */
+    /* End of Signum: '<S51>/Sign1' */
     rtb_Sum_f_idx_0 *= (rtb_sqrt + Infinion_P.Bias_Bias) * Infinion_P.Gain_Gain
       + Infinion_P.Bias1_Bias;
-    rtb_Abs1 = Infinion_P.Constant_Value_o;
-  } else {
-    rtb_Abs1 = Infinion_P.Constant1_Value_d;
   }
 
-  /* End of Switch: '<S105>/Switch' */
+  /* End of Switch: '<S51>/Switch' */
 
-  /* Sum: '<Root>/Sum' incorporates:
+  /* SignalConversion generated from: '<S14>/ SFunction ' incorporates:
    *  Constant: '<Root>/HNLLat'
+   *  Sum: '<Root>/Sum'
    */
-  rtb_sqrt = Infinion_P.HNLLat_Value + rtb_Sum_f_idx_0;
+  TmpSignalConversionAtSFunctionI = Infinion_P.HNLLat_Value + rtb_Sum_f_idx_0;
 
-  /* Sum: '<S101>/Sum' incorporates:
+  /* Switch: '<S47>/Switch1' incorporates:
+   *  Constant: '<S47>/Constant'
+   *  Constant: '<S47>/Constant1'
+   */
+  if (rtb_Compare_f) {
+    rtb_Sum_f_idx_0 = Infinion_P.Constant_Value_o;
+  } else {
+    rtb_Sum_f_idx_0 = Infinion_P.Constant1_Value_d;
+  }
+
+  /* End of Switch: '<S47>/Switch1' */
+
+  /* Sum: '<S47>/Sum' incorporates:
    *  Integrator: '<S1>/xe,ye,ze'
-   *  Product: '<S103>/rad long '
-   *  Product: '<S103>/x*sin'
-   *  Product: '<S103>/y*cos'
-   *  Sum: '<S103>/Sum1'
-   *  Sum: '<S7>/Sum'
-   *  UnitConversion: '<S104>/Unit Conversion'
+   *  Product: '<S49>/rad long '
+   *  Product: '<S49>/x*sin'
+   *  Product: '<S49>/y*cos'
+   *  Sum: '<S49>/Sum1'
+   *  Sum: '<S4>/Sum'
+   *  UnitConversion: '<S50>/Unit Conversion'
    */
-  rtb_Sum_f_idx_0 = ((Infinion_X.xeyeze_CSTATE[0] * Infinion_B.SinCos_o1 +
+  rtb_Sum_f_idx_0 += (Infinion_X.xeyeze_CSTATE[0] * Infinion_B.SinCos_o1 +
                       Infinion_X.xeyeze_CSTATE[1] * Infinion_B.SinCos_o2) *
-                     Infinion_B.TrigonometricFunction2 * 57.295779513082323 +
-                     Infinion_B.Switch_i) + rtb_Abs1;
+    Infinion_B.TrigonometricFunction2 * 57.295779513082323 + Infinion_B.Switch_i;
 
-  /* Switch: '<S106>/Switch' incorporates:
-   *  Abs: '<S106>/Abs'
-   *  Bias: '<S106>/Bias'
-   *  Bias: '<S106>/Bias1'
-   *  Constant: '<S106>/Constant2'
-   *  Constant: '<S110>/Constant'
-   *  Math: '<S106>/Math Function1'
-   *  RelationalOperator: '<S110>/Compare'
+  /* Switch: '<S52>/Switch' incorporates:
+   *  Abs: '<S52>/Abs'
+   *  Bias: '<S52>/Bias'
+   *  Bias: '<S52>/Bias1'
+   *  Constant: '<S52>/Constant2'
+   *  Constant: '<S56>/Constant'
+   *  Math: '<S52>/Math Function1'
+   *  RelationalOperator: '<S56>/Compare'
    */
   if (std::abs(rtb_Sum_f_idx_0) > Infinion_P.CompareToConstant_const_h) {
     rtb_Sum_f_idx_0 = rt_modd_snf(rtb_Sum_f_idx_0 + Infinion_P.Bias_Bias_k,
       Infinion_P.Constant2_Value_h) + Infinion_P.Bias1_Bias_g;
   }
 
-  /* End of Switch: '<S106>/Switch' */
-
-  /* Sum: '<Root>/Sum1' incorporates:
-   *  Constant: '<Root>/HNLLong'
-   */
-  rtb_Abs1 = Infinion_P.HNLLong_Value + rtb_Sum_f_idx_0;
-
-  /* Gain: '<S6>/1//2rhoV^2' incorporates:
-   *  Constant: '<Root>/Constant2'
-   *  Product: '<S6>/Product2'
-   */
-  rtb_Sum_f_idx_0 = rtb_jxi_h * Infinion_P.Constant2_Value_n *
-    Infinion_P.u2rhoV2_Gain;
-
-  /* Gain: '<S4>/reference area' */
-  rtb_referencearea = Infinion_P.AerodynamicForcesandMoments_S * rtb_Sum_f_idx_0;
+  /* End of Switch: '<S52>/Switch' */
   Infinion_emxInit_char_T(&s, 2);
   if (rtmIsMajorTimeStep((&Infinion_M))) {
     /* MATLAB Function: '<Root>/Read Aileron' */
     Infinion_readfile(s);
-    latestData = Infinion_lastStr2double(s);
+    rtb_sqrt = Infinion_lastStr2double(s);
+    Infinion_B.aileron = rtb_sqrt * 0.2618 / 100.0;
 
-    /* PreLookup: '<S2>/(deltal)' incorporates:
-     *  MATLAB Function: '<Root>/Read Aileron'
-     *  UnitConversion: '<S41>/Unit Conversion'
-     */
-    /* Unit Conversion - from: rad to: deg
-       Expression: output = (57.2958*input) + (0) */
-    Infinion_B.idxdelL = plook_s32dd_binxp(latestData * 0.2618 / 100.0 *
-      57.295779513082323, Infinion_P.deltal_BreakpointsData, 8U,
-      &Infinion_B.fdelL, &Infinion_DW.deltal_DWORK1);
-  }
-
-  /* Product: '<S9>/Product1' incorporates:
-   *  Constant: '<Root>/Constant1'
-   *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S126>/Product'
-   *  Sqrt: '<S9>/vt'
-   *  Sum: '<S126>/Sum'
-   */
-  rtb_UnitConversion_a = std::sqrt((Infinion_X.ubvbwb_CSTATE[0] *
-    Infinion_X.ubvbwb_CSTATE[0] + rtb_jxi) + rtb_ixk) /
-    Infinion_P.Constant1_Value_g;
-
-  /* PreLookup: '<S2>/(Mach)' */
-  rtb_idxh = plook_s32dd_binxp(rtb_UnitConversion_a,
-    Infinion_P.Mach_BreakpointsData, 2U, &rtb_ixk, &Infinion_DW.Mach_DWORK1);
-
-  /* PreLookup: '<S2>/(altitude)' incorporates:
-   *  Integrator: '<S1>/xe,ye,ze'
-   */
-  rtb_idxm = plook_s32dd_binxp(Infinion_X.xeyeze_CSTATE[2],
-    Infinion_P.altitude_BreakpointsData, 2U, &rtb_jxi,
-    &Infinion_DW.altitude_DWORK1);
-
-  /* Interpolation_n-D: '<S36>/clroll' */
-  frac[0] = Infinion_B.fdelL;
-  frac[1] = rtb_ixk;
-  frac[2] = rtb_jxi;
-  bpIndex[0] = Infinion_B.idxdelL;
-  bpIndex[1] = rtb_idxh;
-  bpIndex[2] = rtb_idxm;
-
-  /* UnitConversion: '<S39>/Unit Conversion' incorporates:
-   *  UnitConversion: '<S5>/Unit Conversion'
-   */
-  /* Unit Conversion - from: rad to: deg
-     Expression: output = (57.2958*input) + (0) */
-  rtb_Sum_f_idx_1 = 57.295779513082323 * Gain;
-  rtb_jxi_h = rtb_Sum_f_idx_1;
-
-  /* PreLookup: '<S2>/(alpha)' incorporates:
-   *  UnitConversion: '<S39>/Unit Conversion'
-   */
-  rtb_idxa = plook_s32dd_binxp(rtb_Sum_f_idx_1, Infinion_P.alpha_BreakpointsData,
-    11U, &rtb_jxi_h, &Infinion_DW.alpha_DWORK1);
-
-  /* Interpolation_n-D: '<S36>/CmYaw ' */
-  frac_0[0] = rtb_jxi_h;
-  frac_0[1] = Infinion_B.fdelL;
-  frac_0[2] = rtb_ixk;
-  frac_0[3] = rtb_jxi;
-  bpIndex_0[0] = rtb_idxa;
-  bpIndex_0[1] = Infinion_B.idxdelL;
-  bpIndex_0[2] = rtb_idxh;
-  bpIndex_0[3] = rtb_idxm;
-  if (rtmIsMajorTimeStep((&Infinion_M))) {
     /* MATLAB Function: '<Root>/Read Elevator' */
     Infinion_readfile_n(s);
-    latestData = Infinion_lastStr2double(s);
+    rtb_sqrt = Infinion_lastStr2double(s);
+    Infinion_B.elevator = rtb_sqrt * 0.2618 / 100.0;
 
-    /* PreLookup: '<S2>/(delta)' incorporates:
-     *  Gain: '<S2>/Gain1'
-     *  MATLAB Function: '<Root>/Read Elevator'
-     *  UnitConversion: '<S40>/Unit Conversion'
-     */
-    /* Unit Conversion - from: rad to: deg
-       Expression: output = (57.2958*input) + (0) */
-    Infinion_B.idxde = plook_s32dd_binxp(latestData * 0.2618 / 100.0 *
-      Infinion_P.Gain1_Gain * 57.295779513082323,
-      Infinion_P.delta_BreakpointsData, 6U, &Infinion_B.fde,
-      &Infinion_DW.delta_DWORK1);
-  }
-
-  /* Interpolation_n-D: '<S37>/DCDI' */
-  frac_1[0] = rtb_jxi_h;
-  frac_1[1] = rtb_ixk;
-  frac_1[2] = rtb_jxi;
-  frac_1[3] = Infinion_B.fde;
-  bpIndex_1[0] = rtb_idxa;
-  bpIndex_1[1] = rtb_idxh;
-  bpIndex_1[2] = rtb_idxm;
-  bpIndex_1[3] = Infinion_B.idxde;
-
-  /* Interpolation_n-D: '<S37>/DCL' */
-  frac_2[0] = Infinion_B.fde;
-  frac_2[1] = rtb_ixk;
-  frac_2[2] = rtb_jxi;
-  bpIndex_2[0] = Infinion_B.idxde;
-  bpIndex_2[1] = rtb_idxh;
-  bpIndex_2[2] = rtb_idxm;
-
-  /* Interpolation_n-D: '<S37>/DCm' */
-  frac_3[0] = Infinion_B.fde;
-  frac_3[1] = rtb_ixk;
-  frac_3[2] = rtb_jxi;
-  bpIndex_3[0] = Infinion_B.idxde;
-  bpIndex_3[1] = rtb_idxh;
-  bpIndex_3[2] = rtb_idxm;
-  if (rtmIsMajorTimeStep((&Infinion_M))) {
     /* MATLAB Function: '<Root>/Read Rudder' */
     Infinion_readfile_a(s);
-    latestData = Infinion_lastStr2double(s);
-
-    /* PreLookup: '<S2>/(deltaR)' incorporates:
-     *  Gain: '<S2>/Gain2'
-     *  MATLAB Function: '<Root>/Read Rudder'
-     *  UnitConversion: '<S42>/Unit Conversion'
-     */
-    /* Unit Conversion - from: rad to: deg
-       Expression: output = (57.2958*input) + (0) */
-    Infinion_B.idxdelR = plook_s32dd_binxp(latestData * 0.2618 / 100.0 *
-      Infinion_P.Gain2_Gain * 57.295779513082323,
-      Infinion_P.deltaR_BreakpointsData, 4U, &Infinion_B.fdelR,
-      &Infinion_DW.deltaR_DWORK1);
+    rtb_sqrt = Infinion_lastStr2double(s);
+    Infinion_B.rudder = rtb_sqrt * 0.2618 / 100.0;
   }
 
-  /* Interpolation_n-D: '<S38>/DCm (rudder)' */
-  frac_4[0] = Infinion_B.fdelR;
-  frac_4[1] = rtb_ixk;
-  frac_4[2] = rtb_jxi;
-  bpIndex_4[0] = Infinion_B.idxdelR;
-  bpIndex_4[1] = rtb_idxh;
-  bpIndex_4[2] = rtb_idxm;
-
-  /* Sum: '<S2>/Sum' incorporates:
-   *  Constant: '<S36>/Constant1'
-   *  Constant: '<S37>/Constant1'
-   *  Constant: '<S38>/Constant1'
-   *  Interpolation_n-D: '<S36>/CmYaw '
-   *  Interpolation_n-D: '<S36>/clroll'
-   *  Interpolation_n-D: '<S37>/DCDI'
-   *  Interpolation_n-D: '<S37>/DCL'
-   *  Interpolation_n-D: '<S37>/DCm'
-   *  Interpolation_n-D: '<S38>/DCm (rudder)'
-   */
-  tmp[0] = Infinion_P.Constant1_Value_p;
-  tmp[1] = Infinion_P.Constant1_Value_p;
-  tmp[2] = Infinion_P.Constant1_Value_p;
-  tmp[3] = intrp3d_s32dl_pw(bpIndex, frac, Infinion_P.clroll_Table,
-    Infinion_P.clroll_dimSize);
-  tmp[4] = Infinion_P.Constant1_Value_p;
-  tmp[5] = intrp4d_s32dl_pw(bpIndex_0, frac_0, Infinion_P.CmYaw_Table,
-    Infinion_P.CmYaw_dimSize);
-  tmp_0[0] = intrp4d_s32dl_pw(bpIndex_1, frac_1, Infinion_P.DCDI_Table,
-    Infinion_P.DCDI_dimSize);
-  tmp_0[1] = Infinion_P.Constant1_Value_l;
-  tmp_0[2] = intrp3d_s32dl_pw(bpIndex_2, frac_2, Infinion_P.DCL_Table,
-    Infinion_P.DCL_dimSize);
-  tmp_0[3] = Infinion_P.Constant1_Value_l;
-  tmp_0[4] = intrp3d_s32dl_pw(bpIndex_3, frac_3, Infinion_P.DCm_Table,
-    Infinion_P.DCm_dimSize);
-  tmp_0[5] = Infinion_P.Constant1_Value_l;
-  tmp_1[0] = Infinion_P.Constant1_Value_j;
-  tmp_1[1] = Infinion_P.Constant1_Value_j;
-  tmp_1[2] = Infinion_P.Constant1_Value_j;
-  tmp_1[3] = Infinion_P.Constant1_Value_j;
-  tmp_1[4] = Infinion_P.Constant1_Value_j;
-  tmp_1[5] = intrp3d_s32dl_pw(bpIndex_4, frac_4, Infinion_P.DCmrudder_Table,
-    Infinion_P.DCmrudder_dimSize);
-  for (i = 0; i < 6; i++) {
-    rtb_Sum_j[i] = (tmp[i] + tmp_0[i]) + tmp_1[i];
-  }
-
-  /* End of Sum: '<S2>/Sum' */
-
-  /* Product: '<S4>/Product' incorporates:
-   *  Gain: '<S4>/coefAdjust'
-   */
-  frac[0] = Infinion_P.coefAdjust_Gain[0] * rtb_Sum_j[0] * rtb_referencearea;
-  frac[1] = Infinion_P.coefAdjust_Gain[1] * rtb_Sum_j[1] * rtb_referencearea;
-  frac[2] = Infinion_P.coefAdjust_Gain[2] * rtb_Sum_j[2] * rtb_referencearea;
-
-  /* Interpolation_n-D: '<S2>/Xcp' */
-  frac_5[0] = rtb_jxi_h;
-  frac_5[1] = rtb_ixk;
-  frac_5[2] = rtb_jxi;
-  bpIndex_5[0] = rtb_idxa;
-  bpIndex_5[1] = rtb_idxh;
-  bpIndex_5[2] = rtb_idxm;
-
-  /* Gain: '<S2>/Gain' incorporates:
-   *  Interpolation_n-D: '<S2>/Xcp'
-   */
-  rtb_jxi_h = Infinion_P.Gain_Gain_e * intrp3d_s32dl_pw(bpIndex_5, frac_5,
-    Infinion_P.Xcp_Table, Infinion_P.Xcp_dimSize);
-
-  /* Product: '<S4>/Product3' incorporates:
-   *  Constant: '<S4>/Constant'
-   *  Product: '<S4>/Product1'
-   */
-  rtb_Sum_d_idx_0_tmp = Infinion_P.AerodynamicForcesandMoments_b *
-    rtb_referencearea;
-
-  /* Product: '<S4>/Product1' incorporates:
-   *  Constant: '<S4>/Constant1'
-   *  Product: '<S4>/Product3'
-   */
-  rtb_Sum_d_idx_1 = Infinion_P.AerodynamicForcesandMoments_cba *
-    rtb_referencearea * rtb_Sum_j[4];
-
-  /* Product: '<S80>/Product' incorporates:
+  /* Product: '<S5>/Product' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S8>/Product'
    */
-  latestData = Infinion_X.ubvbwb_CSTATE[1] / Airspeed_tmp;
-  rtb_referencearea = latestData;
+  u0 = Infinion_X.ubvbwb_CSTATE[1] / Airspeed;
 
-  /* Trigonometry: '<S80>/Sideslip' incorporates:
-   *  Product: '<S80>/Product'
-   */
-  if (latestData > 1.0) {
-    rtb_referencearea = 1.0;
-  } else if (latestData < -1.0) {
-    rtb_referencearea = -1.0;
+  /* Trigonometry: '<S5>/Sideslip' */
+  if (u0 > 1.0) {
+    u0 = 1.0;
+  } else if (u0 < -1.0) {
+    u0 = -1.0;
   }
 
-  /* SignalConversion generated from: '<S79>/sincos' incorporates:
-   *  Trigonometry: '<S80>/Sideslip'
-   */
-  rtb_ixk = std::asin(rtb_referencearea);
+  rtb_sqrt = std::asin(u0);
 
-  /* Trigonometry: '<S79>/sincos' incorporates:
-   *  Trigonometry: '<S49>/sincos'
-   *  Trigonometry: '<S8>/Incidence'
-   */
-  accXFile = std::cos(rtb_phidot_tmp);
-  rtb_referencearea = accXFile;
-  accYFile = std::sin(rtb_phidot_tmp);
-  rtb_jxi = std::cos(rtb_ixk);
-  rtb_ixk = std::sin(rtb_ixk);
-
-  /* Product: '<S81>/u(3)*u(4)' incorporates:
-   *  Trigonometry: '<S79>/sincos'
-   */
-  Infinion_B.VectorConcatenate[0] = accXFile * rtb_jxi;
-
-  /* UnaryMinus: '<S84>/Unary Minus' incorporates:
-   *  Product: '<S84>/u(2)*u(3)'
-   *  Trigonometry: '<S79>/sincos'
-   */
-  Infinion_B.VectorConcatenate[1] = -(accXFile * rtb_ixk);
-
-  /* UnaryMinus: '<S87>/Unary Minus' incorporates:
-   *  Trigonometry: '<S79>/sincos'
-   */
-  Infinion_B.VectorConcatenate[2] = -accYFile;
-
-  /* SignalConversion generated from: '<S90>/Vector Concatenate' */
-  Infinion_B.VectorConcatenate[3] = rtb_ixk;
-
-  /* SignalConversion generated from: '<S90>/Vector Concatenate' */
-  Infinion_B.VectorConcatenate[4] = rtb_jxi;
-  if (rtmIsMajorTimeStep((&Infinion_M))) {
-    /* Constant: '<S88>/Constant' */
-    Infinion_B.VectorConcatenate[5] = Infinion_P.Constant_Value_lx;
-  }
-
-  /* Product: '<S83>/u(1)*u(4)' incorporates:
-   *  Trigonometry: '<S79>/sincos'
-   */
-  Infinion_B.VectorConcatenate[6] = accYFile * rtb_jxi;
-
-  /* UnaryMinus: '<S86>/Unary Minus' incorporates:
-   *  Product: '<S86>/u(1)*u(2)'
-   *  Trigonometry: '<S79>/sincos'
-   */
-  Infinion_B.VectorConcatenate[7] = -(accYFile * rtb_ixk);
-
-  /* SignalConversion generated from: '<S90>/Vector Concatenate' incorporates:
-   *  Trigonometry: '<S79>/sincos'
-   */
-  Infinion_B.VectorConcatenate[8] = accXFile;
-
-  /* Gain: '<S3>/reference area' */
-  rtb_Sum_f_idx_0 *= Infinion_P.AerodynamicForcesandMoments_S_g;
-
-  /* UnitConversion: '<S5>/Unit Conversion' */
-  /* Unit Conversion - from: rad to: deg
-     Expression: output = (57.2958*input) + (0) */
-  rtb_phidot = rtb_Sum_f_idx_1;
-
-  /* PreLookup: '<Root>/(alpha)' */
-  rtb_idxa = plook_s32dd_binxp(rtb_Sum_f_idx_1,
-    Infinion_P.alpha_BreakpointsData_d, 11U, &rtb_phidot,
-    &Infinion_DW.alpha_DWORK1_n);
-
-  /* PreLookup: '<Root>/(Mach)' */
-  rtb_idxm = plook_s32dd_binxp(rtb_UnitConversion_a,
-    Infinion_P.Mach_BreakpointsData_e, 2U, &rtb_UnitConversion_a,
-    &Infinion_DW.Mach_DWORK1_m);
-
-  /* PreLookup: '<Root>/(altitude)' incorporates:
-   *  Integrator: '<S1>/xe,ye,ze'
-   */
-  rtb_idxh = plook_s32dd_binxp(Infinion_X.xeyeze_CSTATE[2],
-    Infinion_P.altitude_BreakpointsData_i, 2U, &rtb_referencearea,
-    &Infinion_DW.altitude_DWORK1_p);
-
-  /* Interpolation_n-D: '<Root>/CD (coefficient of drag)' */
-  frac_6[0] = rtb_phidot;
-  frac_6[1] = rtb_UnitConversion_a;
-  frac_6[2] = rtb_referencearea;
-  bpIndex_6[0] = rtb_idxa;
-  bpIndex_6[1] = rtb_idxm;
-  bpIndex_6[2] = rtb_idxh;
-
-  /* Trigonometry: '<S8>/Sideslip' */
-  if (latestData > 1.0) {
-    latestData = 1.0;
-  } else if (latestData < -1.0) {
-    latestData = -1.0;
-  }
-
-  latestData = std::asin(latestData);
-
-  /* End of Trigonometry: '<S8>/Sideslip' */
-
-  /* Interpolation_n-D: '<Root>/CL (coeffcient of lift)' */
-  frac_7[0] = rtb_phidot;
-  frac_7[1] = rtb_UnitConversion_a;
-  frac_7[2] = rtb_referencearea;
-  bpIndex_7[0] = rtb_idxa;
-  bpIndex_7[1] = rtb_idxm;
-  bpIndex_7[2] = rtb_idxh;
-
-  /* Product: '<S3>/Product' incorporates:
-   *  Constant: '<Root>/Constant5'
-   *  Gain: '<Root>/Gain1'
-   *  Gain: '<S3>/coefAdjust'
-   *  Interpolation_n-D: '<Root>/CD (coefficient of drag)'
-   *  Interpolation_n-D: '<Root>/CL (coeffcient of lift)'
-   *  Product: '<Root>/Product2'
-   */
-  frac_5[0] = Infinion_P.coefAdjust_Gain_h[0] * intrp3d_s32dl_pw(bpIndex_6,
-    frac_6, Infinion_P.CDcoefficientofdrag_Table,
-    Infinion_P.CDcoefficientofdrag_dimSize) * rtb_Sum_f_idx_0;
-  frac_5[1] = Infinion_P.Constant5_Value * latestData *
-    Infinion_P.coefAdjust_Gain_h[1] * rtb_Sum_f_idx_0;
-  frac_5[2] = Infinion_P.Gain1_Gain_e * intrp3d_s32dl_pw(bpIndex_7, frac_7,
-    Infinion_P.CLcoeffcientoflift_Table, Infinion_P.CLcoeffcientoflift_dimSize) *
-    Infinion_P.coefAdjust_Gain_h[2] * rtb_Sum_f_idx_0;
-
-  /* Product: '<S50>/Product' incorporates:
-   *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S63>/Product'
-   *  Product: '<S63>/Product1'
-   *  Product: '<S63>/Product2'
-   *  Sqrt: '<S50>/Airspeed'
-   *  Sum: '<S63>/Sum'
-   */
-  rtb_Sum_f_idx_1 = Infinion_X.ubvbwb_CSTATE[1] / std::sqrt
-    ((Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.ubvbwb_CSTATE[0] +
-      Infinion_X.ubvbwb_CSTATE[1] * Infinion_X.ubvbwb_CSTATE[1]) +
-     Infinion_X.ubvbwb_CSTATE[2] * Infinion_X.ubvbwb_CSTATE[2]);
-
-  /* Trigonometry: '<S50>/Sideslip' */
-  if (rtb_Sum_f_idx_1 > 1.0) {
-    rtb_Sum_f_idx_1 = 1.0;
-  } else if (rtb_Sum_f_idx_1 < -1.0) {
-    rtb_Sum_f_idx_1 = -1.0;
-  }
-
-  /* SignalConversion generated from: '<S49>/sincos' incorporates:
-   *  SignalConversion generated from: '<S64>/sincos'
-   *  Trigonometry: '<S50>/Sideslip'
-   */
-  rtb_Sum_f_idx_1 = std::asin(rtb_Sum_f_idx_1);
-
-  /* Trigonometry: '<S49>/sincos' incorporates:
-   *  SignalConversion generated from: '<S49>/sincos'
-   *  Trigonometry: '<S64>/sincos'
-   */
-  rollFile = std::cos(rtb_Sum_f_idx_1);
-  pitchFile = std::sin(rtb_Sum_f_idx_1);
-
-  /* Product: '<S51>/u(3)*u(4)' incorporates:
-   *  Product: '<S66>/u(3)*u(4)'
-   *  Trigonometry: '<S49>/sincos'
-   */
-  rtb_jxi = accXFile * rollFile;
-  Infinion_B.VectorConcatenate_m[0] = rtb_jxi;
-
-  /* UnaryMinus: '<S54>/Unary Minus' incorporates:
-   *  Product: '<S54>/u(2)*u(3)'
-   *  Trigonometry: '<S49>/sincos'
-   *  UnaryMinus: '<S69>/Unary Minus'
-   */
-  rtb_ixk = -(accXFile * pitchFile);
-  Infinion_B.VectorConcatenate_m[1] = rtb_ixk;
-
-  /* UnaryMinus: '<S57>/Unary Minus' */
-  Infinion_B.VectorConcatenate_m[2] = -accYFile;
-
-  /* SignalConversion generated from: '<S60>/Vector Concatenate' incorporates:
-   *  Trigonometry: '<S49>/sincos'
-   */
-  Infinion_B.VectorConcatenate_m[3] = pitchFile;
-
-  /* SignalConversion generated from: '<S60>/Vector Concatenate' incorporates:
-   *  Trigonometry: '<S49>/sincos'
-   */
-  Infinion_B.VectorConcatenate_m[4] = rollFile;
-  if (rtmIsMajorTimeStep((&Infinion_M))) {
-    /* Constant: '<S58>/Constant' */
-    Infinion_B.VectorConcatenate_m[5] = Infinion_P.Constant_Value_e;
-  }
-
-  /* Product: '<S53>/u(1)*u(4)' incorporates:
-   *  Product: '<S68>/u(1)*u(4)'
-   *  Trigonometry: '<S49>/sincos'
-   */
-  accZFile = accYFile * rollFile;
-  Infinion_B.VectorConcatenate_m[6] = accZFile;
-
-  /* UnaryMinus: '<S56>/Unary Minus' incorporates:
-   *  Product: '<S56>/u(1)*u(2)'
-   *  Trigonometry: '<S49>/sincos'
-   *  UnaryMinus: '<S71>/Unary Minus'
-   */
-  gyrXFile = -(accYFile * pitchFile);
-  Infinion_B.VectorConcatenate_m[7] = gyrXFile;
-
-  /* SignalConversion generated from: '<S60>/Vector Concatenate' */
-  Infinion_B.VectorConcatenate_m[8] = accXFile;
-
-  /* Product: '<S44>/Product' incorporates:
-   *  Concatenate: '<S60>/Vector Concatenate'
-   *  Constant: '<Root>/zero3'
-   *  Constant: '<S2>/zero1'
-   *  Sum: '<S3>/Sum'
-   *  Trigonometry: '<S27>/sincos'
-   */
-  rtb_phidot_tmp = Infinion_P.zero3_Value[0] - rtb_jxi_h;
-  rtb_Sum_f_idx_1 = Infinion_P.zero3_Value[1] - Infinion_P.zero1_Value;
-  yawFile = Infinion_P.zero3_Value[2] - Infinion_P.zero1_Value;
-  for (i = 0; i < 3; i++) {
-    frac_6[i] = Infinion_B.VectorConcatenate_m[i + 6] * yawFile +
-      (Infinion_B.VectorConcatenate_m[i + 3] * rtb_Sum_f_idx_1 +
-       Infinion_B.VectorConcatenate_m[i] * rtb_phidot_tmp);
-  }
-
-  /* End of Product: '<S44>/Product' */
-
-  /* Sum: '<S43>/Sum' incorporates:
-   *  Product: '<S47>/i x j'
-   *  Product: '<S47>/j x k'
-   *  Product: '<S47>/k x i'
-   *  Product: '<S48>/i x k'
-   *  Product: '<S48>/j x i'
-   *  Product: '<S48>/k x j'
-   */
-  rtb_phidot_tmp = frac_5[1] * frac_6[2];
-  rtb_Sum_f_idx_1 = frac_6[0] * frac_5[2];
-  yawFile = frac_5[0] * frac_6[1];
-  rollRateFile = frac_6[1] * frac_5[2];
-  pitchRateFile = frac_5[0] * frac_6[2];
-  yawRateFile = frac_6[0] * frac_5[1];
-
-  /* Interpolation_n-D: '<Root>/Clb (derivative of rolling moment coefficient)' */
-  frac_8[0] = rtb_phidot;
-  frac_8[1] = rtb_UnitConversion_a;
-  frac_8[2] = rtb_referencearea;
-  bpIndex_8[0] = rtb_idxa;
-  bpIndex_8[1] = rtb_idxm;
-  bpIndex_8[2] = rtb_idxh;
-
-  /* Interpolation_n-D: '<Root>/Cm (pitching moment coefficient)' */
-  frac_9[0] = rtb_phidot;
-  frac_9[1] = rtb_UnitConversion_a;
-  frac_9[2] = rtb_referencearea;
-  bpIndex_9[0] = rtb_idxa;
-  bpIndex_9[1] = rtb_idxm;
-  bpIndex_9[2] = rtb_idxh;
-
-  /* Interpolation_n-D: '<Root>/Cnb (derivative of yawing moment coefficient)' */
-  frac_a[0] = rtb_phidot;
-  frac_a[1] = rtb_UnitConversion_a;
-  frac_a[2] = rtb_referencearea;
-  bpIndex_a[0] = rtb_idxa;
-  bpIndex_a[1] = rtb_idxm;
-  bpIndex_a[2] = rtb_idxh;
-
-  /* Product: '<S3>/Product1' incorporates:
-   *  Constant: '<S3>/Constant'
-   */
-  rtb_UnitConversion_a = Infinion_P.AerodynamicForcesandMoments_b_h *
-    rtb_Sum_f_idx_0;
-
-  /* Product: '<S46>/Product' incorporates:
-   *  Concatenate: '<S90>/Vector Concatenate'
-   *  Constant: '<S3>/Constant1'
-   *  Interpolation_n-D: '<Root>/Clb (derivative of rolling moment coefficient)'
-   *  Interpolation_n-D: '<Root>/Cm (pitching moment coefficient)'
-   *  Interpolation_n-D: '<Root>/Cnb (derivative of yawing moment coefficient)'
-   *  Math: '<S46>/Transpose'
-   *  Product: '<Root>/Product1'
-   *  Product: '<Root>/Product3'
-   *  Product: '<S3>/Product1'
-   *  Product: '<S3>/Product3'
-   *  Sum: '<S29>/Sum'
-   *  Sum: '<S3>/Sum1'
-   *  Sum: '<S43>/Sum'
-   */
-  rtb_phidot_tmp = intrp3d_s32dl_pw(bpIndex_8, frac_8,
-    Infinion_P.Clbderivativeofrollingmomentcoe,
-    Infinion_P.Clbderivativeofrollingmomentc_p) * latestData *
-    rtb_UnitConversion_a + (rtb_phidot_tmp - rollRateFile);
-  rtb_Sum_f_idx_1 = Infinion_P.AerodynamicForcesandMoments_c_h * rtb_Sum_f_idx_0
-    * intrp3d_s32dl_pw(bpIndex_9, frac_9,
-                       Infinion_P.Cmpitchingmomentcoefficient_Tab,
-                       Infinion_P.Cmpitchingmomentcoefficient_dim) +
-    (rtb_Sum_f_idx_1 - pitchRateFile);
-  yawFile = intrp3d_s32dl_pw(bpIndex_a, frac_a,
-    Infinion_P.Cnbderivativeofyawingmomentcoef,
-    Infinion_P.Cnbderivativeofyawingmomentco_p) * latestData *
-    rtb_UnitConversion_a + (yawFile - yawRateFile);
-  for (i = 0; i < 3; i++) {
-    frac_8[i] = Infinion_B.VectorConcatenate[3 * i + 2] * yawFile +
-      (Infinion_B.VectorConcatenate[3 * i + 1] * rtb_Sum_f_idx_1 +
-       Infinion_B.VectorConcatenate[3 * i] * rtb_phidot_tmp);
-  }
-
-  /* End of Product: '<S46>/Product' */
-
-  /* Sum: '<Root>/Add1' incorporates:
-   *  Constant: '<S2>/zero1'
-   *  Product: '<S4>/Product1'
-   *  Product: '<S4>/Product3'
-   *  Product: '<S98>/j x k'
-   *  Product: '<S99>/k x j'
-   *  Sum: '<S4>/Sum'
-   *  Sum: '<S4>/Sum1'
-   *  Sum: '<S94>/Sum'
-   */
-  frac_2[0] = (((0.0 - Infinion_P.zero1_Value) * frac[1] - (0.0 -
-    Infinion_P.zero1_Value) * frac[2]) + rtb_Sum_d_idx_0_tmp * rtb_Sum_j[3]) +
-    frac_8[0];
-
-  /* Product: '<S99>/i x k' incorporates:
-   *  Constant: '<S2>/zero1'
-   *  Product: '<S98>/i x j'
-   *  Sum: '<S4>/Sum'
-   */
-  rtb_phidot_tmp = (0.0 - Infinion_P.zero1_Value) * frac[0];
-
-  /* Sum: '<Root>/Add1' incorporates:
-   *  Gain: '<Root>/Gain2'
-   *  Product: '<S4>/Product3'
-   *  Product: '<S98>/k x i'
-   *  Product: '<S99>/i x k'
-   *  Product: '<S99>/j x i'
-   *  Sum: '<S4>/Sum'
-   *  Sum: '<S4>/Sum1'
-   *  Sum: '<S94>/Sum'
-   */
-  frac_2[1] = (((0.0 - rtb_jxi_h) * frac[2] - rtb_phidot_tmp) + rtb_Sum_d_idx_1)
-    + Infinion_P.Gain2_Gain_d * frac_8[1];
-  frac_2[2] = ((rtb_phidot_tmp - (0.0 - rtb_jxi_h) * frac[1]) +
-               rtb_Sum_d_idx_0_tmp * rtb_Sum_j[5]) + frac_8[2];
+  /* End of Trigonometry: '<S5>/Sideslip' */
   if (rtmIsMajorTimeStep((&Infinion_M))) {
     for (i = 0; i < 3; i++) {
       /* Concatenate: '<S20>/Vector Concatenate' incorporates:
@@ -4625,13 +3898,15 @@ void InfinionModelClass::step()
        *  Selector: '<S19>/Selector1'
        */
       rtb_VectorConcatenate[6 * i] = Infinion_P.uDOFEulerAngles_inertia[3 * i];
-      rtb_idxh = 6 * i + 3;
-      rtb_VectorConcatenate[rtb_idxh] = Infinion_P.Constant2_Value_f[3 * i];
+      rtb_VectorConcatenate_tmp = 6 * i + 3;
+      rtb_VectorConcatenate[rtb_VectorConcatenate_tmp] =
+        Infinion_P.Constant2_Value_f[3 * i];
 
       /* Selector: '<S19>/Selector1' incorporates:
        *  Concatenate: '<S20>/Vector Concatenate'
        */
-      Infinion_B.Selector1[3 * i] = rtb_VectorConcatenate[rtb_idxh];
+      Infinion_B.Selector1[3 * i] =
+        rtb_VectorConcatenate[rtb_VectorConcatenate_tmp];
 
       /* Selector: '<S19>/Selector' incorporates:
        *  Concatenate: '<S20>/Vector Concatenate'
@@ -4644,22 +3919,25 @@ void InfinionModelClass::step()
        *  Selector: '<S19>/Selector'
        *  Selector: '<S19>/Selector1'
        */
-      rtb_idxh = 3 * i + 1;
-      rtb_idxm = 6 * i + 1;
-      rtb_VectorConcatenate[rtb_idxm] =
-        Infinion_P.uDOFEulerAngles_inertia[rtb_idxh];
-      rtb_idxa = 6 * i + 4;
-      rtb_VectorConcatenate[rtb_idxa] = Infinion_P.Constant2_Value_f[rtb_idxh];
+      rtb_VectorConcatenate_tmp = 3 * i + 1;
+      rtb_VectorConcatenate_tmp_1 = 6 * i + 1;
+      rtb_VectorConcatenate[rtb_VectorConcatenate_tmp_1] =
+        Infinion_P.uDOFEulerAngles_inertia[rtb_VectorConcatenate_tmp];
+      rtb_VectorConcatenate_tmp_0 = 6 * i + 4;
+      rtb_VectorConcatenate[rtb_VectorConcatenate_tmp_0] =
+        Infinion_P.Constant2_Value_f[rtb_VectorConcatenate_tmp];
 
       /* Selector: '<S19>/Selector1' incorporates:
        *  Concatenate: '<S20>/Vector Concatenate'
        */
-      Infinion_B.Selector1[rtb_idxh] = rtb_VectorConcatenate[rtb_idxa];
+      Infinion_B.Selector1[rtb_VectorConcatenate_tmp] =
+        rtb_VectorConcatenate[rtb_VectorConcatenate_tmp_0];
 
       /* Selector: '<S19>/Selector' incorporates:
        *  Concatenate: '<S20>/Vector Concatenate'
        */
-      Infinion_B.Selector[rtb_idxh] = rtb_VectorConcatenate[rtb_idxm];
+      Infinion_B.Selector[rtb_VectorConcatenate_tmp] =
+        rtb_VectorConcatenate[rtb_VectorConcatenate_tmp_1];
 
       /* Concatenate: '<S20>/Vector Concatenate' incorporates:
        *  Constant: '<S20>/Constant1'
@@ -4667,22 +3945,25 @@ void InfinionModelClass::step()
        *  Selector: '<S19>/Selector'
        *  Selector: '<S19>/Selector1'
        */
-      rtb_idxh = 3 * i + 2;
-      rtb_idxm = 6 * i + 2;
-      rtb_VectorConcatenate[rtb_idxm] =
-        Infinion_P.uDOFEulerAngles_inertia[rtb_idxh];
-      rtb_idxa = 6 * i + 5;
-      rtb_VectorConcatenate[rtb_idxa] = Infinion_P.Constant2_Value_f[rtb_idxh];
+      rtb_VectorConcatenate_tmp = 3 * i + 2;
+      rtb_VectorConcatenate_tmp_1 = 6 * i + 2;
+      rtb_VectorConcatenate[rtb_VectorConcatenate_tmp_1] =
+        Infinion_P.uDOFEulerAngles_inertia[rtb_VectorConcatenate_tmp];
+      rtb_VectorConcatenate_tmp_0 = 6 * i + 5;
+      rtb_VectorConcatenate[rtb_VectorConcatenate_tmp_0] =
+        Infinion_P.Constant2_Value_f[rtb_VectorConcatenate_tmp];
 
       /* Selector: '<S19>/Selector1' incorporates:
        *  Concatenate: '<S20>/Vector Concatenate'
        */
-      Infinion_B.Selector1[rtb_idxh] = rtb_VectorConcatenate[rtb_idxa];
+      Infinion_B.Selector1[rtb_VectorConcatenate_tmp] =
+        rtb_VectorConcatenate[rtb_VectorConcatenate_tmp_0];
 
       /* Selector: '<S19>/Selector' incorporates:
        *  Concatenate: '<S20>/Vector Concatenate'
        */
-      Infinion_B.Selector[rtb_idxh] = rtb_VectorConcatenate[rtb_idxm];
+      Infinion_B.Selector[rtb_VectorConcatenate_tmp] =
+        rtb_VectorConcatenate[rtb_VectorConcatenate_tmp_1];
     }
   }
 
@@ -4690,9 +3971,9 @@ void InfinionModelClass::step()
     /* Product: '<S30>/Product' incorporates:
      *  Integrator: '<S1>/p,q,r '
      *  Selector: '<S19>/Selector'
-     *  Sum: '<S29>/Sum'
+     *  Trigonometry: '<S27>/sincos'
      */
-    frac_8[i] = Infinion_B.Selector[i + 6] * Infinion_X.pqr_CSTATE[2] +
+    rtb_sincos_o1_b[i] = Infinion_B.Selector[i + 6] * Infinion_X.pqr_CSTATE[2] +
       (Infinion_B.Selector[i + 3] * Infinion_X.pqr_CSTATE[1] +
        Infinion_B.Selector[i] * Infinion_X.pqr_CSTATE[0]);
 
@@ -4700,28 +3981,56 @@ void InfinionModelClass::step()
      *  Integrator: '<S1>/p,q,r '
      *  Selector: '<S19>/Selector1'
      */
-    frac_3[i] = Infinion_B.Selector1[i + 6] * Infinion_X.pqr_CSTATE[2] +
+    tmp[i] = Infinion_B.Selector1[i + 6] * Infinion_X.pqr_CSTATE[2] +
       (Infinion_B.Selector1[i + 3] * Infinion_X.pqr_CSTATE[1] +
        Infinion_B.Selector1[i] * Infinion_X.pqr_CSTATE[0]);
   }
 
   /* Sum: '<S19>/Sum2' incorporates:
    *  Integrator: '<S1>/p,q,r '
+   *  MATLAB Function: '<Root>/SimpleActuators'
    *  Product: '<S31>/Product'
-   *  Product: '<S32>/i x j'
    *  Product: '<S32>/j x k'
-   *  Product: '<S32>/k x i'
-   *  Product: '<S33>/i x k'
-   *  Product: '<S33>/j x i'
    *  Product: '<S33>/k x j'
    *  Sum: '<S29>/Sum'
    */
-  frac_2[0] = (frac_2[0] - frac_3[0]) - (Infinion_X.pqr_CSTATE[1] * frac_8[2] -
-    frac_8[1] * Infinion_X.pqr_CSTATE[2]);
-  frac_2[1] = (frac_2[1] - frac_3[1]) - (frac_8[0] * Infinion_X.pqr_CSTATE[2] -
-    Infinion_X.pqr_CSTATE[0] * frac_8[2]);
-  frac_2[2] = (frac_2[2] - frac_3[2]) - (Infinion_X.pqr_CSTATE[0] * frac_8[1] -
-    frac_8[0] * Infinion_X.pqr_CSTATE[1]);
+  rtb_sincos_o2_a[0] = (Infinion_B.aileron * 0.5 * 100.0 - tmp[0]) -
+    (Infinion_X.pqr_CSTATE[1] * rtb_sincos_o1_b[2] - rtb_sincos_o1_b[1] *
+     Infinion_X.pqr_CSTATE[2]);
+
+  /* MATLAB Function: '<Root>/SimpleActuators' incorporates:
+   *  Trigonometry: '<S2>/sincos'
+   */
+  rtb_Abs1 = std::cos(Gain);
+
+  /* Sum: '<S19>/Sum2' incorporates:
+   *  Integrator: '<S1>/p,q,r '
+   *  MATLAB Function: '<Root>/SimpleActuators'
+   *  Product: '<S31>/Product'
+   *  Product: '<S32>/k x i'
+   *  Product: '<S33>/i x k'
+   *  Sum: '<S29>/Sum'
+   */
+  rtb_sincos_o2_a[1] = (Infinion_B.elevator * 0.5 * 100.0 * std::abs(rtb_Abs1) -
+                        tmp[1]) - (rtb_sincos_o1_b[0] * Infinion_X.pqr_CSTATE[2]
+    - Infinion_X.pqr_CSTATE[0] * rtb_sincos_o1_b[2]);
+
+  /* MATLAB Function: '<Root>/SimpleActuators' incorporates:
+   *  Trigonometry: '<S2>/sincos'
+   */
+  rtb_Abs = std::cos(rtb_sqrt);
+
+  /* Sum: '<S19>/Sum2' incorporates:
+   *  Integrator: '<S1>/p,q,r '
+   *  MATLAB Function: '<Root>/SimpleActuators'
+   *  Product: '<S31>/Product'
+   *  Product: '<S32>/i x j'
+   *  Product: '<S33>/j x i'
+   *  Sum: '<S29>/Sum'
+   */
+  rtb_sincos_o2_a[2] = (Infinion_B.rudder * 0.5 * 100.0 * std::abs(rtb_Abs) -
+                        tmp[2]) - (Infinion_X.pqr_CSTATE[0] * rtb_sincos_o1_b[1]
+    - rtb_sincos_o1_b[0] * Infinion_X.pqr_CSTATE[1]);
   if (rtmIsMajorTimeStep((&Infinion_M))) {
     for (i = 0; i < 3; i++) {
       /* Selector: '<S19>/Selector2' incorporates:
@@ -4735,9 +4044,9 @@ void InfinionModelClass::step()
 
   /* Product: '<S19>/Product2' incorporates:
    *  Selector: '<S19>/Selector2'
-   *  Trigonometry: '<S26>/sincos'
+   *  Trigonometry: '<S27>/sincos'
    */
-  rt_mrdivide_U1d1x3_U2d_9vOrDY9Z(frac_2, Infinion_B.Selector2,
+  rt_mrdivide_U1d1x3_U2d_9vOrDY9Z(rtb_sincos_o2_a, Infinion_B.Selector2,
     Infinion_B.Product2);
 
   /* Trigonometry: '<S26>/sincos' incorporates:
@@ -4745,65 +4054,65 @@ void InfinionModelClass::step()
    *  SignalConversion generated from: '<S26>/sincos'
    *  Trigonometry: '<S27>/sincos'
    */
-  frac_2[0] = std::cos(Infinion_X.phithetapsi_CSTATE[2]);
-  rtb_Sum_f_idx_0 = std::sin(Infinion_X.phithetapsi_CSTATE[2]);
-  rtb_phidot_tmp = std::cos(Infinion_X.phithetapsi_CSTATE[1]);
-  rtb_Sum_d_idx_0_tmp = std::sin(Infinion_X.phithetapsi_CSTATE[1]);
-  rtb_Sum_d_idx_1 = std::cos(Infinion_X.phithetapsi_CSTATE[0]);
-  rtb_Sum_f_idx_1 = std::sin(Infinion_X.phithetapsi_CSTATE[0]);
+  rtb_sincos_o2_a[0] = std::cos(Infinion_X.phithetapsi_CSTATE[2]);
+  TmpSignalConversionAtSFunctio_0 = std::sin(Infinion_X.phithetapsi_CSTATE[2]);
+  u0 = std::cos(Infinion_X.phithetapsi_CSTATE[1]);
+  rtb_sincos_o1_g_tmp_0 = std::sin(Infinion_X.phithetapsi_CSTATE[1]);
+  rtb_sincos_o2_b_tmp = std::cos(Infinion_X.phithetapsi_CSTATE[0]);
+  rtb_sincos_o1_g_tmp = std::sin(Infinion_X.phithetapsi_CSTATE[0]);
 
   /* Fcn: '<S26>/Fcn11' incorporates:
    *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate_j[0] = frac_2[0] * rtb_phidot_tmp;
+  VectorConcatenate[0] = rtb_sincos_o2_a[0] * u0;
 
   /* Fcn: '<S26>/Fcn21' incorporates:
    *  Fcn: '<S26>/Fcn22'
    *  Trigonometry: '<S26>/sincos'
    */
-  rtb_UnitConversion_a = rtb_Sum_d_idx_0_tmp * rtb_Sum_f_idx_1;
-  VectorConcatenate_j[1] = rtb_UnitConversion_a * frac_2[0] - rtb_Sum_f_idx_0 *
-    rtb_Sum_d_idx_1;
+  latSpeedFile = rtb_sincos_o1_g_tmp_0 * rtb_sincos_o1_g_tmp;
+  VectorConcatenate[1] = latSpeedFile * rtb_sincos_o2_a[0] -
+    TmpSignalConversionAtSFunctio_0 * rtb_sincos_o2_b_tmp;
 
   /* Fcn: '<S26>/Fcn31' incorporates:
    *  Fcn: '<S26>/Fcn32'
    *  Trigonometry: '<S26>/sincos'
    */
-  rtb_jxi_h = rtb_Sum_d_idx_0_tmp * rtb_Sum_d_idx_1;
-  VectorConcatenate_j[2] = rtb_jxi_h * frac_2[0] + rtb_Sum_f_idx_0 *
-    rtb_Sum_f_idx_1;
+  longSpeedFile = rtb_sincos_o1_g_tmp_0 * rtb_sincos_o2_b_tmp;
+  VectorConcatenate[2] = longSpeedFile * rtb_sincos_o2_a[0] +
+    TmpSignalConversionAtSFunctio_0 * rtb_sincos_o1_g_tmp;
 
   /* Fcn: '<S26>/Fcn12' incorporates:
    *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate_j[3] = rtb_Sum_f_idx_0 * rtb_phidot_tmp;
+  VectorConcatenate[3] = TmpSignalConversionAtSFunctio_0 * u0;
 
   /* Fcn: '<S26>/Fcn22' incorporates:
    *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate_j[4] = rtb_UnitConversion_a * rtb_Sum_f_idx_0 + frac_2[0] *
-    rtb_Sum_d_idx_1;
+  VectorConcatenate[4] = latSpeedFile * TmpSignalConversionAtSFunctio_0 +
+    rtb_sincos_o2_a[0] * rtb_sincos_o2_b_tmp;
 
   /* Fcn: '<S26>/Fcn32' incorporates:
    *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate_j[5] = rtb_jxi_h * rtb_Sum_f_idx_0 - frac_2[0] *
-    rtb_Sum_f_idx_1;
+  VectorConcatenate[5] = longSpeedFile * TmpSignalConversionAtSFunctio_0 -
+    rtb_sincos_o2_a[0] * rtb_sincos_o1_g_tmp;
 
   /* Fcn: '<S26>/Fcn13' incorporates:
    *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate_j[6] = -rtb_Sum_d_idx_0_tmp;
+  VectorConcatenate[6] = -rtb_sincos_o1_g_tmp_0;
 
   /* Fcn: '<S26>/Fcn23' incorporates:
    *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate_j[7] = rtb_phidot_tmp * rtb_Sum_f_idx_1;
+  VectorConcatenate[7] = u0 * rtb_sincos_o1_g_tmp;
 
   /* Fcn: '<S26>/Fcn33' incorporates:
    *  Trigonometry: '<S26>/sincos'
    */
-  VectorConcatenate_j[8] = rtb_phidot_tmp * rtb_Sum_d_idx_1;
+  VectorConcatenate[8] = u0 * rtb_sincos_o2_b_tmp;
   for (i = 0; i < 3; i++) {
     /* Product: '<S25>/Product' incorporates:
      *  Concatenate: '<S28>/Vector Concatenate'
@@ -4811,56 +4120,66 @@ void InfinionModelClass::step()
      *  Math: '<S1>/Transpose'
      */
     Infinion_B.Product[i] = 0.0;
-    Infinion_B.Product[i] += VectorConcatenate_j[3 * i] *
+    Infinion_B.Product[i] += VectorConcatenate[3 * i] *
       Infinion_X.ubvbwb_CSTATE[0];
-    Infinion_B.Product[i] += VectorConcatenate_j[3 * i + 1] *
+    Infinion_B.Product[i] += VectorConcatenate[3 * i + 1] *
       Infinion_X.ubvbwb_CSTATE[1];
-    Infinion_B.Product[i] += VectorConcatenate_j[3 * i + 2] *
+    Infinion_B.Product[i] += VectorConcatenate[3 * i + 2] *
       Infinion_X.ubvbwb_CSTATE[2];
   }
 
+  /* Trigonometry: '<S2>/sincos' incorporates:
+   *  SignalConversion generated from: '<S2>/sincos'
+   */
+  TmpSignalConversionAtSFunctio_0 = std::sin(Gain);
+  rtb_sqrt = std::sin(rtb_sqrt);
+
+  /* Product: '<S36>/u(3)*u(4)' */
+  Infinion_B.VectorConcatenate_b[0] = rtb_Abs1 * rtb_Abs;
+
+  /* UnaryMinus: '<S39>/Unary Minus' incorporates:
+   *  Product: '<S39>/u(2)*u(3)'
+   */
+  Infinion_B.VectorConcatenate_b[1] = -(rtb_Abs1 * rtb_sqrt);
+
+  /* UnaryMinus: '<S42>/Unary Minus' */
+  Infinion_B.VectorConcatenate_b[2] = -TmpSignalConversionAtSFunctio_0;
+
+  /* SignalConversion generated from: '<S45>/Vector Concatenate' */
+  Infinion_B.VectorConcatenate_b[3] = rtb_sqrt;
+
+  /* SignalConversion generated from: '<S45>/Vector Concatenate' */
+  Infinion_B.VectorConcatenate_b[4] = rtb_Abs;
+  if (rtmIsMajorTimeStep((&Infinion_M))) {
+    /* Constant: '<S43>/Constant' */
+    Infinion_B.VectorConcatenate_b[5] = Infinion_P.Constant_Value_jt;
+  }
+
+  /* Product: '<S38>/u(1)*u(4)' */
+  Infinion_B.VectorConcatenate_b[6] = TmpSignalConversionAtSFunctio_0 * rtb_Abs;
+
+  /* UnaryMinus: '<S41>/Unary Minus' incorporates:
+   *  Product: '<S41>/u(1)*u(2)'
+   */
+  Infinion_B.VectorConcatenate_b[7] = -(TmpSignalConversionAtSFunctio_0 *
+    rtb_sqrt);
+
+  /* SignalConversion generated from: '<S45>/Vector Concatenate' */
+  Infinion_B.VectorConcatenate_b[8] = rtb_Abs1;
   if (rtmIsMajorTimeStep((&Infinion_M))) {
     /* MATLAB Function: '<Root>/Read Throttle' */
     Infinion_readfile_e(s);
-    latestData = Infinion_lastStr2double(s);
+    rtb_sqrt = Infinion_lastStr2double(s);
 
     /* MATLAB Function: '<Root>/propulsion' incorporates:
      *  MATLAB Function: '<Root>/Read Throttle'
      */
-    Infinion_B.forces[0] = latestData / 100.0 * 0.2 * 100.0;
+    Infinion_B.forces[0] = rtb_sqrt / 100.0 * 0.15 * 100.0;
     Infinion_B.forces[1] = 0.0;
     Infinion_B.forces[2] = 0.0;
   }
 
   Infinion_emxFree_char_T(&s);
-
-  /* Product: '<S66>/u(3)*u(4)' */
-  Infinion_B.VectorConcatenate_n[0] = rtb_jxi;
-
-  /* UnaryMinus: '<S69>/Unary Minus' */
-  Infinion_B.VectorConcatenate_n[1] = rtb_ixk;
-
-  /* UnaryMinus: '<S72>/Unary Minus' */
-  Infinion_B.VectorConcatenate_n[2] = -accYFile;
-
-  /* SignalConversion generated from: '<S75>/Vector Concatenate' */
-  Infinion_B.VectorConcatenate_n[3] = pitchFile;
-
-  /* SignalConversion generated from: '<S75>/Vector Concatenate' */
-  Infinion_B.VectorConcatenate_n[4] = rollFile;
-  if (rtmIsMajorTimeStep((&Infinion_M))) {
-    /* Constant: '<S73>/Constant' */
-    Infinion_B.VectorConcatenate_n[5] = Infinion_P.Constant_Value_lm;
-  }
-
-  /* Product: '<S68>/u(1)*u(4)' */
-  Infinion_B.VectorConcatenate_n[6] = accZFile;
-
-  /* UnaryMinus: '<S71>/Unary Minus' */
-  Infinion_B.VectorConcatenate_n[7] = gyrXFile;
-
-  /* SignalConversion generated from: '<S75>/Vector Concatenate' */
-  Infinion_B.VectorConcatenate_n[8] = accXFile;
 
   /* Sum: '<S21>/Sum' incorporates:
    *  Integrator: '<S1>/p,q,r '
@@ -4872,44 +4191,53 @@ void InfinionModelClass::step()
    *  Product: '<S35>/j x i'
    *  Product: '<S35>/k x j'
    */
-  frac_6[0] = Infinion_X.ubvbwb_CSTATE[1] * Infinion_X.pqr_CSTATE[2] -
+  rtb_sincos_o1_b[0] = Infinion_X.ubvbwb_CSTATE[1] * Infinion_X.pqr_CSTATE[2] -
     Infinion_X.pqr_CSTATE[1] * Infinion_X.ubvbwb_CSTATE[2];
-  frac_6[1] = Infinion_X.pqr_CSTATE[0] * Infinion_X.ubvbwb_CSTATE[2] -
+  rtb_sincos_o1_b[1] = Infinion_X.pqr_CSTATE[0] * Infinion_X.ubvbwb_CSTATE[2] -
     Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.pqr_CSTATE[2];
-  frac_6[2] = Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.pqr_CSTATE[1] -
+  rtb_sincos_o1_b[2] = Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.pqr_CSTATE[1] -
     Infinion_X.pqr_CSTATE[0] * Infinion_X.ubvbwb_CSTATE[1];
+
+  /* MATLAB Function: '<Root>/SimpleDrag' incorporates:
+   *  MATLAB Function: '<Root>/SimpleLift'
+   */
+  rtb_sqrt = Airspeed * Airspeed;
+  rtb_Abs1 = -rtb_sqrt * 0.04444;
+
+  /* MATLAB Function: '<Root>/SimpleLift' */
+  tmp[0] = 0.0;
+  tmp[1] = 0.0;
+  tmp[2] = (Gain + 0.08) * rtb_sqrt * 0.21222;
   for (i = 0; i < 3; i++) {
     /* Sum: '<S1>/Sum' incorporates:
      *  Concatenate: '<S28>/Vector Concatenate'
-     *  Concatenate: '<S75>/Vector Concatenate'
+     *  Concatenate: '<S45>/Vector Concatenate'
      *  Constant: '<S20>/Constant'
+     *  MATLAB Function: '<Root>/SimpleDrag'
      *  MATLAB Function: '<Root>/gravity'
-     *  Math: '<S45>/Transpose'
      *  Product: '<S1>/Product'
-     *  Product: '<S45>/Product'
      *  Sum: '<Root>/Add'
-     *  Trigonometry: '<S27>/sincos'
      */
-    Infinion_B.Sum[i] = ((((VectorConcatenate_j[i + 3] * 0.0 +
-      VectorConcatenate_j[i] * 0.0) + VectorConcatenate_j[i + 6] * -18.62) +
-                          (frac[i] + Infinion_B.forces[i])) +
-                         (Infinion_B.VectorConcatenate_n[3 * i + 2] * frac_5[2]
-                          + (Infinion_B.VectorConcatenate_n[3 * i + 1] * frac_5
-      [1] + Infinion_B.VectorConcatenate_n[3 * i] * frac_5[0]))) /
-      Infinion_P.uDOFEulerAngles_mass_0 + frac_6[i];
+    Infinion_B.Sum[i] = (((((Infinion_B.VectorConcatenate_b[3 * i + 1] * 0.0 +
+      Infinion_B.VectorConcatenate_b[3 * i] * rtb_Abs1) +
+      Infinion_B.VectorConcatenate_b[3 * i + 2] * 0.0) + Infinion_B.forces[i]) +
+                          (VectorConcatenate[i + 6] * -18.62 +
+      (VectorConcatenate[i + 3] * 0.0 + VectorConcatenate[i] * 0.0))) + tmp[i]) /
+      Infinion_P.uDOFEulerAngles_mass_0 + rtb_sincos_o1_b[i];
   }
 
   /* MATLAB Function: '<Root>/compute track' */
-  rtb_phidot = rt_atan2d_snf(Infinion_B.Product[1], Infinion_B.Product[0]);
-  if (rtb_phidot < 0.0) {
-    rtb_phidot += 6.2831853071795862;
+  rtb_sqrt = rt_atan2d_snf(Infinion_B.Product[1], Infinion_B.Product[0]);
+  if (rtb_sqrt < 0.0) {
+    rtb_sqrt += 6.2831853071795862;
   }
 
   /* SignalConversion generated from: '<S14>/ SFunction ' incorporates:
+   *  Constant: '<Root>/HNLLong'
    *  MATLAB Function: '<Root>/WriteToFile'
+   *  Sum: '<Root>/Sum1'
    */
-  frac_8[0] = rtb_sqrt;
-  frac_8[1] = rtb_Abs1;
+  TmpSignalConversionAtSFunctio_0 = Infinion_P.HNLLong_Value + rtb_Sum_f_idx_0;
 
   /* MATLAB Function: '<Root>/WriteToFile' incorporates:
    *  Concatenate: '<S28>/Vector Concatenate'
@@ -4919,24 +4247,23 @@ void InfinionModelClass::step()
    *  Integrator: '<S1>/p,q,r '
    *  Integrator: '<S1>/xe,ye,ze'
    *  MATLAB Function: '<Root>/compute track'
-   *  Sqrt: '<S8>/Airspeed'
-   *  Sum: '<S7>/Sum1'
-   *  UnaryMinus: '<S7>/Ze2height'
+   *  Sum: '<S4>/Sum1'
+   *  UnaryMinus: '<S4>/Ze2height'
    */
   for (i = 0; i < 3; i++) {
-    frac_9[i] = VectorConcatenate_j[i + 6] * -9.8 + (VectorConcatenate_j[i + 3] *
-      0.0 + VectorConcatenate_j[i] * 0.0);
+    rtb_sincos_o1_b[i] = VectorConcatenate[i + 6] * -9.8 + (VectorConcatenate[i
+      + 3] * 0.0 + VectorConcatenate[i] * 0.0);
   }
 
-  rtb_sqrt = Infinion_fileManager_n();
-  rtb_Sum_f_idx_0 = Infinion_fileManager_nv();
-  rtb_Abs1 = Infinion_fileManager_nvg();
-  rtb_UnitConversion_a = Infinion_fileManager_nvg1();
-  rtb_jxi_h = Infinion_fileManager_nvg1z();
-  rtb_referencearea = Infinion_fileManager_nvg1zl();
-  latestData = Infinion_fileManager_nvg1zlk();
-  rtb_jxi = Infinion_fileManager_nvg1zlk2();
-  rtb_ixk = Infinion_fileManager_nvg1zlk2m();
+  rtb_Sum_f_idx_0 = Infinion_fileManager_n();
+  rtb_Abs1 = Infinion_fileManager_nv();
+  rtb_Abs = Infinion_fileManager_nvg();
+  latSpeedFile = Infinion_fileManager_nvg1();
+  longSpeedFile = Infinion_fileManager_nvg1z();
+  rateOfClimbFile = Infinion_fileManager_nvg1zl();
+  latFile = Infinion_fileManager_nvg1zlk();
+  longFile = Infinion_fileManager_nvg1zlk2();
+  altitudeFile = Infinion_fileManager_nvg1zlk2m();
   rollFile = Infinion_fileManager_nvg1zlk2mj();
   pitchFile = Infinio_fileManager_nvg1zlk2mjw();
   yawFile = Infini_fileManager_nvg1zlk2mjw5();
@@ -4950,18 +4277,9 @@ void InfinionModelClass::step()
   gyrYFile = Inf_fileManager_oy();
   gyrZFile = Inf_fileManager_p();
   b_NULL = NULL;
-  Inf_fileManager_n(rtb_sqrt, &filestar, &rtb_Compare_f);
-  if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", Airspeed_tmp);
-    if (rtb_Compare_f) {
-      fflush(filestar);
-    }
-  }
-
-  b_NULL = NULL;
   Inf_fileManager_n(rtb_Sum_f_idx_0, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", Gain);
+    fprintf(filestar, "%f\n", Airspeed);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -4970,14 +4288,23 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(rtb_Abs1, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", rtb_phidot);
+    fprintf(filestar, "%f\n", Gain);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
   }
 
   b_NULL = NULL;
-  Inf_fileManager_n(rtb_UnitConversion_a, &filestar, &rtb_Compare_f);
+  Inf_fileManager_n(rtb_Abs, &filestar, &rtb_Compare_f);
+  if (!(filestar == b_NULL)) {
+    fprintf(filestar, "%f\n", rtb_sqrt);
+    if (rtb_Compare_f) {
+      fflush(filestar);
+    }
+  }
+
+  b_NULL = NULL;
+  Inf_fileManager_n(latSpeedFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
     fprintf(filestar, "%f\n", Infinion_B.Product[0]);
     if (rtb_Compare_f) {
@@ -4986,7 +4313,7 @@ void InfinionModelClass::step()
   }
 
   b_NULL = NULL;
-  Inf_fileManager_n(rtb_jxi_h, &filestar, &rtb_Compare_f);
+  Inf_fileManager_n(longSpeedFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
     fprintf(filestar, "%f\n", Infinion_B.Product[1]);
     if (rtb_Compare_f) {
@@ -4995,7 +4322,7 @@ void InfinionModelClass::step()
   }
 
   b_NULL = NULL;
-  Inf_fileManager_n(rtb_referencearea, &filestar, &rtb_Compare_f);
+  Inf_fileManager_n(rateOfClimbFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
     fprintf(filestar, "%f\n", Infinion_B.Product[2]);
     if (rtb_Compare_f) {
@@ -5004,25 +4331,25 @@ void InfinionModelClass::step()
   }
 
   b_NULL = NULL;
-  Inf_fileManager_n(latestData, &filestar, &rtb_Compare_f);
+  Inf_fileManager_n(latFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", frac_8[0]);
+    fprintf(filestar, "%f\n", TmpSignalConversionAtSFunctionI);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
   }
 
   b_NULL = NULL;
-  Inf_fileManager_n(rtb_jxi, &filestar, &rtb_Compare_f);
+  Inf_fileManager_n(longFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", frac_8[1]);
+    fprintf(filestar, "%f\n", TmpSignalConversionAtSFunctio_0);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
   }
 
   b_NULL = NULL;
-  Inf_fileManager_n(rtb_ixk, &filestar, &rtb_Compare_f);
+  Inf_fileManager_n(altitudeFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
     fprintf(filestar, "%f\n", Infinion_P.Gain3_Gain *
             (-Infinion_X.xeyeze_CSTATE[2] - Infinion_P.Constant_Value_m));
@@ -5088,7 +4415,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(accXFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", frac_9[0] + Infinion_B.Sum[0]);
+    fprintf(filestar, "%f\n", rtb_sincos_o1_b[0] + Infinion_B.Sum[0]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -5097,7 +4424,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(accYFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", frac_9[1] + Infinion_B.Sum[1]);
+    fprintf(filestar, "%f\n", rtb_sincos_o1_b[1] + Infinion_B.Sum[1]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -5106,7 +4433,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(accZFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", frac_9[2] + Infinion_B.Sum[2]);
+    fprintf(filestar, "%f\n", rtb_sincos_o1_b[2] + Infinion_B.Sum[2]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -5145,8 +4472,8 @@ void InfinionModelClass::step()
    *  Fcn: '<S27>/psidot'
    *  Integrator: '<S1>/p,q,r '
    */
-  rtb_jxi_h = Infinion_X.pqr_CSTATE[1] * rtb_Sum_f_idx_1 +
-    Infinion_X.pqr_CSTATE[2] * rtb_Sum_d_idx_1;
+  Airspeed = Infinion_X.pqr_CSTATE[1] * rtb_sincos_o1_g_tmp +
+    Infinion_X.pqr_CSTATE[2] * rtb_sincos_o2_b_tmp;
 
   /* SignalConversion generated from: '<S18>/phi theta psi' incorporates:
    *  Fcn: '<S27>/phidot'
@@ -5154,11 +4481,11 @@ void InfinionModelClass::step()
    *  Fcn: '<S27>/thetadot'
    *  Integrator: '<S1>/p,q,r '
    */
-  Infinion_B.TmpSignalConversionAtphithetaps[0] = rtb_jxi_h *
-    (rtb_Sum_d_idx_0_tmp / rtb_phidot_tmp) + Infinion_X.pqr_CSTATE[0];
-  Infinion_B.TmpSignalConversionAtphithetaps[1] = rtb_Sum_d_idx_1 *
-    Infinion_X.pqr_CSTATE[1] - Infinion_X.pqr_CSTATE[2] * rtb_Sum_f_idx_1;
-  Infinion_B.TmpSignalConversionAtphithetaps[2] = rtb_jxi_h / rtb_phidot_tmp;
+  Infinion_B.TmpSignalConversionAtphithetaps[0] = Airspeed *
+    (rtb_sincos_o1_g_tmp_0 / u0) + Infinion_X.pqr_CSTATE[0];
+  Infinion_B.TmpSignalConversionAtphithetaps[1] = rtb_sincos_o2_b_tmp *
+    Infinion_X.pqr_CSTATE[1] - Infinion_X.pqr_CSTATE[2] * rtb_sincos_o1_g_tmp;
+  Infinion_B.TmpSignalConversionAtphithetaps[2] = Airspeed / u0;
   if (rtmIsMajorTimeStep((&Infinion_M))) {
     rt_ertODEUpdateContinuousStates(&(&Infinion_M)->solverInfo);
 
