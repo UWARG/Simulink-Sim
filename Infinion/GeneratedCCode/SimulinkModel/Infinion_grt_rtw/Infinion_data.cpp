@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 3.30
+ * Model version              : 3.102
  * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
- * C++ source code generated on : Wed May 19 19:08:54 2021
+ * C++ source code generated on : Mon May 24 14:53:17 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -31,7 +31,7 @@ P_Infinion_T InfinionModelClass::Infinion_P = {
   /* Mask Parameter: uDOFEulerAngles_Vm_0
    * Referenced by: '<S1>/ub,vb,wb'
    */
-  { 30.0, 0.0, 0.0 },
+  { 15.0, 0.0, 0.0 },
 
   /* Mask Parameter: CompareToConstant_const
    * Referenced by: '<S61>/Constant'
@@ -71,12 +71,12 @@ P_Infinion_T InfinionModelClass::Infinion_P = {
   /* Mask Parameter: uDOFEulerAngles_inertia
    * Referenced by: '<S20>/Constant1'
    */
-  { 0.33, 0.0, 0.0, 0.0, 0.4, 0.0, 0.0, 0.0, 0.66 },
+  { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 },
 
   /* Mask Parameter: uDOFEulerAngles_mass_0
    * Referenced by: '<S20>/Constant'
    */
-  1.9,
+  1.0,
 
   /* Mask Parameter: uDOFEulerAngles_pm_0
    * Referenced by: '<S1>/p,q,r '
@@ -91,7 +91,7 @@ P_Infinion_T InfinionModelClass::Infinion_P = {
   /* Mask Parameter: uDOFEulerAngles_xme_0
    * Referenced by: '<S1>/xe,ye,ze'
    */
-  { 0.0, 0.0, 1000.0 },
+  { 0.0, 0.0, -50.0 },
 
   /* Expression: -90
    * Referenced by: '<S51>/Bias'
@@ -183,11 +183,6 @@ P_Infinion_T InfinionModelClass::Infinion_P = {
    */
   -180.0,
 
-  /* Expression: -1
-   * Referenced by: '<Root>/Gain'
-   */
-  -1.0,
-
   /* Expression: 21.322
    * Referenced by: '<Root>/HNLLat'
    */
@@ -263,11 +258,6 @@ P_Infinion_T InfinionModelClass::Infinion_P = {
    */
   0.0,
 
-  /* Expression: -1
-   * Referenced by: '<Root>/Gain3'
-   */
-  -1.0,
-
   /* Expression: pi
    * Referenced by: '<S18>/phi theta psi'
    */
@@ -278,13 +268,13 @@ P_Infinion_T InfinionModelClass::Infinion_P = {
    */
   -3.1415926535897931,
 
-  /* Expression: zeros(3)
-   * Referenced by: '<S20>/Constant2'
-   */
-  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
-
   /* Expression: 0
    * Referenced by: '<S43>/Constant'
    */
-  0.0
+  0.0,
+
+  /* Expression: zeros(3)
+   * Referenced by: '<S20>/Constant2'
+   */
+  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 };
