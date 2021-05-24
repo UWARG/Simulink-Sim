@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 3.11
+ * Model version              : 3.102
  * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
- * C++ source code generated on : Thu Apr 29 17:54:18 2021
+ * C++ source code generated on : Mon May 24 14:53:17 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -44,6 +44,20 @@ struct emxArray_char_T_Infinion_T
 
 #endif                                 /* struct_emxArray_char_T_Infinion_T */
 
+#ifndef struct_emxArray_boolean_T_Infinion_T
+#define struct_emxArray_boolean_T_Infinion_T
+
+struct emxArray_boolean_T_Infinion_T
+{
+  boolean_T *data;
+  int32_T *size;
+  int32_T allocatedSize;
+  int32_T numDimensions;
+  boolean_T canFreeData;
+};
+
+#endif                                /* struct_emxArray_boolean_T_Infinion_T */
+
 #ifndef struct_emxArray_real_T_Infinion_T
 #define struct_emxArray_real_T_Infinion_T
 
@@ -71,20 +85,6 @@ struct emxArray_uint8_T_Infinion_T
 };
 
 #endif                                 /* struct_emxArray_uint8_T_Infinion_T */
-
-#ifndef struct_emxArray_boolean_T_Infinion_T
-#define struct_emxArray_boolean_T_Infinion_T
-
-struct emxArray_boolean_T_Infinion_T
-{
-  boolean_T *data;
-  int32_T *size;
-  int32_T allocatedSize;
-  int32_T numDimensions;
-  boolean_T canFreeData;
-};
-
-#endif                                /* struct_emxArray_boolean_T_Infinion_T */
 
 /* Parameters (default storage) */
 typedef struct P_Infinion_T_ P_Infinion_T;
