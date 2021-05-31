@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 3.102
+ * Model version              : 3.121
  * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
- * C++ source code generated on : Mon May 24 14:53:17 2021
+ * C++ source code generated on : Mon May 31 17:44:15 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -160,27 +160,29 @@ struct B_Infinion_T {
   uint8_T buffer_m[65536];
   uint8_T buffer_c[65536];
   uint8_T buffer_k[65536];
-  real_T SinCos_o1;                    /* '<S49>/SinCos' */
-  real_T SinCos_o2;                    /* '<S49>/SinCos' */
-  real_T Switch;                       /* '<S57>/Switch' */
-  real_T TrigonometricFunction1;       /* '<S63>/Trigonometric Function1' */
-  real_T TrigonometricFunction2;       /* '<S63>/Trigonometric Function2' */
-  real_T Switch_i;                     /* '<S58>/Switch' */
-  real_T Product[3];                   /* '<S25>/Product' */
-  real_T VectorConcatenate_b[9];       /* '<S45>/Vector Concatenate' */
+  real_T SinCos_o1;                    /* '<S50>/SinCos' */
+  real_T SinCos_o2;                    /* '<S50>/SinCos' */
+  real_T Switch;                       /* '<S58>/Switch' */
+  real_T TrigonometricFunction1;       /* '<S64>/Trigonometric Function1' */
+  real_T TrigonometricFunction2;       /* '<S64>/Trigonometric Function2' */
+  real_T Switch_i;                     /* '<S59>/Switch' */
+  real_T Product[3];                   /* '<S26>/Product' */
+  real_T VectorConcatenate_b[9];       /* '<S46>/Vector Concatenate' */
+  real_T Merge[3];                     /* '<S5>/Merge' */
   real_T Sum[3];                       /* '<S1>/Sum' */
-  real_T TmpSignalConversionAtphithetaps[3];/* '<S18>/phidot thetadot psidot' */
-  real_T Selector[9];                  /* '<S19>/Selector' */
-  real_T Selector1[9];                 /* '<S19>/Selector1' */
-  real_T Selector2[9];                 /* '<S19>/Selector2' */
-  real_T Product2[3];                  /* '<S19>/Product2' */
+  real_T TmpSignalConversionAtphithetaps[3];/* '<S19>/phidot thetadot psidot' */
+  real_T Selector[9];                  /* '<S20>/Selector' */
+  real_T Selector1[9];                 /* '<S20>/Selector1' */
+  real_T Selector2[9];                 /* '<S20>/Selector2' */
+  real_T Product2[3];                  /* '<S20>/Product2' */
   real_T forces[3];                    /* '<Root>/propulsion' */
   real_T torques[3];                   /* '<Root>/SimpleActuators' */
 };
 
 /* Block states (default storage) for system '<Root>' */
 struct DW_Infinion_T {
-  real_T Product2_DWORK4[9];           /* '<S19>/Product2' */
+  real_T Product2_DWORK4[9];           /* '<S20>/Product2' */
+  int8_T If_ActiveSubsystem;           /* '<S5>/If' */
   boolean_T eml_autoflush[20];         /* '<Root>/WriteToFile' */
   FILE * eml_openfiles[20];            /* '<Root>/Read Aileron' */
   FILE * eml_openfiles_m[20];          /* '<Root>/Read Elevator' */
@@ -193,7 +195,7 @@ struct DW_Infinion_T {
 struct X_Infinion_T {
   real_T ubvbwb_CSTATE[3];             /* '<S1>/ub,vb,wb' */
   real_T xeyeze_CSTATE[3];             /* '<S1>/xe,ye,ze' */
-  real_T phithetapsi_CSTATE[3];        /* '<S18>/phi theta psi' */
+  real_T phithetapsi_CSTATE[3];        /* '<S19>/phi theta psi' */
   real_T pqr_CSTATE[3];                /* '<S1>/p,q,r ' */
 };
 
@@ -205,7 +207,7 @@ typedef real_T PeriodicRngX_Infinion_T[6];
 struct XDot_Infinion_T {
   real_T ubvbwb_CSTATE[3];             /* '<S1>/ub,vb,wb' */
   real_T xeyeze_CSTATE[3];             /* '<S1>/xe,ye,ze' */
-  real_T phithetapsi_CSTATE[3];        /* '<S18>/phi theta psi' */
+  real_T phithetapsi_CSTATE[3];        /* '<S19>/phi theta psi' */
   real_T pqr_CSTATE[3];                /* '<S1>/p,q,r ' */
 };
 
@@ -213,7 +215,7 @@ struct XDot_Infinion_T {
 struct XDis_Infinion_T {
   boolean_T ubvbwb_CSTATE[3];          /* '<S1>/ub,vb,wb' */
   boolean_T xeyeze_CSTATE[3];          /* '<S1>/xe,ye,ze' */
-  boolean_T phithetapsi_CSTATE[3];     /* '<S18>/phi theta psi' */
+  boolean_T phithetapsi_CSTATE[3];     /* '<S19>/phi theta psi' */
   boolean_T pqr_CSTATE[3];             /* '<S1>/p,q,r ' */
 };
 
@@ -237,31 +239,31 @@ struct P_Infinion_T_ {
                                         * Referenced by: '<S1>/ub,vb,wb'
                                         */
   real_T CompareToConstant_const;     /* Mask Parameter: CompareToConstant_const
-                                       * Referenced by: '<S61>/Constant'
+                                       * Referenced by: '<S62>/Constant'
                                        */
   real_T CompareToConstant_const_n; /* Mask Parameter: CompareToConstant_const_n
-                                     * Referenced by: '<S59>/Constant'
+                                     * Referenced by: '<S60>/Constant'
                                      */
   real_T CompareToConstant_const_c; /* Mask Parameter: CompareToConstant_const_c
-                                     * Referenced by: '<S62>/Constant'
+                                     * Referenced by: '<S63>/Constant'
                                      */
   real_T CompareToConstant_const_e; /* Mask Parameter: CompareToConstant_const_e
-                                     * Referenced by: '<S55>/Constant'
-                                     */
-  real_T CompareToConstant_const_p; /* Mask Parameter: CompareToConstant_const_p
-                                     * Referenced by: '<S53>/Constant'
-                                     */
-  real_T CompareToConstant_const_h; /* Mask Parameter: CompareToConstant_const_h
                                      * Referenced by: '<S56>/Constant'
                                      */
+  real_T CompareToConstant_const_p; /* Mask Parameter: CompareToConstant_const_p
+                                     * Referenced by: '<S54>/Constant'
+                                     */
+  real_T CompareToConstant_const_h; /* Mask Parameter: CompareToConstant_const_h
+                                     * Referenced by: '<S57>/Constant'
+                                     */
   real_T uDOFEulerAngles_eul_0[3];     /* Mask Parameter: uDOFEulerAngles_eul_0
-                                        * Referenced by: '<S18>/phi theta psi'
+                                        * Referenced by: '<S19>/phi theta psi'
                                         */
   real_T uDOFEulerAngles_inertia[9];  /* Mask Parameter: uDOFEulerAngles_inertia
-                                       * Referenced by: '<S20>/Constant1'
+                                       * Referenced by: '<S21>/Constant1'
                                        */
   real_T uDOFEulerAngles_mass_0;       /* Mask Parameter: uDOFEulerAngles_mass_0
-                                        * Referenced by: '<S20>/Constant'
+                                        * Referenced by: '<S21>/Constant'
                                         */
   real_T uDOFEulerAngles_pm_0[3];      /* Mask Parameter: uDOFEulerAngles_pm_0
                                         * Referenced by: '<S1>/p,q,r '
@@ -273,115 +275,142 @@ struct P_Infinion_T_ {
                                         * Referenced by: '<S1>/xe,ye,ze'
                                         */
   real_T Bias_Bias;                    /* Expression: -90
-                                        * Referenced by: '<S51>/Bias'
-                                        */
-  real_T Gain_Gain;                    /* Expression: -1
-                                        * Referenced by: '<S51>/Gain'
-                                        */
-  real_T Bias1_Bias;                   /* Expression: +90
-                                        * Referenced by: '<S51>/Bias1'
-                                        */
-  real_T Bias_Bias_m;                  /* Expression: 180
-                                        * Referenced by: '<S54>/Bias'
-                                        */
-  real_T Bias1_Bias_j;                 /* Expression: -180
-                                        * Referenced by: '<S54>/Bias1'
-                                        */
-  real_T Bias_Bias_k;                  /* Expression: 180
                                         * Referenced by: '<S52>/Bias'
                                         */
-  real_T Bias1_Bias_g;                 /* Expression: -180
+  real_T Gain_Gain;                    /* Expression: -1
+                                        * Referenced by: '<S52>/Gain'
+                                        */
+  real_T Bias1_Bias;                   /* Expression: +90
                                         * Referenced by: '<S52>/Bias1'
                                         */
+  real_T Bias_Bias_m;                  /* Expression: 180
+                                        * Referenced by: '<S55>/Bias'
+                                        */
+  real_T Bias1_Bias_j;                 /* Expression: -180
+                                        * Referenced by: '<S55>/Bias1'
+                                        */
+  real_T Bias_Bias_k;                  /* Expression: 180
+                                        * Referenced by: '<S53>/Bias'
+                                        */
+  real_T Bias1_Bias_g;                 /* Expression: -180
+                                        * Referenced by: '<S53>/Bias1'
+                                        */
   real_T Bias_Bias_n;                  /* Expression: -90
-                                        * Referenced by: '<S57>/Bias'
-                                        */
-  real_T Gain_Gain_g;                  /* Expression: -1
-                                        * Referenced by: '<S57>/Gain'
-                                        */
-  real_T Bias1_Bias_a;                 /* Expression: +90
-                                        * Referenced by: '<S57>/Bias1'
-                                        */
-  real_T Constant2_Value;              /* Expression: 360
-                                        * Referenced by: '<S60>/Constant2'
-                                        */
-  real_T Bias_Bias_o;                  /* Expression: 180
-                                        * Referenced by: '<S60>/Bias'
-                                        */
-  real_T Bias1_Bias_jw;                /* Expression: -180
-                                        * Referenced by: '<S60>/Bias1'
-                                        */
-  real_T Constant_Value;               /* Expression: 180
-                                        * Referenced by: '<S48>/Constant'
-                                        */
-  real_T Constant1_Value;              /* Expression: 0
-                                        * Referenced by: '<S48>/Constant1'
-                                        */
-  real_T Constant2_Value_g;            /* Expression: 360
-                                        * Referenced by: '<S58>/Constant2'
-                                        */
-  real_T Bias_Bias_f;                  /* Expression: 180
                                         * Referenced by: '<S58>/Bias'
                                         */
-  real_T Bias1_Bias_b;                 /* Expression: -180
+  real_T Gain_Gain_g;                  /* Expression: -1
+                                        * Referenced by: '<S58>/Gain'
+                                        */
+  real_T Bias1_Bias_a;                 /* Expression: +90
                                         * Referenced by: '<S58>/Bias1'
+                                        */
+  real_T Constant2_Value;              /* Expression: 360
+                                        * Referenced by: '<S61>/Constant2'
+                                        */
+  real_T Bias_Bias_o;                  /* Expression: 180
+                                        * Referenced by: '<S61>/Bias'
+                                        */
+  real_T Bias1_Bias_jw;                /* Expression: -180
+                                        * Referenced by: '<S61>/Bias1'
+                                        */
+  real_T Constant_Value;               /* Expression: 180
+                                        * Referenced by: '<S49>/Constant'
+                                        */
+  real_T Constant1_Value;              /* Expression: 0
+                                        * Referenced by: '<S49>/Constant1'
+                                        */
+  real_T Constant2_Value_g;            /* Expression: 360
+                                        * Referenced by: '<S59>/Constant2'
+                                        */
+  real_T Bias_Bias_f;                  /* Expression: 180
+                                        * Referenced by: '<S59>/Bias'
+                                        */
+  real_T Bias1_Bias_b;                 /* Expression: -180
+                                        * Referenced by: '<S59>/Bias1'
+                                        */
+  real_T Constant_Value_m[3];          /* Expression: [0 0 0]
+                                        * Referenced by: '<S72>/Constant'
+                                        */
+  real_T Constant_Value_j;             /* Expression: 0
+                                        * Referenced by: '<S71>/Constant'
+                                        */
+  real_T Gain_Gain_i;                  /* Expression: -100
+                                        * Referenced by: '<S71>/Gain'
+                                        */
+  real_T Gain1_Gain;                   /* Expression: -1
+                                        * Referenced by: '<S71>/Gain1'
+                                        */
+  real_T Saturation_UpperSat;          /* Expression: 0
+                                        * Referenced by: '<S71>/Saturation'
+                                        */
+  real_T Saturation_LowerSat;          /* Expression: -inf
+                                        * Referenced by: '<S71>/Saturation'
+                                        */
+  real_T Saturation1_UpperSat;         /* Expression: 0
+                                        * Referenced by: '<S71>/Saturation1'
+                                        */
+  real_T Saturation1_LowerSat;         /* Expression: -inf
+                                        * Referenced by: '<S71>/Saturation1'
                                         */
   real_T HNLLat_Value;                 /* Expression: 21.322
                                         * Referenced by: '<Root>/HNLLat'
                                         */
   real_T Constant2_Value_d;            /* Expression: 1
-                                        * Referenced by: '<S63>/Constant2'
+                                        * Referenced by: '<S64>/Constant2'
                                         */
   real_T Constant1_Value_k;            /* Expression: R
-                                        * Referenced by: '<S63>/Constant1'
+                                        * Referenced by: '<S64>/Constant1'
                                         */
   real_T Constant_Value_l;             /* Expression: 1
-                                        * Referenced by: '<S66>/Constant'
-                                        */
-  real_T Constant_Value_i;             /* Expression: 1
-                                        * Referenced by: '<S68>/Constant'
-                                        */
-  real_T Constant_Value_j;             /* Expression: F
                                         * Referenced by: '<S67>/Constant'
                                         */
+  real_T Constant_Value_i;             /* Expression: 1
+                                        * Referenced by: '<S69>/Constant'
+                                        */
+  real_T Constant_Value_j3;            /* Expression: F
+                                        * Referenced by: '<S68>/Constant'
+                                        */
   real_T f_Value;                      /* Expression: 1
-                                        * Referenced by: '<S67>/f'
+                                        * Referenced by: '<S68>/f'
                                         */
   real_T Constant_Value_h;             /* Expression: 1
-                                        * Referenced by: '<S63>/Constant'
+                                        * Referenced by: '<S64>/Constant'
                                         */
   real_T Constant3_Value;              /* Expression: 1
-                                        * Referenced by: '<S63>/Constant3'
+                                        * Referenced by: '<S64>/Constant3'
                                         */
   real_T Constant2_Value_e;            /* Expression: 360
-                                        * Referenced by: '<S54>/Constant2'
+                                        * Referenced by: '<S55>/Constant2'
                                         */
   real_T HNLLong_Value;                /* Expression: -157.924
                                         * Referenced by: '<Root>/HNLLong'
                                         */
   real_T Constant_Value_o;             /* Expression: 180
-                                        * Referenced by: '<S47>/Constant'
+                                        * Referenced by: '<S48>/Constant'
                                         */
   real_T Constant1_Value_d;            /* Expression: 0
-                                        * Referenced by: '<S47>/Constant1'
+                                        * Referenced by: '<S48>/Constant1'
                                         */
   real_T Constant2_Value_h;            /* Expression: 360
-                                        * Referenced by: '<S52>/Constant2'
+                                        * Referenced by: '<S53>/Constant2'
                                         */
-  real_T Constant_Value_m;             /* Expression: 0
+  real_T Constant_Value_ml;            /* Expression: 0
                                         * Referenced by: '<Root>/Constant'
                                         */
   real_T phithetapsi_WrappedStateUpperVa;/* Expression: pi
-                                          * Referenced by: '<S18>/phi theta psi'
+                                          * Referenced by: '<S19>/phi theta psi'
                                           */
   real_T phithetapsi_WrappedStateLowerVa;/* Expression: -pi
-                                          * Referenced by: '<S18>/phi theta psi'
+                                          * Referenced by: '<S19>/phi theta psi'
                                           */
   real_T Constant_Value_jt;            /* Expression: 0
-                                        * Referenced by: '<S43>/Constant'
+                                        * Referenced by: '<S44>/Constant'
+                                        */
+  real_T Merge_InitialOutput[3];       /* Expression: [0 0 0]
+                                        * Referenced by: '<S5>/Merge'
                                         */
   real_T Constant2_Value_f[9];         /* Expression: zeros(3)
-                                        * Referenced by: '<S20>/Constant2'
+                                        * Referenced by: '<S21>/Constant2'
                                         */
 };
 
@@ -625,73 +654,78 @@ class InfinionModelClass {
  * '<S2>'   : 'Infinion/Direction Cosine Matrix Body to Wind'
  * '<S3>'   : 'Infinion/Dynamic Pressure'
  * '<S4>'   : 'Infinion/Flat Earth to LLA'
- * '<S5>'   : 'Infinion/Incidence, Sideslip, & Airspeed'
- * '<S6>'   : 'Infinion/Mach Number'
- * '<S7>'   : 'Infinion/Read Aileron'
- * '<S8>'   : 'Infinion/Read Elevator'
- * '<S9>'   : 'Infinion/Read Rudder'
- * '<S10>'  : 'Infinion/Read Throttle'
- * '<S11>'  : 'Infinion/SimpleActuators'
- * '<S12>'  : 'Infinion/SimpleDrag'
- * '<S13>'  : 'Infinion/SimpleLift'
- * '<S14>'  : 'Infinion/WriteToFile'
- * '<S15>'  : 'Infinion/compute track'
- * '<S16>'  : 'Infinion/gravity'
- * '<S17>'  : 'Infinion/propulsion'
- * '<S18>'  : 'Infinion/6DOF (Euler Angles)/Calculate DCM & Euler Angles'
- * '<S19>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot'
- * '<S20>'  : 'Infinion/6DOF (Euler Angles)/Determine Force,  Mass & Inertia'
- * '<S21>'  : 'Infinion/6DOF (Euler Angles)/Vbxw'
- * '<S22>'  : 'Infinion/6DOF (Euler Angles)/Velocity Conversion'
- * '<S23>'  : 'Infinion/6DOF (Euler Angles)/Velocity Conversion1'
- * '<S24>'  : 'Infinion/6DOF (Euler Angles)/Velocity Conversion2'
- * '<S25>'  : 'Infinion/6DOF (Euler Angles)/transform to Inertial axes '
- * '<S26>'  : 'Infinion/6DOF (Euler Angles)/Calculate DCM & Euler Angles/Rotation Angles to Direction Cosine Matrix'
- * '<S27>'  : 'Infinion/6DOF (Euler Angles)/Calculate DCM & Euler Angles/phidot thetadot psidot'
- * '<S28>'  : 'Infinion/6DOF (Euler Angles)/Calculate DCM & Euler Angles/Rotation Angles to Direction Cosine Matrix/Create 3x3 Matrix'
- * '<S29>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product'
- * '<S30>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/I x w'
- * '<S31>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/I x w1'
- * '<S32>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem'
- * '<S33>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem1'
- * '<S34>'  : 'Infinion/6DOF (Euler Angles)/Vbxw/Subsystem'
- * '<S35>'  : 'Infinion/6DOF (Euler Angles)/Vbxw/Subsystem1'
- * '<S36>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A11'
- * '<S37>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A12'
- * '<S38>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A13'
- * '<S39>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A21'
- * '<S40>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A22'
- * '<S41>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A23'
- * '<S42>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A31'
- * '<S43>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A32'
- * '<S44>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A33'
- * '<S45>'  : 'Infinion/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
- * '<S46>'  : 'Infinion/Dynamic Pressure/dot'
- * '<S47>'  : 'Infinion/Flat Earth to LLA/LatLong wrap'
- * '<S48>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1'
- * '<S49>'  : 'Infinion/Flat Earth to LLA/LongLat_offset'
- * '<S50>'  : 'Infinion/Flat Earth to LLA/pos_deg'
- * '<S51>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90'
- * '<S52>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Wrap Longitude'
- * '<S53>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Compare To Constant'
- * '<S54>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180'
- * '<S55>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
- * '<S56>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Wrap Longitude/Compare To Constant'
- * '<S57>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90'
- * '<S58>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Wrap Longitude'
- * '<S59>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Compare To Constant'
- * '<S60>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180'
- * '<S61>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
- * '<S62>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Wrap Longitude/Compare To Constant'
- * '<S63>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance'
- * '<S64>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/rotation_rad'
- * '<S65>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/Angle Conversion2'
- * '<S66>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/denom'
- * '<S67>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e'
- * '<S68>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e^4'
- * '<S69>'  : 'Infinion/Incidence, Sideslip, & Airspeed/Subsystem'
- * '<S70>'  : 'Infinion/Incidence, Sideslip, & Airspeed/Subsystem1'
- * '<S71>'  : 'Infinion/Incidence, Sideslip, & Airspeed/dot'
- * '<S72>'  : 'Infinion/Mach Number/dot'
+ * '<S5>'   : 'Infinion/Ground model'
+ * '<S6>'   : 'Infinion/Incidence, Sideslip, & Airspeed'
+ * '<S7>'   : 'Infinion/Mach Number'
+ * '<S8>'   : 'Infinion/Read Aileron'
+ * '<S9>'   : 'Infinion/Read Elevator'
+ * '<S10>'  : 'Infinion/Read Rudder'
+ * '<S11>'  : 'Infinion/Read Throttle'
+ * '<S12>'  : 'Infinion/SimpleActuators'
+ * '<S13>'  : 'Infinion/SimpleDrag'
+ * '<S14>'  : 'Infinion/SimpleLift'
+ * '<S15>'  : 'Infinion/WriteToFile'
+ * '<S16>'  : 'Infinion/compute track'
+ * '<S17>'  : 'Infinion/gravity'
+ * '<S18>'  : 'Infinion/propulsion'
+ * '<S19>'  : 'Infinion/6DOF (Euler Angles)/Calculate DCM & Euler Angles'
+ * '<S20>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot'
+ * '<S21>'  : 'Infinion/6DOF (Euler Angles)/Determine Force,  Mass & Inertia'
+ * '<S22>'  : 'Infinion/6DOF (Euler Angles)/Vbxw'
+ * '<S23>'  : 'Infinion/6DOF (Euler Angles)/Velocity Conversion'
+ * '<S24>'  : 'Infinion/6DOF (Euler Angles)/Velocity Conversion1'
+ * '<S25>'  : 'Infinion/6DOF (Euler Angles)/Velocity Conversion2'
+ * '<S26>'  : 'Infinion/6DOF (Euler Angles)/transform to Inertial axes '
+ * '<S27>'  : 'Infinion/6DOF (Euler Angles)/Calculate DCM & Euler Angles/Rotation Angles to Direction Cosine Matrix'
+ * '<S28>'  : 'Infinion/6DOF (Euler Angles)/Calculate DCM & Euler Angles/phidot thetadot psidot'
+ * '<S29>'  : 'Infinion/6DOF (Euler Angles)/Calculate DCM & Euler Angles/Rotation Angles to Direction Cosine Matrix/Create 3x3 Matrix'
+ * '<S30>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product'
+ * '<S31>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/I x w'
+ * '<S32>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/I x w1'
+ * '<S33>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem'
+ * '<S34>'  : 'Infinion/6DOF (Euler Angles)/Calculate omega_dot/3x3 Cross Product/Subsystem1'
+ * '<S35>'  : 'Infinion/6DOF (Euler Angles)/Vbxw/Subsystem'
+ * '<S36>'  : 'Infinion/6DOF (Euler Angles)/Vbxw/Subsystem1'
+ * '<S37>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A11'
+ * '<S38>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A12'
+ * '<S39>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A13'
+ * '<S40>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A21'
+ * '<S41>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A22'
+ * '<S42>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A23'
+ * '<S43>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A31'
+ * '<S44>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A32'
+ * '<S45>'  : 'Infinion/Direction Cosine Matrix Body to Wind/A33'
+ * '<S46>'  : 'Infinion/Direction Cosine Matrix Body to Wind/Create Transformation Matrix'
+ * '<S47>'  : 'Infinion/Dynamic Pressure/dot'
+ * '<S48>'  : 'Infinion/Flat Earth to LLA/LatLong wrap'
+ * '<S49>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1'
+ * '<S50>'  : 'Infinion/Flat Earth to LLA/LongLat_offset'
+ * '<S51>'  : 'Infinion/Flat Earth to LLA/pos_deg'
+ * '<S52>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90'
+ * '<S53>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Wrap Longitude'
+ * '<S54>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Compare To Constant'
+ * '<S55>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180'
+ * '<S56>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
+ * '<S57>'  : 'Infinion/Flat Earth to LLA/LatLong wrap/Wrap Longitude/Compare To Constant'
+ * '<S58>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90'
+ * '<S59>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Wrap Longitude'
+ * '<S60>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Compare To Constant'
+ * '<S61>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180'
+ * '<S62>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Latitude Wrap 90/Wrap Angle 180/Compare To Constant'
+ * '<S63>'  : 'Infinion/Flat Earth to LLA/LatLong wrap1/Wrap Longitude/Compare To Constant'
+ * '<S64>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance'
+ * '<S65>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/rotation_rad'
+ * '<S66>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/Angle Conversion2'
+ * '<S67>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/denom'
+ * '<S68>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e'
+ * '<S69>'  : 'Infinion/Flat Earth to LLA/LongLat_offset/Find Radian//Distance/e^4'
+ * '<S70>'  : 'Infinion/Ground model/Body2Inertial'
+ * '<S71>'  : 'Infinion/Ground model/If Action Subsystem1'
+ * '<S72>'  : 'Infinion/Ground model/If Action Subsystem2'
+ * '<S73>'  : 'Infinion/Ground model/Inertial2Body'
+ * '<S74>'  : 'Infinion/Incidence, Sideslip, & Airspeed/Subsystem'
+ * '<S75>'  : 'Infinion/Incidence, Sideslip, & Airspeed/Subsystem1'
+ * '<S76>'  : 'Infinion/Incidence, Sideslip, & Airspeed/dot'
+ * '<S77>'  : 'Infinion/Mach Number/dot'
  */
 #endif                                 /* RTW_HEADER_Infinion_h_ */
