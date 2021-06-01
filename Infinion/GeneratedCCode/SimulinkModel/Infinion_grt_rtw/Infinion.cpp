@@ -7,9 +7,9 @@
  *
  * Code generation for model "Infinion".
  *
- * Model version              : 3.102
+ * Model version              : 3.121
  * Simulink Coder version : 9.5 (R2021a) 14-Nov-2020
- * C++ source code generated on : Mon May 24 14:53:17 2021
+ * C++ source code generated on : Mon May 31 17:44:15 2021
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -3445,13 +3445,13 @@ void InfinionModelClass::step()
   creal_T tmp_1;
   creal_T tmp_2;
   real_T rtb_VectorConcatenate[18];
+  real_T Product_tmp[9];
   real_T VectorConcatenate[9];
-  real_T gravityBody[3];
-  real_T rtb_Sum_f5[3];
+  real_T Product_tmp_0[3];
+  real_T rtb_Add[3];
   real_T rtb_Sum_h[3];
   real_T Airspeed;
   real_T Incidence;
-  real_T TmpSignalConversionAtSFunctionI;
   real_T accXFile;
   real_T accYFile;
   real_T accZFile;
@@ -3463,20 +3463,19 @@ void InfinionModelClass::step()
   real_T latFile;
   real_T latSpeedFile;
   real_T longFile;
-  real_T longSpeedFile;
   real_T pitchFile;
   real_T pitchRateFile;
-  real_T rateOfClimbFile;
   real_T rollFile;
   real_T rollRateFile;
   real_T rtb_Abs;
   real_T rtb_Abs1;
-  real_T rtb_Sum2_tmp;
-  real_T rtb_Sum2_tmp_0;
+  real_T rtb_Abs1_tmp;
+  real_T rtb_Sum2_f_tmp;
+  real_T rtb_Sum2_f_tmp_0;
   real_T rtb_Sum_f5_tmp;
-  real_T rtb_Sum_f5_tmp_0;
   real_T rtb_Sum_f_idx_0;
   real_T rtb_sincos_o1_idx_1;
+  real_T rtb_sincos_o2_idx_1;
   real_T rtb_sqrt;
   real_T yawFile;
   real_T yawRateFile;
@@ -3484,6 +3483,7 @@ void InfinionModelClass::step()
   int32_T idx;
   int32_T ii_data;
   int32_T k;
+  int8_T rtAction;
   boolean_T exitg1;
   boolean_T rtb_Compare_f;
   if (rtmIsMajorTimeStep((&Infinion_M))) {
@@ -3505,59 +3505,59 @@ void InfinionModelClass::step()
     (&Infinion_M)->Timing.t[0] = rtsiGetT(&(&Infinion_M)->solverInfo);
   }
 
-  /* Sqrt: '<S5>/Airspeed' incorporates:
+  /* Sqrt: '<S6>/Airspeed' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S71>/Product'
-   *  Product: '<S71>/Product1'
-   *  Product: '<S71>/Product2'
-   *  Sum: '<S71>/Sum'
+   *  Product: '<S76>/Product'
+   *  Product: '<S76>/Product1'
+   *  Product: '<S76>/Product2'
+   *  Sum: '<S76>/Sum'
    */
   Airspeed = std::sqrt((Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.ubvbwb_CSTATE[0]
                         + Infinion_X.ubvbwb_CSTATE[1] *
                         Infinion_X.ubvbwb_CSTATE[1]) + Infinion_X.ubvbwb_CSTATE
                        [2] * Infinion_X.ubvbwb_CSTATE[2]);
 
-  /* Trigonometry: '<S5>/Incidence' incorporates:
+  /* Trigonometry: '<S6>/Incidence' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
    */
   Incidence = rt_atan2d_snf(Infinion_X.ubvbwb_CSTATE[2],
     Infinion_X.ubvbwb_CSTATE[0]);
   if (rtmIsMajorTimeStep((&Infinion_M))) {
-    /* UnitConversion: '<S64>/Unit Conversion' incorporates:
+    /* UnitConversion: '<S65>/Unit Conversion' incorporates:
      *  Constant: '<S4>/ref_rotation'
      */
     /* Unit Conversion - from: deg to: rad
        Expression: output = (0.0174533*input) + (0) */
     rtb_sqrt = 0.017453292519943295 * Infinion_P.FlatEarthtoLLA_psi;
 
-    /* Trigonometry: '<S49>/SinCos' */
+    /* Trigonometry: '<S50>/SinCos' */
     Infinion_B.SinCos_o1 = std::sin(rtb_sqrt);
 
-    /* Trigonometry: '<S49>/SinCos' */
+    /* Trigonometry: '<S50>/SinCos' */
     Infinion_B.SinCos_o2 = std::cos(rtb_sqrt);
 
-    /* Sum: '<S67>/Sum' incorporates:
-     *  Constant: '<S67>/Constant'
-     *  Constant: '<S67>/f'
-     */
-    rtb_sqrt = Infinion_P.f_Value - Infinion_P.Constant_Value_j;
-
-    /* Sqrt: '<S68>/sqrt' incorporates:
+    /* Sum: '<S68>/Sum' incorporates:
      *  Constant: '<S68>/Constant'
-     *  Product: '<S68>/Product1'
-     *  Sum: '<S68>/Sum1'
+     *  Constant: '<S68>/f'
+     */
+    rtb_sqrt = Infinion_P.f_Value - Infinion_P.Constant_Value_j3;
+
+    /* Sqrt: '<S69>/sqrt' incorporates:
+     *  Constant: '<S69>/Constant'
+     *  Product: '<S69>/Product1'
+     *  Sum: '<S69>/Sum1'
      */
     rtb_sqrt = std::sqrt(Infinion_P.Constant_Value_i - rtb_sqrt * rtb_sqrt);
 
-    /* Switch: '<S60>/Switch' incorporates:
-     *  Abs: '<S60>/Abs'
-     *  Bias: '<S60>/Bias'
-     *  Bias: '<S60>/Bias1'
+    /* Switch: '<S61>/Switch' incorporates:
+     *  Abs: '<S61>/Abs'
+     *  Bias: '<S61>/Bias'
+     *  Bias: '<S61>/Bias1'
      *  Constant: '<S4>/ref_position'
-     *  Constant: '<S60>/Constant2'
-     *  Constant: '<S61>/Constant'
-     *  Math: '<S60>/Math Function1'
-     *  RelationalOperator: '<S61>/Compare'
+     *  Constant: '<S61>/Constant2'
+     *  Constant: '<S62>/Constant'
+     *  Math: '<S61>/Math Function1'
+     *  RelationalOperator: '<S62>/Compare'
      */
     if (std::abs(Infinion_P.FlatEarthtoLLA_LL0[0]) >
         Infinion_P.CompareToConstant_const) {
@@ -3568,137 +3568,136 @@ void InfinionModelClass::step()
       rtb_Sum_f_idx_0 = Infinion_P.FlatEarthtoLLA_LL0[0];
     }
 
-    /* End of Switch: '<S60>/Switch' */
+    /* End of Switch: '<S61>/Switch' */
 
-    /* Abs: '<S57>/Abs1' */
+    /* Abs: '<S58>/Abs1' */
     rtb_Abs1 = std::abs(rtb_Sum_f_idx_0);
 
-    /* RelationalOperator: '<S59>/Compare' incorporates:
-     *  Constant: '<S59>/Constant'
+    /* RelationalOperator: '<S60>/Compare' incorporates:
+     *  Constant: '<S60>/Constant'
      */
     rtb_Compare_f = (rtb_Abs1 > Infinion_P.CompareToConstant_const_n);
 
-    /* Switch: '<S57>/Switch' */
+    /* Switch: '<S58>/Switch' */
     if (rtb_Compare_f) {
-      /* Signum: '<S57>/Sign1' */
+      /* Signum: '<S58>/Sign1' */
       if (rtb_Sum_f_idx_0 < 0.0) {
-        rtb_Sum_f_idx_0 = -1.0;
+        rtb_Abs = -1.0;
       } else if (rtb_Sum_f_idx_0 > 0.0) {
-        rtb_Sum_f_idx_0 = 1.0;
+        rtb_Abs = 1.0;
       } else if (rtb_Sum_f_idx_0 == 0.0) {
-        rtb_Sum_f_idx_0 = 0.0;
+        rtb_Abs = 0.0;
       } else {
-        rtb_Sum_f_idx_0 = (rtNaN);
+        rtb_Abs = (rtNaN);
       }
 
-      /* End of Signum: '<S57>/Sign1' */
+      /* End of Signum: '<S58>/Sign1' */
 
-      /* Switch: '<S57>/Switch' incorporates:
-       *  Bias: '<S57>/Bias'
-       *  Bias: '<S57>/Bias1'
-       *  Gain: '<S57>/Gain'
-       *  Product: '<S57>/Divide1'
+      /* Switch: '<S58>/Switch' incorporates:
+       *  Bias: '<S58>/Bias'
+       *  Bias: '<S58>/Bias1'
+       *  Gain: '<S58>/Gain'
+       *  Product: '<S58>/Divide1'
        */
       Infinion_B.Switch = ((rtb_Abs1 + Infinion_P.Bias_Bias_n) *
                            Infinion_P.Gain_Gain_g + Infinion_P.Bias1_Bias_a) *
-        rtb_Sum_f_idx_0;
+        rtb_Abs;
     } else {
-      /* Switch: '<S57>/Switch' */
+      /* Switch: '<S58>/Switch' */
       Infinion_B.Switch = rtb_Sum_f_idx_0;
     }
 
-    /* End of Switch: '<S57>/Switch' */
+    /* End of Switch: '<S58>/Switch' */
 
-    /* UnitConversion: '<S65>/Unit Conversion' */
+    /* UnitConversion: '<S66>/Unit Conversion' */
     /* Unit Conversion - from: deg to: rad
        Expression: output = (0.0174533*input) + (0) */
     rtb_Sum_f_idx_0 = 0.017453292519943295 * Infinion_B.Switch;
 
-    /* Trigonometry: '<S66>/Trigonometric Function1' */
+    /* Trigonometry: '<S67>/Trigonometric Function1' */
     rtb_Abs1 = std::sin(rtb_Sum_f_idx_0);
 
-    /* Product: '<S66>/Product1' incorporates:
-     *  Product: '<S63>/Product2'
+    /* Product: '<S67>/Product1' incorporates:
+     *  Product: '<S64>/Product2'
      */
-    TmpSignalConversionAtSFunctionI = rtb_sqrt * rtb_sqrt;
+    rtb_Abs1_tmp = rtb_sqrt * rtb_sqrt;
 
-    /* Sum: '<S66>/Sum1' incorporates:
-     *  Constant: '<S66>/Constant'
-     *  Product: '<S66>/Product1'
+    /* Sum: '<S67>/Sum1' incorporates:
+     *  Constant: '<S67>/Constant'
+     *  Product: '<S67>/Product1'
      */
-    rtb_Abs1 = Infinion_P.Constant_Value_l - TmpSignalConversionAtSFunctionI *
-      rtb_Abs1 * rtb_Abs1;
+    rtb_Abs1 = Infinion_P.Constant_Value_l - rtb_Abs1_tmp * rtb_Abs1 * rtb_Abs1;
 
-    /* Product: '<S63>/Product1' incorporates:
-     *  Constant: '<S63>/Constant1'
-     *  Sqrt: '<S63>/sqrt'
+    /* Product: '<S64>/Product1' incorporates:
+     *  Constant: '<S64>/Constant1'
+     *  Sqrt: '<S64>/sqrt'
      */
     rtb_Abs = Infinion_P.Constant1_Value_k / std::sqrt(rtb_Abs1);
 
-    /* Trigonometry: '<S63>/Trigonometric Function1' incorporates:
-     *  Constant: '<S63>/Constant'
-     *  Constant: '<S63>/Constant2'
-     *  Product: '<S63>/Product3'
-     *  Sum: '<S63>/Sum1'
+    /* Trigonometry: '<S64>/Trigonometric Function1' incorporates:
+     *  Constant: '<S64>/Constant'
+     *  Constant: '<S64>/Constant2'
+     *  Product: '<S64>/Product3'
+     *  Sum: '<S64>/Sum1'
      */
     Infinion_B.TrigonometricFunction1 = rt_atan2d_snf
-      (Infinion_P.Constant2_Value_d, (Infinion_P.Constant_Value_h -
-        TmpSignalConversionAtSFunctionI) * rtb_Abs / rtb_Abs1);
+      (Infinion_P.Constant2_Value_d, (Infinion_P.Constant_Value_h - rtb_Abs1_tmp)
+       * rtb_Abs / rtb_Abs1);
 
-    /* Trigonometry: '<S63>/Trigonometric Function2' incorporates:
-     *  Constant: '<S63>/Constant3'
-     *  Product: '<S63>/Product4'
-     *  Trigonometry: '<S63>/Trigonometric Function'
+    /* Trigonometry: '<S64>/Trigonometric Function2' incorporates:
+     *  Constant: '<S64>/Constant3'
+     *  Product: '<S64>/Product4'
+     *  Trigonometry: '<S64>/Trigonometric Function'
      */
     Infinion_B.TrigonometricFunction2 = rt_atan2d_snf(Infinion_P.Constant3_Value,
       rtb_Abs * std::cos(rtb_Sum_f_idx_0));
 
-    /* Switch: '<S48>/Switch1' incorporates:
-     *  Constant: '<S48>/Constant'
-     *  Constant: '<S48>/Constant1'
+    /* Switch: '<S49>/Switch1' incorporates:
+     *  Constant: '<S49>/Constant'
+     *  Constant: '<S49>/Constant1'
      */
     if (rtb_Compare_f) {
-      rtb_Sum_f_idx_0 = Infinion_P.Constant_Value;
+      rtb_Abs = Infinion_P.Constant_Value;
     } else {
-      rtb_Sum_f_idx_0 = Infinion_P.Constant1_Value;
+      rtb_Abs = Infinion_P.Constant1_Value;
     }
 
-    /* End of Switch: '<S48>/Switch1' */
+    /* End of Switch: '<S49>/Switch1' */
 
-    /* Sum: '<S48>/Sum' incorporates:
+    /* Sum: '<S49>/Sum' incorporates:
      *  Constant: '<S4>/ref_position'
      */
-    rtb_sqrt = rtb_Sum_f_idx_0 + Infinion_P.FlatEarthtoLLA_LL0[1];
+    rtb_sqrt = rtb_Abs + Infinion_P.FlatEarthtoLLA_LL0[1];
 
-    /* Switch: '<S58>/Switch' incorporates:
-     *  Abs: '<S58>/Abs'
-     *  Constant: '<S62>/Constant'
-     *  RelationalOperator: '<S62>/Compare'
+    /* Switch: '<S59>/Switch' incorporates:
+     *  Abs: '<S59>/Abs'
+     *  Constant: '<S63>/Constant'
+     *  RelationalOperator: '<S63>/Compare'
      */
     if (std::abs(rtb_sqrt) > Infinion_P.CompareToConstant_const_c) {
-      /* Switch: '<S58>/Switch' incorporates:
-       *  Bias: '<S58>/Bias'
-       *  Bias: '<S58>/Bias1'
-       *  Constant: '<S58>/Constant2'
-       *  Math: '<S58>/Math Function1'
+      /* Switch: '<S59>/Switch' incorporates:
+       *  Bias: '<S59>/Bias'
+       *  Bias: '<S59>/Bias1'
+       *  Constant: '<S59>/Constant2'
+       *  Math: '<S59>/Math Function1'
        */
       Infinion_B.Switch_i = rt_modd_snf(rtb_sqrt + Infinion_P.Bias_Bias_f,
         Infinion_P.Constant2_Value_g) + Infinion_P.Bias1_Bias_b;
     } else {
-      /* Switch: '<S58>/Switch' */
+      /* Switch: '<S59>/Switch' */
       Infinion_B.Switch_i = rtb_sqrt;
     }
 
-    /* End of Switch: '<S58>/Switch' */
+    /* End of Switch: '<S59>/Switch' */
   }
 
   /* Sum: '<S4>/Sum' incorporates:
    *  Integrator: '<S1>/xe,ye,ze'
-   *  Product: '<S49>/rad lat'
-   *  Product: '<S49>/x*cos'
-   *  Product: '<S49>/y*sin'
-   *  Sum: '<S49>/Sum'
-   *  UnitConversion: '<S50>/Unit Conversion'
+   *  Product: '<S50>/rad lat'
+   *  Product: '<S50>/x*cos'
+   *  Product: '<S50>/y*sin'
+   *  Sum: '<S50>/Sum'
+   *  UnitConversion: '<S51>/Unit Conversion'
    */
   /* Unit Conversion - from: rad to: deg
      Expression: output = (57.2958*input) + (0) */
@@ -3706,175 +3705,181 @@ void InfinionModelClass::step()
                      Infinion_X.xeyeze_CSTATE[1] * Infinion_B.SinCos_o1) *
     Infinion_B.TrigonometricFunction1 * 57.295779513082323 + Infinion_B.Switch;
 
-  /* Switch: '<S54>/Switch' incorporates:
-   *  Abs: '<S54>/Abs'
-   *  Bias: '<S54>/Bias'
-   *  Bias: '<S54>/Bias1'
-   *  Constant: '<S54>/Constant2'
-   *  Constant: '<S55>/Constant'
-   *  Math: '<S54>/Math Function1'
-   *  RelationalOperator: '<S55>/Compare'
+  /* Switch: '<S55>/Switch' incorporates:
+   *  Abs: '<S55>/Abs'
+   *  Bias: '<S55>/Bias'
+   *  Bias: '<S55>/Bias1'
+   *  Constant: '<S55>/Constant2'
+   *  Constant: '<S56>/Constant'
+   *  Math: '<S55>/Math Function1'
+   *  RelationalOperator: '<S56>/Compare'
    */
   if (std::abs(rtb_Sum_f_idx_0) > Infinion_P.CompareToConstant_const_e) {
     rtb_Sum_f_idx_0 = rt_modd_snf(rtb_Sum_f_idx_0 + Infinion_P.Bias_Bias_m,
       Infinion_P.Constant2_Value_e) + Infinion_P.Bias1_Bias_j;
   }
 
-  /* End of Switch: '<S54>/Switch' */
+  /* End of Switch: '<S55>/Switch' */
 
-  /* Abs: '<S51>/Abs1' */
+  /* Abs: '<S52>/Abs1' */
   rtb_sqrt = std::abs(rtb_Sum_f_idx_0);
 
-  /* RelationalOperator: '<S53>/Compare' incorporates:
-   *  Constant: '<S53>/Constant'
-   */
-  rtb_Compare_f = (rtb_sqrt > Infinion_P.CompareToConstant_const_p);
-
-  /* Switch: '<S51>/Switch' incorporates:
-   *  Bias: '<S51>/Bias'
-   *  Bias: '<S51>/Bias1'
-   *  Gain: '<S51>/Gain'
-   *  Product: '<S51>/Divide1'
-   */
-  if (rtb_Compare_f) {
-    /* Signum: '<S51>/Sign1' */
-    if (rtb_Sum_f_idx_0 < 0.0) {
-      rtb_Sum_f_idx_0 = -1.0;
-    } else if (rtb_Sum_f_idx_0 > 0.0) {
-      rtb_Sum_f_idx_0 = 1.0;
-    } else if (rtb_Sum_f_idx_0 == 0.0) {
-      rtb_Sum_f_idx_0 = 0.0;
-    } else {
-      rtb_Sum_f_idx_0 = (rtNaN);
-    }
-
-    /* End of Signum: '<S51>/Sign1' */
-    rtb_Sum_f_idx_0 *= (rtb_sqrt + Infinion_P.Bias_Bias) * Infinion_P.Gain_Gain
-      + Infinion_P.Bias1_Bias;
-  }
-
-  /* End of Switch: '<S51>/Switch' */
-
-  /* SignalConversion generated from: '<S14>/ SFunction ' incorporates:
-   *  Constant: '<Root>/HNLLat'
-   *  Sum: '<Root>/Sum'
-   */
-  TmpSignalConversionAtSFunctionI = Infinion_P.HNLLat_Value + rtb_Sum_f_idx_0;
-
-  /* Switch: '<S47>/Switch1' incorporates:
-   *  Constant: '<S47>/Constant'
-   *  Constant: '<S47>/Constant1'
-   */
-  if (rtb_Compare_f) {
-    rtb_Sum_f_idx_0 = Infinion_P.Constant_Value_o;
-  } else {
-    rtb_Sum_f_idx_0 = Infinion_P.Constant1_Value_d;
-  }
-
-  /* End of Switch: '<S47>/Switch1' */
-
-  /* Sum: '<S47>/Sum' incorporates:
-   *  Integrator: '<S1>/xe,ye,ze'
-   *  Product: '<S49>/rad long '
-   *  Product: '<S49>/x*sin'
-   *  Product: '<S49>/y*cos'
-   *  Sum: '<S49>/Sum1'
-   *  Sum: '<S4>/Sum'
-   *  UnitConversion: '<S50>/Unit Conversion'
-   */
-  rtb_Sum_f_idx_0 += (Infinion_X.xeyeze_CSTATE[0] * Infinion_B.SinCos_o1 +
-                      Infinion_X.xeyeze_CSTATE[1] * Infinion_B.SinCos_o2) *
-    Infinion_B.TrigonometricFunction2 * 57.295779513082323 + Infinion_B.Switch_i;
-
   /* Switch: '<S52>/Switch' incorporates:
-   *  Abs: '<S52>/Abs'
    *  Bias: '<S52>/Bias'
    *  Bias: '<S52>/Bias1'
-   *  Constant: '<S52>/Constant2'
-   *  Constant: '<S56>/Constant'
-   *  Math: '<S52>/Math Function1'
-   *  RelationalOperator: '<S56>/Compare'
+   *  Constant: '<S48>/Constant'
+   *  Constant: '<S48>/Constant1'
+   *  Constant: '<S54>/Constant'
+   *  Gain: '<S52>/Gain'
+   *  Product: '<S52>/Divide1'
+   *  RelationalOperator: '<S54>/Compare'
+   *  Switch: '<S48>/Switch1'
+   */
+  if (rtb_sqrt > Infinion_P.CompareToConstant_const_p) {
+    /* Signum: '<S52>/Sign1' */
+    if (rtb_Sum_f_idx_0 < 0.0) {
+      rtb_Abs = -1.0;
+    } else if (rtb_Sum_f_idx_0 > 0.0) {
+      rtb_Abs = 1.0;
+    } else if (rtb_Sum_f_idx_0 == 0.0) {
+      rtb_Abs = 0.0;
+    } else {
+      rtb_Abs = (rtNaN);
+    }
+
+    /* End of Signum: '<S52>/Sign1' */
+    rtb_Sum_f_idx_0 = ((rtb_sqrt + Infinion_P.Bias_Bias) * Infinion_P.Gain_Gain
+                       + Infinion_P.Bias1_Bias) * rtb_Abs;
+    rtb_Abs = Infinion_P.Constant_Value_o;
+  } else {
+    rtb_Abs = Infinion_P.Constant1_Value_d;
+  }
+
+  /* End of Switch: '<S52>/Switch' */
+
+  /* Sum: '<Root>/Sum' incorporates:
+   *  Constant: '<Root>/HNLLat'
+   */
+  rtb_Abs1 = Infinion_P.HNLLat_Value + rtb_Sum_f_idx_0;
+
+  /* Sum: '<S48>/Sum' incorporates:
+   *  Integrator: '<S1>/xe,ye,ze'
+   *  Product: '<S50>/rad long '
+   *  Product: '<S50>/x*sin'
+   *  Product: '<S50>/y*cos'
+   *  Sum: '<S4>/Sum'
+   *  Sum: '<S50>/Sum1'
+   *  UnitConversion: '<S51>/Unit Conversion'
+   */
+  rtb_Sum_f_idx_0 = ((Infinion_X.xeyeze_CSTATE[0] * Infinion_B.SinCos_o1 +
+                      Infinion_X.xeyeze_CSTATE[1] * Infinion_B.SinCos_o2) *
+                     Infinion_B.TrigonometricFunction2 * 57.295779513082323 +
+                     Infinion_B.Switch_i) + rtb_Abs;
+
+  /* Switch: '<S53>/Switch' incorporates:
+   *  Abs: '<S53>/Abs'
+   *  Bias: '<S53>/Bias'
+   *  Bias: '<S53>/Bias1'
+   *  Constant: '<S53>/Constant2'
+   *  Constant: '<S57>/Constant'
+   *  Math: '<S53>/Math Function1'
+   *  RelationalOperator: '<S57>/Compare'
    */
   if (std::abs(rtb_Sum_f_idx_0) > Infinion_P.CompareToConstant_const_h) {
     rtb_Sum_f_idx_0 = rt_modd_snf(rtb_Sum_f_idx_0 + Infinion_P.Bias_Bias_k,
       Infinion_P.Constant2_Value_h) + Infinion_P.Bias1_Bias_g;
   }
 
-  /* End of Switch: '<S52>/Switch' */
+  /* End of Switch: '<S53>/Switch' */
 
-  /* Trigonometry: '<S26>/sincos' incorporates:
-   *  Integrator: '<S18>/phi theta psi'
-   *  SignalConversion generated from: '<S26>/sincos'
-   *  Trigonometry: '<S27>/sincos'
+  /* Sum: '<S4>/Sum1' incorporates:
+   *  Constant: '<Root>/Constant'
+   *  Integrator: '<S1>/xe,ye,ze'
+   *  UnaryMinus: '<S4>/Ze2height'
+   */
+  rtb_Abs = -Infinion_X.xeyeze_CSTATE[2] - Infinion_P.Constant_Value_ml;
+
+  /* Trigonometry: '<S27>/sincos' incorporates:
+   *  Integrator: '<S19>/phi theta psi'
+   *  SignalConversion generated from: '<S27>/sincos'
+   *  Trigonometry: '<S28>/sincos'
    */
   rtb_Sum_h[0] = std::cos(Infinion_X.phithetapsi_CSTATE[2]);
-  rtb_Abs1 = std::sin(Infinion_X.phithetapsi_CSTATE[2]);
-  rtb_Sum_f5_tmp_0 = std::cos(Infinion_X.phithetapsi_CSTATE[1]);
-  rtb_Sum2_tmp_0 = std::sin(Infinion_X.phithetapsi_CSTATE[1]);
+  rtb_sqrt = std::sin(Infinion_X.phithetapsi_CSTATE[2]);
+  rtb_Abs1_tmp = std::cos(Infinion_X.phithetapsi_CSTATE[1]);
+  rtb_Sum2_f_tmp_0 = std::sin(Infinion_X.phithetapsi_CSTATE[1]);
   rtb_Sum_f5_tmp = std::cos(Infinion_X.phithetapsi_CSTATE[0]);
-  rtb_Sum2_tmp = std::sin(Infinion_X.phithetapsi_CSTATE[0]);
+  rtb_Sum2_f_tmp = std::sin(Infinion_X.phithetapsi_CSTATE[0]);
 
-  /* Fcn: '<S26>/Fcn11' incorporates:
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn11' incorporates:
+   *  Trigonometry: '<S27>/sincos'
    */
-  VectorConcatenate[0] = rtb_Sum_h[0] * rtb_Sum_f5_tmp_0;
+  VectorConcatenate[0] = rtb_Sum_h[0] * rtb_Abs1_tmp;
 
-  /* Fcn: '<S26>/Fcn21' incorporates:
-   *  Fcn: '<S26>/Fcn22'
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn21' incorporates:
+   *  Fcn: '<S27>/Fcn22'
+   *  Trigonometry: '<S27>/sincos'
    */
-  rtb_sqrt = rtb_Sum2_tmp_0 * rtb_Sum2_tmp;
-  VectorConcatenate[1] = rtb_sqrt * rtb_Sum_h[0] - rtb_Abs1 * rtb_Sum_f5_tmp;
+  latSpeedFile = rtb_Sum2_f_tmp_0 * rtb_Sum2_f_tmp;
+  VectorConcatenate[1] = latSpeedFile * rtb_Sum_h[0] - rtb_sqrt * rtb_Sum_f5_tmp;
 
-  /* Fcn: '<S26>/Fcn31' incorporates:
-   *  Fcn: '<S26>/Fcn32'
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn31' incorporates:
+   *  Fcn: '<S27>/Fcn32'
+   *  Trigonometry: '<S27>/sincos'
    */
-  rtb_Abs = rtb_Sum2_tmp_0 * rtb_Sum_f5_tmp;
-  VectorConcatenate[2] = rtb_Abs * rtb_Sum_h[0] + rtb_Abs1 * rtb_Sum2_tmp;
+  rtb_sincos_o2_idx_1 = rtb_Sum2_f_tmp_0 * rtb_Sum_f5_tmp;
+  VectorConcatenate[2] = rtb_sincos_o2_idx_1 * rtb_Sum_h[0] + rtb_sqrt *
+    rtb_Sum2_f_tmp;
 
-  /* Fcn: '<S26>/Fcn12' incorporates:
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn12' incorporates:
+   *  Trigonometry: '<S27>/sincos'
    */
-  VectorConcatenate[3] = rtb_Abs1 * rtb_Sum_f5_tmp_0;
+  VectorConcatenate[3] = rtb_sqrt * rtb_Abs1_tmp;
 
-  /* Fcn: '<S26>/Fcn22' incorporates:
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn22' incorporates:
+   *  Trigonometry: '<S27>/sincos'
    */
-  VectorConcatenate[4] = rtb_sqrt * rtb_Abs1 + rtb_Sum_h[0] * rtb_Sum_f5_tmp;
+  VectorConcatenate[4] = latSpeedFile * rtb_sqrt + rtb_Sum_h[0] * rtb_Sum_f5_tmp;
 
-  /* Fcn: '<S26>/Fcn32' incorporates:
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn32' incorporates:
+   *  Trigonometry: '<S27>/sincos'
    */
-  VectorConcatenate[5] = rtb_Abs * rtb_Abs1 - rtb_Sum_h[0] * rtb_Sum2_tmp;
+  VectorConcatenate[5] = rtb_sincos_o2_idx_1 * rtb_sqrt - rtb_Sum_h[0] *
+    rtb_Sum2_f_tmp;
 
-  /* Fcn: '<S26>/Fcn13' incorporates:
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn13' incorporates:
+   *  Trigonometry: '<S27>/sincos'
    */
-  VectorConcatenate[6] = -rtb_Sum2_tmp_0;
+  VectorConcatenate[6] = -rtb_Sum2_f_tmp_0;
 
-  /* Fcn: '<S26>/Fcn23' incorporates:
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn23' incorporates:
+   *  Trigonometry: '<S27>/sincos'
    */
-  VectorConcatenate[7] = rtb_Sum_f5_tmp_0 * rtb_Sum2_tmp;
+  VectorConcatenate[7] = rtb_Abs1_tmp * rtb_Sum2_f_tmp;
 
-  /* Fcn: '<S26>/Fcn33' incorporates:
-   *  Trigonometry: '<S26>/sincos'
+  /* Fcn: '<S27>/Fcn33' incorporates:
+   *  Trigonometry: '<S27>/sincos'
    */
-  VectorConcatenate[8] = rtb_Sum_f5_tmp_0 * rtb_Sum_f5_tmp;
+  VectorConcatenate[8] = rtb_Abs1_tmp * rtb_Sum_f5_tmp;
   for (k = 0; k < 3; k++) {
-    /* Product: '<S25>/Product' incorporates:
-     *  Concatenate: '<S28>/Vector Concatenate'
+    /* Math: '<S1>/Transpose' incorporates:
+     *  Concatenate: '<S29>/Vector Concatenate'
+     *  MATLAB Function: '<S5>/Body2Inertial'
+     */
+    Product_tmp[3 * k] = VectorConcatenate[k];
+    Product_tmp[3 * k + 1] = VectorConcatenate[k + 3];
+    Product_tmp[3 * k + 2] = VectorConcatenate[k + 6];
+  }
+
+  for (k = 0; k < 3; k++) {
+    /* Product: '<S26>/Product' incorporates:
      *  Integrator: '<S1>/ub,vb,wb'
      *  Math: '<S1>/Transpose'
      */
     Infinion_B.Product[k] = 0.0;
-    Infinion_B.Product[k] += VectorConcatenate[3 * k] *
-      Infinion_X.ubvbwb_CSTATE[0];
-    Infinion_B.Product[k] += VectorConcatenate[3 * k + 1] *
-      Infinion_X.ubvbwb_CSTATE[1];
-    Infinion_B.Product[k] += VectorConcatenate[3 * k + 2] *
-      Infinion_X.ubvbwb_CSTATE[2];
+    Infinion_B.Product[k] += Product_tmp[k] * Infinion_X.ubvbwb_CSTATE[0];
+    Infinion_B.Product[k] += Product_tmp[k + 3] * Infinion_X.ubvbwb_CSTATE[1];
+    Infinion_B.Product[k] += Product_tmp[k + 6] * Infinion_X.ubvbwb_CSTATE[2];
   }
 
   Infinion_emxInit_char_T(&s, 2);
@@ -3936,72 +3941,181 @@ void InfinionModelClass::step()
     Infinion_emxFree_char_T(&tmp_6);
   }
 
-  /* Product: '<S5>/Product' incorporates:
+  /* Product: '<S6>/Product' incorporates:
    *  Integrator: '<S1>/ub,vb,wb'
    */
-  rtb_Abs1 = Infinion_X.ubvbwb_CSTATE[1] / Airspeed;
+  rtb_sqrt = Infinion_X.ubvbwb_CSTATE[1] / Airspeed;
 
-  /* Trigonometry: '<S5>/Sideslip' */
-  if (rtb_Abs1 > 1.0) {
-    rtb_Abs1 = 1.0;
-  } else if (rtb_Abs1 < -1.0) {
-    rtb_Abs1 = -1.0;
+  /* Trigonometry: '<S6>/Sideslip' */
+  if (rtb_sqrt > 1.0) {
+    rtb_sqrt = 1.0;
+  } else if (rtb_sqrt < -1.0) {
+    rtb_sqrt = -1.0;
   }
 
   /* SignalConversion generated from: '<S2>/sincos' incorporates:
-   *  Trigonometry: '<S5>/Sideslip'
+   *  Trigonometry: '<S6>/Sideslip'
    */
-  rtb_sincos_o1_idx_1 = std::asin(rtb_Abs1);
+  rtb_sincos_o1_idx_1 = std::asin(rtb_sqrt);
 
   /* Trigonometry: '<S2>/sincos' incorporates:
    *  SignalConversion generated from: '<S2>/sincos'
    */
-  rtb_Abs1 = std::cos(Incidence);
-  rtb_sqrt = std::sin(Incidence);
-  rtb_Abs = std::cos(rtb_sincos_o1_idx_1);
+  rtb_sqrt = std::cos(Incidence);
+  latSpeedFile = std::sin(Incidence);
+  rtb_sincos_o2_idx_1 = std::cos(rtb_sincos_o1_idx_1);
   rtb_sincos_o1_idx_1 = std::sin(rtb_sincos_o1_idx_1);
 
-  /* Product: '<S36>/u(3)*u(4)' */
-  Infinion_B.VectorConcatenate_b[0] = rtb_Abs1 * rtb_Abs;
+  /* Product: '<S37>/u(3)*u(4)' */
+  Infinion_B.VectorConcatenate_b[0] = rtb_sqrt * rtb_sincos_o2_idx_1;
 
-  /* UnaryMinus: '<S39>/Unary Minus' incorporates:
-   *  Product: '<S39>/u(2)*u(3)'
+  /* UnaryMinus: '<S40>/Unary Minus' incorporates:
+   *  Product: '<S40>/u(2)*u(3)'
    */
-  Infinion_B.VectorConcatenate_b[1] = -(rtb_Abs1 * rtb_sincos_o1_idx_1);
+  Infinion_B.VectorConcatenate_b[1] = -(rtb_sqrt * rtb_sincos_o1_idx_1);
 
-  /* UnaryMinus: '<S42>/Unary Minus' */
-  Infinion_B.VectorConcatenate_b[2] = -rtb_sqrt;
+  /* UnaryMinus: '<S43>/Unary Minus' */
+  Infinion_B.VectorConcatenate_b[2] = -latSpeedFile;
 
-  /* SignalConversion generated from: '<S45>/Vector Concatenate' */
+  /* SignalConversion generated from: '<S46>/Vector Concatenate' */
   Infinion_B.VectorConcatenate_b[3] = rtb_sincos_o1_idx_1;
 
-  /* SignalConversion generated from: '<S45>/Vector Concatenate' */
-  Infinion_B.VectorConcatenate_b[4] = rtb_Abs;
+  /* SignalConversion generated from: '<S46>/Vector Concatenate' */
+  Infinion_B.VectorConcatenate_b[4] = rtb_sincos_o2_idx_1;
   if (rtmIsMajorTimeStep((&Infinion_M))) {
-    /* Constant: '<S43>/Constant' */
+    /* Constant: '<S44>/Constant' */
     Infinion_B.VectorConcatenate_b[5] = Infinion_P.Constant_Value_jt;
   }
 
-  /* Product: '<S38>/u(1)*u(4)' */
-  Infinion_B.VectorConcatenate_b[6] = rtb_sqrt * rtb_Abs;
+  /* Product: '<S39>/u(1)*u(4)' */
+  Infinion_B.VectorConcatenate_b[6] = latSpeedFile * rtb_sincos_o2_idx_1;
 
-  /* UnaryMinus: '<S41>/Unary Minus' incorporates:
-   *  Product: '<S41>/u(1)*u(2)'
+  /* UnaryMinus: '<S42>/Unary Minus' incorporates:
+   *  Product: '<S42>/u(1)*u(2)'
    */
-  Infinion_B.VectorConcatenate_b[7] = -(rtb_sqrt * rtb_sincos_o1_idx_1);
+  Infinion_B.VectorConcatenate_b[7] = -(latSpeedFile * rtb_sincos_o1_idx_1);
 
-  /* SignalConversion generated from: '<S45>/Vector Concatenate' */
-  Infinion_B.VectorConcatenate_b[8] = rtb_Abs1;
+  /* SignalConversion generated from: '<S46>/Vector Concatenate' */
+  Infinion_B.VectorConcatenate_b[8] = rtb_sqrt;
 
-  /* Sum: '<S21>/Sum' incorporates:
+  /* MATLAB Function: '<Root>/SimpleLift' incorporates:
+   *  MATLAB Function: '<Root>/SimpleDrag'
+   */
+  Product_tmp_0[0] = 0.0;
+  Product_tmp_0[1] = 0.0;
+  rtb_sqrt = Airspeed * Airspeed;
+  Product_tmp_0[2] = -((Incidence + 0.08) * rtb_sqrt * 0.21222);
+
+  /* MATLAB Function: '<Root>/SimpleDrag' */
+  rtb_sqrt = -rtb_sqrt * 0.04444;
+
+  /* Sum: '<Root>/Add' incorporates:
+   *  Concatenate: '<S29>/Vector Concatenate'
+   *  Concatenate: '<S46>/Vector Concatenate'
+   *  MATLAB Function: '<Root>/SimpleDrag'
+   *  MATLAB Function: '<Root>/gravity'
+   */
+  for (k = 0; k < 3; k++) {
+    rtb_Add[k] = ((((VectorConcatenate[k + 3] * 0.0 + VectorConcatenate[k] * 0.0)
+                    + VectorConcatenate[k + 6] * 9.8) + Infinion_B.forces[k]) +
+                  Product_tmp_0[k]) + ((Infinion_B.VectorConcatenate_b[3 * k + 1]
+      * 0.0 + Infinion_B.VectorConcatenate_b[3 * k] * rtb_sqrt) +
+      Infinion_B.VectorConcatenate_b[3 * k + 2] * 0.0);
+  }
+
+  /* End of Sum: '<Root>/Add' */
+
+  /* If: '<S5>/If' */
+  if (rtmIsMajorTimeStep((&Infinion_M))) {
+    rtAction = static_cast<int8_T>((!(rtb_Abs > 0.01)) && (!(Infinion_B.Product
+      [2] < 0.0)));
+    Infinion_DW.If_ActiveSubsystem = rtAction;
+  } else {
+    rtAction = Infinion_DW.If_ActiveSubsystem;
+  }
+
+  switch (rtAction) {
+   case 0:
+    /* Outputs for IfAction SubSystem: '<S5>/If Action Subsystem2' incorporates:
+     *  ActionPort: '<S72>/Action Port'
+     */
+    if (rtmIsMajorTimeStep((&Infinion_M))) {
+      /* Merge: '<S5>/Merge' incorporates:
+       *  Constant: '<S72>/Constant'
+       *  SignalConversion generated from: '<S72>/Zero normal force'
+       */
+      Infinion_B.Merge[0] = Infinion_P.Constant_Value_m[0];
+      Infinion_B.Merge[1] = Infinion_P.Constant_Value_m[1];
+      Infinion_B.Merge[2] = Infinion_P.Constant_Value_m[2];
+    }
+
+    /* End of Outputs for SubSystem: '<S5>/If Action Subsystem2' */
+    break;
+
+   case 1:
+    /* MATLAB Function: '<S5>/Body2Inertial' */
+    for (k = 0; k < 3; k++) {
+      Product_tmp_0[k] = Product_tmp[k + 6] * rtb_Add[2] + (Product_tmp[k + 3] *
+        rtb_Add[1] + Product_tmp[k] * rtb_Add[0]);
+    }
+
+    /* Outputs for IfAction SubSystem: '<S5>/If Action Subsystem1' incorporates:
+     *  ActionPort: '<S71>/Action Port'
+     */
+    /* Gain: '<S71>/Gain' */
+    rtb_sqrt = Infinion_P.Gain_Gain_i * Infinion_B.Product[2];
+
+    /* Gain: '<S71>/Gain1' incorporates:
+     *  MATLAB Function: '<S5>/Body2Inertial'
+     */
+    latSpeedFile = Infinion_P.Gain1_Gain * Product_tmp_0[2];
+
+    /* Merge: '<S5>/Merge' incorporates:
+     *  Constant: '<S71>/Constant'
+     *  SignalConversion generated from: '<S71>/Normal force'
+     */
+    Infinion_B.Merge[0] = Infinion_P.Constant_Value_j;
+    Infinion_B.Merge[1] = Infinion_P.Constant_Value_j;
+
+    /* Saturate: '<S71>/Saturation' */
+    if (rtb_sqrt > Infinion_P.Saturation_UpperSat) {
+      rtb_sqrt = Infinion_P.Saturation_UpperSat;
+    } else if (rtb_sqrt < Infinion_P.Saturation_LowerSat) {
+      rtb_sqrt = Infinion_P.Saturation_LowerSat;
+    }
+
+    /* End of Saturate: '<S71>/Saturation' */
+
+    /* Saturate: '<S71>/Saturation1' */
+    if (latSpeedFile > Infinion_P.Saturation1_UpperSat) {
+      latSpeedFile = Infinion_P.Saturation1_UpperSat;
+    } else if (latSpeedFile < Infinion_P.Saturation1_LowerSat) {
+      latSpeedFile = Infinion_P.Saturation1_LowerSat;
+    }
+
+    /* End of Saturate: '<S71>/Saturation1' */
+
+    /* Merge: '<S5>/Merge' incorporates:
+     *  SignalConversion generated from: '<S71>/Normal force'
+     *  Sum: '<S71>/Sum'
+     */
+    Infinion_B.Merge[2] = rtb_sqrt + latSpeedFile;
+
+    /* End of Outputs for SubSystem: '<S5>/If Action Subsystem1' */
+    break;
+  }
+
+  /* End of If: '<S5>/If' */
+
+  /* Sum: '<S22>/Sum' incorporates:
    *  Integrator: '<S1>/p,q,r '
    *  Integrator: '<S1>/ub,vb,wb'
-   *  Product: '<S34>/i x j'
-   *  Product: '<S34>/j x k'
-   *  Product: '<S34>/k x i'
-   *  Product: '<S35>/i x k'
-   *  Product: '<S35>/j x i'
-   *  Product: '<S35>/k x j'
+   *  Product: '<S35>/i x j'
+   *  Product: '<S35>/j x k'
+   *  Product: '<S35>/k x i'
+   *  Product: '<S36>/i x k'
+   *  Product: '<S36>/j x i'
+   *  Product: '<S36>/k x j'
    */
   rtb_Sum_h[0] = Infinion_X.ubvbwb_CSTATE[1] * Infinion_X.pqr_CSTATE[2] -
     Infinion_X.pqr_CSTATE[1] * Infinion_X.ubvbwb_CSTATE[2];
@@ -4009,33 +4123,17 @@ void InfinionModelClass::step()
     Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.pqr_CSTATE[2];
   rtb_Sum_h[2] = Infinion_X.ubvbwb_CSTATE[0] * Infinion_X.pqr_CSTATE[1] -
     Infinion_X.pqr_CSTATE[0] * Infinion_X.ubvbwb_CSTATE[1];
-
-  /* MATLAB Function: '<Root>/SimpleLift' incorporates:
-   *  MATLAB Function: '<Root>/SimpleDrag'
-   */
-  gravityBody[0] = 0.0;
-  gravityBody[1] = 0.0;
-  rtb_Abs1 = Airspeed * Airspeed;
-  gravityBody[2] = -((Incidence + 0.08) * rtb_Abs1 * 0.21222);
-
-  /* MATLAB Function: '<Root>/SimpleDrag' */
-  rtb_Abs1 = -rtb_Abs1 * 0.04444;
   for (k = 0; k < 3; k++) {
     /* Sum: '<S1>/Sum' incorporates:
-     *  Concatenate: '<S28>/Vector Concatenate'
-     *  Concatenate: '<S45>/Vector Concatenate'
-     *  Constant: '<S20>/Constant'
-     *  MATLAB Function: '<Root>/SimpleDrag'
-     *  MATLAB Function: '<Root>/gravity'
+     *  Concatenate: '<S29>/Vector Concatenate'
+     *  Constant: '<S21>/Constant'
+     *  MATLAB Function: '<S5>/Inertial2Body'
      *  Product: '<S1>/Product'
-     *  Sum: '<Root>/Add'
+     *  Sum: '<Root>/Sum2'
      */
-    Infinion_B.Sum[k] = (((((VectorConcatenate[k + 3] * 0.0 +
-      VectorConcatenate[k] * 0.0) + VectorConcatenate[k + 6] * 9.8) +
-      Infinion_B.forces[k]) + gravityBody[k]) +
-                         ((Infinion_B.VectorConcatenate_b[3 * k + 1] * 0.0 +
-      Infinion_B.VectorConcatenate_b[3 * k] * rtb_Abs1) +
-                          Infinion_B.VectorConcatenate_b[3 * k + 2] * 0.0)) /
+    Infinion_B.Sum[k] = (((VectorConcatenate[k + 3] * Infinion_B.Merge[1] +
+      VectorConcatenate[k] * Infinion_B.Merge[0]) + VectorConcatenate[k + 6] *
+                          Infinion_B.Merge[2]) + rtb_Add[k]) /
       Infinion_P.uDOFEulerAngles_mass_0 + rtb_Sum_h[k];
   }
 
@@ -4045,34 +4143,32 @@ void InfinionModelClass::step()
     rtb_sqrt += 6.2831853071795862;
   }
 
-  /* SignalConversion generated from: '<S14>/ SFunction ' incorporates:
+  /* SignalConversion generated from: '<S15>/ SFunction ' incorporates:
    *  Constant: '<Root>/HNLLong'
    *  MATLAB Function: '<Root>/WriteToFile'
    *  Sum: '<Root>/Sum1'
    */
-  rtb_sincos_o1_idx_1 = Infinion_P.HNLLong_Value + rtb_Sum_f_idx_0;
+  rtb_Add[0] = rtb_Abs1;
+  rtb_Add[1] = Infinion_P.HNLLong_Value + rtb_Sum_f_idx_0;
+  rtb_Add[2] = rtb_Abs;
 
   /* MATLAB Function: '<Root>/WriteToFile' incorporates:
-   *  Concatenate: '<S28>/Vector Concatenate'
-   *  Constant: '<Root>/Constant'
-   *  Integrator: '<S18>/phi theta psi'
+   *  Concatenate: '<S29>/Vector Concatenate'
+   *  Integrator: '<S19>/phi theta psi'
    *  Integrator: '<S1>/p,q,r '
-   *  Integrator: '<S1>/xe,ye,ze'
    *  MATLAB Function: '<Root>/compute track'
-   *  Sum: '<S4>/Sum1'
-   *  UnaryMinus: '<S4>/Ze2height'
    */
   for (k = 0; k < 3; k++) {
-    gravityBody[k] = VectorConcatenate[k + 6] * -9.8 + (VectorConcatenate[k + 3]
-      * 0.0 + VectorConcatenate[k] * 0.0);
+    rtb_Sum_h[k] = VectorConcatenate[k + 6] * -9.8 + (VectorConcatenate[k + 3] *
+      0.0 + VectorConcatenate[k] * 0.0);
   }
 
   rtb_Sum_f_idx_0 = Infinion_fileManager_n();
   rtb_Abs1 = Infinion_fileManager_nv();
   rtb_Abs = Infinion_fileManager_nvg();
   latSpeedFile = Infinion_fileManager_nvg1();
-  longSpeedFile = Infinion_fileManager_nvg1z();
-  rateOfClimbFile = Infinion_fileManager_nvg1zl();
+  rtb_sincos_o2_idx_1 = Infinion_fileManager_nvg1z();
+  rtb_sincos_o1_idx_1 = Infinion_fileManager_nvg1zl();
   latFile = Infinion_fileManager_nvg1zlk();
   longFile = Infinion_fileManager_nvg1zlk2();
   altitudeFile = Infinion_fileManager_nvg1zlk2m();
@@ -4125,7 +4221,7 @@ void InfinionModelClass::step()
   }
 
   b_NULL = NULL;
-  Inf_fileManager_n(longSpeedFile, &filestar, &rtb_Compare_f);
+  Inf_fileManager_n(rtb_sincos_o2_idx_1, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
     fprintf(filestar, "%f\n", Infinion_B.Product[1]);
     if (rtb_Compare_f) {
@@ -4134,7 +4230,7 @@ void InfinionModelClass::step()
   }
 
   b_NULL = NULL;
-  Inf_fileManager_n(rateOfClimbFile, &filestar, &rtb_Compare_f);
+  Inf_fileManager_n(rtb_sincos_o1_idx_1, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
     fprintf(filestar, "%f\n", Infinion_B.Product[2]);
     if (rtb_Compare_f) {
@@ -4145,7 +4241,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(latFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", TmpSignalConversionAtSFunctionI);
+    fprintf(filestar, "%f\n", rtb_Add[0]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -4154,7 +4250,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(longFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", rtb_sincos_o1_idx_1);
+    fprintf(filestar, "%f\n", rtb_Add[1]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -4163,8 +4259,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(altitudeFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", -Infinion_X.xeyeze_CSTATE[2] -
-            Infinion_P.Constant_Value_m);
+    fprintf(filestar, "%f\n", rtb_Add[2]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -4227,7 +4322,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(accXFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", gravityBody[0] + Infinion_B.Sum[0]);
+    fprintf(filestar, "%f\n", rtb_Sum_h[0] + Infinion_B.Sum[0]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -4236,7 +4331,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(accYFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", gravityBody[1] + Infinion_B.Sum[1]);
+    fprintf(filestar, "%f\n", rtb_Sum_h[1] + Infinion_B.Sum[1]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -4245,7 +4340,7 @@ void InfinionModelClass::step()
   b_NULL = NULL;
   Inf_fileManager_n(accZFile, &filestar, &rtb_Compare_f);
   if (!(filestar == b_NULL)) {
-    fprintf(filestar, "%f\n", gravityBody[2] + Infinion_B.Sum[2]);
+    fprintf(filestar, "%f\n", rtb_Sum_h[2] + Infinion_B.Sum[2]);
     if (rtb_Compare_f) {
       fflush(filestar);
     }
@@ -4280,74 +4375,74 @@ void InfinionModelClass::step()
 
   Inf_fileManager_el();
 
-  /* Fcn: '<S27>/phidot' incorporates:
-   *  Fcn: '<S27>/psidot'
+  /* Fcn: '<S28>/phidot' incorporates:
+   *  Fcn: '<S28>/psidot'
    *  Integrator: '<S1>/p,q,r '
    */
-  Airspeed = Infinion_X.pqr_CSTATE[1] * rtb_Sum2_tmp + Infinion_X.pqr_CSTATE[2] *
-    rtb_Sum_f5_tmp;
+  Airspeed = Infinion_X.pqr_CSTATE[1] * rtb_Sum2_f_tmp + Infinion_X.pqr_CSTATE[2]
+    * rtb_Sum_f5_tmp;
 
-  /* SignalConversion generated from: '<S18>/phi theta psi' incorporates:
-   *  Fcn: '<S27>/phidot'
-   *  Fcn: '<S27>/psidot'
-   *  Fcn: '<S27>/thetadot'
+  /* SignalConversion generated from: '<S19>/phi theta psi' incorporates:
+   *  Fcn: '<S28>/phidot'
+   *  Fcn: '<S28>/psidot'
+   *  Fcn: '<S28>/thetadot'
    *  Integrator: '<S1>/p,q,r '
    */
-  Infinion_B.TmpSignalConversionAtphithetaps[0] = Airspeed * (rtb_Sum2_tmp_0 /
-    rtb_Sum_f5_tmp_0) + Infinion_X.pqr_CSTATE[0];
+  Infinion_B.TmpSignalConversionAtphithetaps[0] = Airspeed * (rtb_Sum2_f_tmp_0 /
+    rtb_Abs1_tmp) + Infinion_X.pqr_CSTATE[0];
   Infinion_B.TmpSignalConversionAtphithetaps[1] = Infinion_X.pqr_CSTATE[1] *
-    rtb_Sum_f5_tmp - Infinion_X.pqr_CSTATE[2] * rtb_Sum2_tmp;
-  Infinion_B.TmpSignalConversionAtphithetaps[2] = Airspeed / rtb_Sum_f5_tmp_0;
+    rtb_Sum_f5_tmp - Infinion_X.pqr_CSTATE[2] * rtb_Sum2_f_tmp;
+  Infinion_B.TmpSignalConversionAtphithetaps[2] = Airspeed / rtb_Abs1_tmp;
   if (rtmIsMajorTimeStep((&Infinion_M))) {
     for (k = 0; k < 3; k++) {
-      /* Concatenate: '<S20>/Vector Concatenate' incorporates:
-       *  Constant: '<S20>/Constant1'
-       *  Constant: '<S20>/Constant2'
+      /* Concatenate: '<S21>/Vector Concatenate' incorporates:
+       *  Constant: '<S21>/Constant1'
+       *  Constant: '<S21>/Constant2'
        */
       rtb_VectorConcatenate[6 * k] = Infinion_P.uDOFEulerAngles_inertia[3 * k];
       rtb_VectorConcatenate[6 * k + 3] = Infinion_P.Constant2_Value_f[3 * k];
 
-      /* Selector: '<S19>/Selector' incorporates:
-       *  Concatenate: '<S20>/Vector Concatenate'
+      /* Selector: '<S20>/Selector' incorporates:
+       *  Concatenate: '<S21>/Vector Concatenate'
        */
       Infinion_B.Selector[3 * k] = rtb_VectorConcatenate[6 * k];
 
-      /* Concatenate: '<S20>/Vector Concatenate' incorporates:
-       *  Constant: '<S20>/Constant1'
-       *  Constant: '<S20>/Constant2'
-       *  Selector: '<S19>/Selector'
+      /* Concatenate: '<S21>/Vector Concatenate' incorporates:
+       *  Constant: '<S21>/Constant1'
+       *  Constant: '<S21>/Constant2'
+       *  Selector: '<S20>/Selector'
        */
       idx = 3 * k + 1;
       b_ii = 6 * k + 1;
       rtb_VectorConcatenate[b_ii] = Infinion_P.uDOFEulerAngles_inertia[idx];
       rtb_VectorConcatenate[6 * k + 4] = Infinion_P.Constant2_Value_f[idx];
 
-      /* Selector: '<S19>/Selector' incorporates:
-       *  Concatenate: '<S20>/Vector Concatenate'
+      /* Selector: '<S20>/Selector' incorporates:
+       *  Concatenate: '<S21>/Vector Concatenate'
        */
       Infinion_B.Selector[idx] = rtb_VectorConcatenate[b_ii];
 
-      /* Concatenate: '<S20>/Vector Concatenate' incorporates:
-       *  Constant: '<S20>/Constant1'
-       *  Constant: '<S20>/Constant2'
-       *  Selector: '<S19>/Selector'
+      /* Concatenate: '<S21>/Vector Concatenate' incorporates:
+       *  Constant: '<S21>/Constant1'
+       *  Constant: '<S21>/Constant2'
+       *  Selector: '<S20>/Selector'
        */
       idx = 3 * k + 2;
       b_ii = 6 * k + 2;
       rtb_VectorConcatenate[b_ii] = Infinion_P.uDOFEulerAngles_inertia[idx];
       rtb_VectorConcatenate[6 * k + 5] = Infinion_P.Constant2_Value_f[idx];
 
-      /* Selector: '<S19>/Selector' incorporates:
-       *  Concatenate: '<S20>/Vector Concatenate'
+      /* Selector: '<S20>/Selector' incorporates:
+       *  Concatenate: '<S21>/Vector Concatenate'
        */
       Infinion_B.Selector[idx] = rtb_VectorConcatenate[b_ii];
     }
   }
 
-  /* Product: '<S30>/Product' incorporates:
+  /* Product: '<S31>/Product' incorporates:
    *  Integrator: '<S1>/p,q,r '
-   *  Selector: '<S19>/Selector'
-   *  Sum: '<S29>/Sum'
+   *  Selector: '<S20>/Selector'
+   *  Sum: '<S30>/Sum'
    */
   for (k = 0; k < 3; k++) {
     rtb_Sum_h[k] = Infinion_B.Selector[k + 6] * Infinion_X.pqr_CSTATE[2] +
@@ -4355,11 +4450,11 @@ void InfinionModelClass::step()
        Infinion_B.Selector[k] * Infinion_X.pqr_CSTATE[0]);
   }
 
-  /* End of Product: '<S30>/Product' */
+  /* End of Product: '<S31>/Product' */
   if (rtmIsMajorTimeStep((&Infinion_M))) {
     for (k = 0; k < 3; k++) {
-      /* Selector: '<S19>/Selector1' incorporates:
-       *  Concatenate: '<S20>/Vector Concatenate'
+      /* Selector: '<S20>/Selector1' incorporates:
+       *  Concatenate: '<S21>/Vector Concatenate'
        */
       Infinion_B.Selector1[3 * k] = rtb_VectorConcatenate[6 * k + 3];
       Infinion_B.Selector1[3 * k + 1] = rtb_VectorConcatenate[6 * k + 4];
@@ -4517,8 +4612,8 @@ void InfinionModelClass::step()
     Infinion_B.torques[2] = tmp_2.re / 100.0 * 50.0 * 0.2618;
     Infinion_emxFree_char_T(&tmp_3);
     for (k = 0; k < 3; k++) {
-      /* Selector: '<S19>/Selector2' incorporates:
-       *  Concatenate: '<S20>/Vector Concatenate'
+      /* Selector: '<S20>/Selector2' incorporates:
+       *  Concatenate: '<S21>/Vector Concatenate'
        */
       Infinion_B.Selector2[3 * k] = rtb_VectorConcatenate[6 * k];
       Infinion_B.Selector2[3 * k + 1] = rtb_VectorConcatenate[6 * k + 1];
@@ -4531,36 +4626,36 @@ void InfinionModelClass::step()
   Infinion_emxFree_char_T(&b_s);
   Infinion_emxFree_char_T(&s);
 
-  /* Sum: '<S29>/Sum' incorporates:
+  /* Sum: '<S30>/Sum' incorporates:
    *  Integrator: '<S1>/p,q,r '
-   *  Product: '<S32>/i x j'
-   *  Product: '<S32>/j x k'
-   *  Product: '<S32>/k x i'
-   *  Product: '<S33>/i x k'
-   *  Product: '<S33>/j x i'
-   *  Product: '<S33>/k x j'
+   *  Product: '<S33>/i x j'
+   *  Product: '<S33>/j x k'
+   *  Product: '<S33>/k x i'
+   *  Product: '<S34>/i x k'
+   *  Product: '<S34>/j x i'
+   *  Product: '<S34>/k x j'
    */
-  gravityBody[0] = Infinion_X.pqr_CSTATE[1] * rtb_Sum_h[2];
-  gravityBody[1] = rtb_Sum_h[0] * Infinion_X.pqr_CSTATE[2];
-  gravityBody[2] = Infinion_X.pqr_CSTATE[0] * rtb_Sum_h[1];
-  rtb_Sum_f5[0] = rtb_Sum_h[1] * Infinion_X.pqr_CSTATE[2];
-  rtb_Sum_f5[1] = Infinion_X.pqr_CSTATE[0] * rtb_Sum_h[2];
-  rtb_Sum_f5[2] = rtb_Sum_h[0] * Infinion_X.pqr_CSTATE[1];
+  Product_tmp_0[0] = Infinion_X.pqr_CSTATE[1] * rtb_Sum_h[2];
+  Product_tmp_0[1] = rtb_Sum_h[0] * Infinion_X.pqr_CSTATE[2];
+  Product_tmp_0[2] = Infinion_X.pqr_CSTATE[0] * rtb_Sum_h[1];
+  rtb_Add[0] = rtb_Sum_h[1] * Infinion_X.pqr_CSTATE[2];
+  rtb_Add[1] = Infinion_X.pqr_CSTATE[0] * rtb_Sum_h[2];
+  rtb_Add[2] = rtb_Sum_h[0] * Infinion_X.pqr_CSTATE[1];
   for (k = 0; k < 3; k++) {
-    /* Sum: '<S19>/Sum2' incorporates:
+    /* Sum: '<S20>/Sum2' incorporates:
      *  Integrator: '<S1>/p,q,r '
-     *  Product: '<S31>/Product'
-     *  Selector: '<S19>/Selector1'
-     *  Sum: '<S29>/Sum'
+     *  Product: '<S32>/Product'
+     *  Selector: '<S20>/Selector1'
+     *  Sum: '<S30>/Sum'
      */
     rtb_Sum_h[k] = (Infinion_B.torques[k] - (Infinion_B.Selector1[k + 6] *
       Infinion_X.pqr_CSTATE[2] + (Infinion_B.Selector1[k + 3] *
       Infinion_X.pqr_CSTATE[1] + Infinion_B.Selector1[k] *
-      Infinion_X.pqr_CSTATE[0]))) - (gravityBody[k] - rtb_Sum_f5[k]);
+      Infinion_X.pqr_CSTATE[0]))) - (Product_tmp_0[k] - rtb_Add[k]);
   }
 
-  /* Product: '<S19>/Product2' incorporates:
-   *  Selector: '<S19>/Selector2'
+  /* Product: '<S20>/Product2' incorporates:
+   *  Selector: '<S20>/Selector2'
    */
   rt_mrdivide_U1d1x3_U2d_9vOrDY9Z(rtb_Sum_h, Infinion_B.Selector2,
     Infinion_B.Product2);
@@ -4613,7 +4708,7 @@ void InfinionModelClass::Infinion_derivatives()
   /* Derivatives for Integrator: '<S1>/xe,ye,ze' */
   _rtXdot->xeyeze_CSTATE[0] = Infinion_B.Product[0];
 
-  /* Derivatives for Integrator: '<S18>/phi theta psi' */
+  /* Derivatives for Integrator: '<S19>/phi theta psi' */
   _rtXdot->phithetapsi_CSTATE[0] = Infinion_B.TmpSignalConversionAtphithetaps[0];
 
   /* Derivatives for Integrator: '<S1>/p,q,r ' */
@@ -4625,7 +4720,7 @@ void InfinionModelClass::Infinion_derivatives()
   /* Derivatives for Integrator: '<S1>/xe,ye,ze' */
   _rtXdot->xeyeze_CSTATE[1] = Infinion_B.Product[1];
 
-  /* Derivatives for Integrator: '<S18>/phi theta psi' */
+  /* Derivatives for Integrator: '<S19>/phi theta psi' */
   _rtXdot->phithetapsi_CSTATE[1] = Infinion_B.TmpSignalConversionAtphithetaps[1];
 
   /* Derivatives for Integrator: '<S1>/p,q,r ' */
@@ -4637,7 +4732,7 @@ void InfinionModelClass::Infinion_derivatives()
   /* Derivatives for Integrator: '<S1>/xe,ye,ze' */
   _rtXdot->xeyeze_CSTATE[2] = Infinion_B.Product[2];
 
-  /* Derivatives for Integrator: '<S18>/phi theta psi' */
+  /* Derivatives for Integrator: '<S19>/phi theta psi' */
   _rtXdot->phithetapsi_CSTATE[2] = Infinion_B.TmpSignalConversionAtphithetaps[2];
 
   /* Derivatives for Integrator: '<S1>/p,q,r ' */
@@ -4651,6 +4746,10 @@ void InfinionModelClass::initialize()
 
   /* initialize non-finites */
   rt_InitInfAndNaN(sizeof(real_T));
+
+  /* non-finite (run-time) assignments */
+  Infinion_P.Saturation_LowerSat = rtMinusInf;
+  Infinion_P.Saturation1_LowerSat = rtMinusInf;
 
   {
     /* Setup solver object */
@@ -4689,6 +4788,9 @@ void InfinionModelClass::initialize()
   rtmSetTPtr((&Infinion_M), &(&Infinion_M)->Timing.tArray[0]);
   (&Infinion_M)->Timing.stepSize0 = 0.02;
 
+  /* Start for If: '<S5>/If' */
+  Infinion_DW.If_ActiveSubsystem = -1;
+
   {
     FILE * a;
     int32_T i;
@@ -4699,7 +4801,7 @@ void InfinionModelClass::initialize()
     /* InitializeConditions for Integrator: '<S1>/xe,ye,ze' */
     Infinion_X.xeyeze_CSTATE[0] = Infinion_P.uDOFEulerAngles_xme_0[0];
 
-    /* InitializeConditions for Integrator: '<S18>/phi theta psi' */
+    /* InitializeConditions for Integrator: '<S19>/phi theta psi' */
     Infinion_X.phithetapsi_CSTATE[0] = Infinion_P.uDOFEulerAngles_eul_0[0];
 
     /* InitializeConditions for Integrator: '<S1>/p,q,r ' */
@@ -4711,7 +4813,7 @@ void InfinionModelClass::initialize()
     /* InitializeConditions for Integrator: '<S1>/xe,ye,ze' */
     Infinion_X.xeyeze_CSTATE[1] = Infinion_P.uDOFEulerAngles_xme_0[1];
 
-    /* InitializeConditions for Integrator: '<S18>/phi theta psi' */
+    /* InitializeConditions for Integrator: '<S19>/phi theta psi' */
     Infinion_X.phithetapsi_CSTATE[1] = Infinion_P.uDOFEulerAngles_eul_0[1];
 
     /* InitializeConditions for Integrator: '<S1>/p,q,r ' */
@@ -4723,7 +4825,7 @@ void InfinionModelClass::initialize()
     /* InitializeConditions for Integrator: '<S1>/xe,ye,ze' */
     Infinion_X.xeyeze_CSTATE[2] = Infinion_P.uDOFEulerAngles_xme_0[2];
 
-    /* InitializeConditions for Integrator: '<S18>/phi theta psi' */
+    /* InitializeConditions for Integrator: '<S19>/phi theta psi' */
     Infinion_X.phithetapsi_CSTATE[2] = Infinion_P.uDOFEulerAngles_eul_0[2];
 
     /* InitializeConditions for Integrator: '<S1>/p,q,r ' */
@@ -4736,6 +4838,11 @@ void InfinionModelClass::initialize()
     }
 
     /* End of SystemInitialize for MATLAB Function: '<Root>/Read Throttle' */
+
+    /* SystemInitialize for Merge: '<S5>/Merge' */
+    Infinion_B.Merge[0] = Infinion_P.Merge_InitialOutput[0];
+    Infinion_B.Merge[1] = Infinion_P.Merge_InitialOutput[1];
+    Infinion_B.Merge[2] = Infinion_P.Merge_InitialOutput[2];
 
     /* SystemInitialize for MATLAB Function: '<Root>/WriteToFile' */
     a = NULL;
